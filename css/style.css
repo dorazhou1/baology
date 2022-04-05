@@ -25,6 +25,9 @@ p, .paragraph {
 p-lg, .paragraph-lg {
   font-size: 22px;
 }
+a {
+  color: #E24C35;
+}
 
 h1, h2, h3, h4, h5, h6 {
   color: #000;
@@ -174,7 +177,10 @@ a.text-dark:hover {
 a:hover {
   color: #162D59;
 }
-
+a.link:hover {
+  color: #E24C35;
+  text-decoration: underline;
+}
 .slick-slide {
   outline: 0;
 }
