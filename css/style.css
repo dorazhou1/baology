@@ -518,4 +518,27 @@ blockquote {
   font-size: 22px;
   line-height: 1.7;
 }
-
+ol.steps {
+  list-style: none !important;
+}
+ol.steps li {
+  margin-bottom: 35px;
+  line-height: 36px;
+  font-size: 22px;
+  padding-left: 15px;
+  counter-increment: item;
+}
+ol.steps li:before {
+  content: counter(item) " ";
+  font-family: "New York","Playfair Display", serif;
+  text-align: center;
+  color: #FFD686;
+  position:absolute;
+  left:20px;
+  z-index:-1;
+  display:inline-block;
+  width:36px;
+  height:36px;
+  border-radius:500px;
+  background: #E24C35;
+}
