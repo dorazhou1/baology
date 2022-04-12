@@ -245,6 +245,12 @@ a.link:hover {
 .text-sm {
   font-size: 15px;
 }
+.text-md {
+  font-size: 18px;
+}
+.text-lg {
+  font-size: 26px;
+}
 
 .mb-10 {
   margin-bottom: 10px !important;
@@ -451,7 +457,8 @@ span.wow {
 .instructor-card {
   background-color: #FFD686;
   border-radius: 20px;
-  margin: 0 20px;
+  padding-bottom: 20px;
+  margin: 0 20px 30px;
   box-shadow: 0px 18px 39.1px 6.9px rgba(0, 0, 0, 0.14) !important;
 }
 
@@ -462,7 +469,64 @@ span.wow {
   border-radius: 50%;
   margin: 20px;
 }
-
+.instructor-text {
+  margin: 40px;
+}
+/* About page */
+.instructor-card.about {
+  width: 100%;
+  vertical-align: middle;
+  padding: 40px 0;
+}
+.img-wrapper-left {
+  width:30%;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0px 0px 0 40px;
+}
+.about-text{
+  padding: 0px 40px 40px 20px;
+  width: 60%;
+  display: inline-block;
+  vertical-align: middle;
+}
+@media (max-width: 1200px) {
+  .img-wrapper-left {
+    width: 45%;
+    padding: 20px;
+  }
+  .about-text {
+    width: 45%;
+  }
+}
+@media (max-width: 1000px) {
+  .instructor-card.about {
+    padding: 40px;
+  }
+  .img-wrapper-left {
+    width: 45%;
+    padding: 0 0px;
+    float: left;
+  }
+  .about-text {
+    width: 45%;
+    display:contents;
+  }
+}
+@media (max-width: 790px) {
+  .instructor-card.about {
+    text-align: center;
+  }
+  .img-wrapper-left {
+    width: 100%;
+    padding: 0 0px;
+    float: left;
+  }
+  .about-text {
+    width: 100%;
+    display:inline-block;
+  }
+}
 /* testimonial */
 .fa-quote-left {
   color: #E24C35;
