@@ -3,7 +3,7 @@
 <head>
 
   <meta charset="utf-8">
-  <title>Baology Prep</title>
+  <title>FAQ | Baology Prep</title>
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="The premier USABO course taught by Biolympiad finalists and Harvard-educated instructors.">
@@ -21,35 +21,9 @@
 </head>
 <body>
   
+<!--Navigation bar-->
+<div id="header"></div>
 
-<header class="navigation fixed-top wow fadeInRight"  data-wow-delay=".4s" data-wow-duration="1.3s">
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
-      aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse text-center" id="navigation">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="../">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="../resources.html">Resources</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="../syllabus.html">Syllabus</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="../about.html">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="../signup.html">Sign Up</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</header>
 
 <!-- hero area -->
 <section class="hero-area bg-primary" style="padding-bottom: 20vh;">
@@ -156,5 +130,10 @@
 <!-- Main Script -->
 <script src="../js/script.js"></script>
 
+<script>
+$(function(){
+    $("#header").load("../header.html");
+});
+</script>
 </body>
 </html>

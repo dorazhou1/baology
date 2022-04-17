@@ -22,34 +22,9 @@
 <body>
   
 
-<header class="navigation fixed-top wow fadeInRight"  data-wow-delay=".4s" data-wow-duration="1.3s">
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
-      aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
 
-    <div class="collapse navbar-collapse text-center" id="navigation">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="https://baology.org/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://baology.org/resources.html">Resources</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://baology.org/syllabus.html">Syllabus</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://baology.org/about.html">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://baology.org/signup.html">Sign Up</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</header>
+<!--Navigation bar-->
+<div id="header"></div>
 
 <!-- hero area -->
 <section class="hero-area bg-primary" style="padding-bottom: 20vh;">
@@ -110,5 +85,10 @@
 <!-- Main Script -->
 <script src="https://baology.org/js/script.js"></script>
 
+<script>
+  $(function(){
+      $("#header").load("https://baology.org/header.html");
+  });
+</script>
 </body>
 </html>
