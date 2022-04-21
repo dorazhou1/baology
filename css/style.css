@@ -722,49 +722,14 @@ p.description {
     padding-top: 10px;
     text-align: left;
 }
-.other {
-    margin-top: 20px;
-}
 
-@media only screen and (max-width: 850px) {
-    div.cols {
-        padding: 0 20px;
-    }
-    div.col {
-        width: 100%;
-    }
-    .btn {
-        margin: 2%;
-    }
-    .btn-container {
-        padding: 0;
-    }
-    div.introtext, div.vid, .video {
-        width: 100%;
-        float: left;
-        margin-top: 0;
-    }
-    .video {
-        height: 44vw;
-    }
+.table-section {
+  padding:20px;
 }
-@media only screen and (max-width: 500px) {
-    .video2 {
-        width: 100%;
-    }
-    div.num, p.label{
-        width: 100%;        
-    }
-    p.label {
-        margin-top: 20px;
-        margin-bottom: 15px;
-        text-align: left;
-    }
-    div.labels, div.nums {
-        width: 49%;
-        float: left;
-        text-align: center;
-    }
+.table{
+  display: block !important;
+  overflow-x: auto !important;
+  max-width: calc(100vw - 50px) !important;
 }
 
 /* calendar */
