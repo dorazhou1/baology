@@ -8,6 +8,11 @@
   src: url('../plugins/fonts/New-York-Bold.ttf') format('truetype'), url('../plugins/fonts/New-York-Bold.woff2') format('woff2');
   font-weight: normal;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   line-height: 1.2;
   font-family: "Inter", sans-serif;
@@ -313,7 +318,7 @@ a.link:hover {
 }
 
 .shadow {
-  box-shadow: 0px 18px 39.1px 6.9px rgba(224, 241, 255, 0.34) !important;
+  box-shadow: 0px 18px 39.1px 6.9px rgba(209, 218, 225, 0.34) !important;
 }
 span.wow {
   display:inline-block;
@@ -793,4 +798,127 @@ p.description {
 
 .smgc-watermark {
   display: none;
+}
+
+input#query {
+  font: 16px Inter;
+  height: 100%;
+  padding: 13px 15px;
+  border-radius: 500px;
+  border: 0px;
+  background-color: #FFF1D6;
+  width: 70%;
+  margin: 10px;
+}
+input#query:focus {
+  outline-color: #F77F00;
+}
+input#query::placeholder {
+  color: #F77F00;
+  opacity: 0.7; 
+}
+.search {
+  height: 100%;
+  background-color: #F77F00;
+  color: white;
+  font: 16px Inter;
+  padding: 10px 15px;
+  margin: 10px;
+}
+form#search {
+  width: 50vw;
+  display: flex;
+  justify-content: center;
+}
+
+svg {
+  color: #fff;
+  fill: currentColor;
+  width: 22px;
+}
+
+
+/* blog cards */
+.blog-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.card {
+  border: none;
+  background-color: #fef8ec;
+  background-size: contain;
+  border-radius: 22px;
+  height: 400px;
+  display: flex;
+  justify-content: flex-end;
+  top: 0;
+}
+
+.card:hover {
+  top: -5px;
+  transition: .3s; 
+}
+
+.card-label {
+  background-color: white;
+  padding: 20px;
+  border-radius: 0 0 20px 20px;
+}
+
+.card-label > .header {
+  margin-bottom: .3rem;
+  color: #E85928;
+  font: 1000 20px Inter;
+}
+.card-label > .subtitle {
+  font-size: 1 rem;
+  color: #162D59;
+  margin-bottom: .15rem;
+}
+.card-label > .body {
+  font-size: .8rem;
+  color: #777;
+}
+
+.hide {
+  display: none;
+}
+
+.page-nums {
+  display: flex;
+  font: 800 15px New York;
+  font-family: "New York","Playfair Display", serif;
+  margin-top: 50px;
+}
+.page-nums > li {
+  margin: 10px;
+  padding-top: 10px;
+  text-align: center;
+  color: #162D59;
+  border-radius: 50px;
+  width:36px;
+  height:36px;
+}
+.page-nums > li:hover {
+  cursor: pointer;
+}
+.page-nums > li.active-num {
+  background-color: #FFE4AD;
+}
+
+.taglist {
+  display: flex;
+  margin: 15px 0;
+  padding: 0;
+}
+
+.taglist > li {
+  padding: 5px;
+  background-color: #FFE4AD;
+  margin-right: 5px;
+  border-radius: 5px;
+  color:#E85928;
 }

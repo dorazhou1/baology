@@ -1,0 +1,19 @@
+.img-top {
+    max-height: 80vh;
+    max-width: 100%;
+    margin: 20px 0;
+}
+.navigation {
+    width: 100%;
+    border-radius: 0;
+}
+h2 {
+    color: #162D59;
+}
+h3 {
+    color: #E24C35;
+    font-size: 25px;
+}
+img {
+    max-width: 100%;
+}
