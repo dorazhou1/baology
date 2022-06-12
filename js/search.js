@@ -51,15 +51,17 @@ fetch("./blogs/blogs.json")
             //content
             const card = blogCardTemplate.content.cloneNode(true).children[0]
             const header = card.querySelector("[data-header]")
+            const subtitle = card.querySelector("[data-subtitle]")
             const body = card.querySelector("[data-body]")
             const tags = card.querySelector("[data-taglist]")
+            const date = card.querySelector("[data-date]")
             header.textContent = blog.name
+            subtitle.textContent = blog.subtitle
             body.textContent = blog.description
+            date.textContent = blog.date
             //tags
             let taglist = blog.tags
-            // debugger
             while(taglist) {
-                // debugger
                 const li = document.createElement("li");
                 const ind = taglist.indexOf(" ")
                 if(ind == -1) {

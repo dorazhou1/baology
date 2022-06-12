@@ -882,6 +882,24 @@ svg {
   font-size: .8rem;
   color: #777;
 }
+.card-label > .date {
+  font-size: .8rem;
+  color: #E85928;
+}
+.taglist {
+  display: flex;
+  margin: 15px 0;
+  padding: 0;
+}
+
+.taglist > li {
+  padding: 5px;
+  background-color: #FFE4AD;
+  margin-right: 5px;
+  border-radius: 5px;
+  color:#E85928;
+}
+
 
 .hide {
   display: none;
@@ -907,18 +925,4 @@ svg {
 }
 .page-nums > li.active-num {
   background-color: #FFE4AD;
-}
-
-.taglist {
-  display: flex;
-  margin: 15px 0;
-  padding: 0;
-}
-
-.taglist > li {
-  padding: 5px;
-  background-color: #FFE4AD;
-  margin-right: 5px;
-  border-radius: 5px;
-  color:#E85928;
 }
