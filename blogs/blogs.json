@@ -1,6 +1,6 @@
 
 [
-  {
+  /* {
     "id": 1,
     "date": "06/11/2022",
     "name": "Blog Title",
@@ -9,9 +9,9 @@
     "link": "blogs/blogpage.html",
     "imglink": "blogs/images/picture.jpg",
     "tags":"biology tag1"
-  },
+  }, */
   {
-    "id": 2,
+    "id": 1,
     "date": "07/30/2022",
     "name": "Our first blog post!",
     "subtitle": "",
