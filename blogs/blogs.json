@@ -2,16 +2,6 @@
 [
   {
     "id": 1,
-    "date": "06/11/2022",
-    "name": "Blog Title",
-    "subtitle": "This is the subtitle",
-    "description": "A short description or the introduction paragraph can go here and will be displayed on this page. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam scelerisque justo at egestas mollis. In hac habitasse platea dictumst. Duis ac nisi fermentum, euismod dui auctor, dapibus massa. Search Criteria",
-    "link": "blogs/blogpage.html",
-    "imglink": "blogs/images/picture.jpg",
-    "tags":"biology tag1"
-  },
-  {
-    "id": 2,
     "date": "07/30/2022",
     "name": "Our first blog post!",
     "subtitle": "",
