@@ -9,5 +9,15 @@
     "link": "blogs/blogpage.html",
     "imglink": "blogs/images/picture.jpg",
     "tags":"biology tag1"
+  },
+  {
+    "id": 1,
+    "date": "07/30/2022",
+    "name": "Our first blog post!",
+    "subtitle": "",
+    "description": "",
+    "link": "blogs/blaog-1.html",
+    "imglink": "blogs/images/hideokojima.jpeg",
+    "tags":"test"
   }
 ]
