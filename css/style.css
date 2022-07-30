@@ -849,17 +849,23 @@ svg {
 .card {
   border: none;
   background-color: #fef8ec;
-  background-size: contain;
   border-radius: 22px;
   height: 400px;
   display: flex;
   justify-content: flex-end;
   top: 0;
+  overflow: hidden;
 }
 
 .card:hover {
   top: -5px;
   transition: .3s; 
+}
+
+.card-img-blog {
+  object-fit: cover;
+  flex-grow: 1;
+  min-height: 0;
 }
 
 .card-label {

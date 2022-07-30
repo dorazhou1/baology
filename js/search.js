@@ -80,7 +80,7 @@ fetch("./blogs/blogs.json")
             }
             //links and imgs
             card.href = blog.link;
-            card.style.backgroundImage = "url("+blog.imglink+")"
+            card.querySelector('[data-img]').src = blog.imglink
             blogCardContainer.append(card)
             //page number
             maxnum = Math.max(maxnum,(Math.floor(c/6)+1));
