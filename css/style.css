@@ -45,7 +45,7 @@ h1, .h1 {
 }
 @media (max-width: 991px) {
   h1, .h1 {
-    font-size: 65px;
+    font-size: 12vw;
   }
 }
 
@@ -340,7 +340,6 @@ span.wow {
 }
 
 /* /icon */
-
 .navigation {
   padding: 10px 30px;
   background-color: #FFD686;
@@ -573,6 +572,7 @@ li.nav-item {
 @media (max-width: 1000px) {
   .instructor-card.about {
     padding: 40px;
+    margin: 30px 0;
   }
   .img-wrapper-left {
     width: 45%;
@@ -730,11 +730,23 @@ p.description {
 
 .table-section {
   padding:20px;
+  width: 100%;
 }
 .table{
-  display: block !important;
+  /* display: block !important; */
   overflow-x: auto !important;
-  max-width: calc(100vw - 50px) !important;
+  max-width: calc(100vw - 80px) !important;
+  width: 100%; 
+  color: #162D59;
+}
+thead {
+  background-color: #FFD686;
+}
+td, tr, td, th {
+  border: none !important;
+}
+tr:nth-child(even) {
+  background-color: #FFF1D6;
 }
 
 /* calendar */
@@ -830,6 +842,12 @@ form#search {
   display: flex;
   justify-content: center;
 }
+@media (max-width: 991px) {
+  form#search {
+    width: 100%;
+  }
+}
+
 
 svg {
   color: #fff;
