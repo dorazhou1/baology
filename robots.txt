@@ -1,0 +1,4 @@
+Sitemap: https://baology.org/sitemap.xml
+
+User-agent: *
+Allow: /
