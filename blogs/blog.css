@@ -7,6 +7,9 @@
     width: 100%;
     border-radius: 0;
 }
+.list-group{
+      display:inline-block;
+}
 h2 {
     color: #162D59;
 }
