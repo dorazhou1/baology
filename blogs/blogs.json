@@ -8,5 +8,15 @@
     "description": "",
     "link": "blogs/blaog-1.html",
     "imglink": "blogs/images/hideokojima.jpeg"
+  },
+  {
+    "id": 2,
+    "date": "08/30/2022",
+    "name": "Blog Post 1: The One True Campbells (Textbook Review)",
+    "subtitle": "Our review of the best book for USABO studying",
+    "description": "",
+    "link": "blogs/usabo-blog-2.html",
+    "imglink": "blogs/images/usabo-blog-2-thumbnail.png",
+    "tags":"biology usabo textbook study campbells review"
   }
 ]
