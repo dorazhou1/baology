@@ -54,7 +54,7 @@ h2, .h2 {
 }
 @media (max-width: 991px) {
   h2, .h2 {
-    font-size: 50px;
+    font-size: 11vw;
   }
 }
 
@@ -150,6 +150,10 @@ ol,
 ul {
   list-style-type: none;
   margin: 0px;
+}
+
+table ul {
+  padding: 0;
 }
 
 img {
@@ -255,6 +259,14 @@ a.link:hover {
 }
 .text-lg {
   font-size: 26px;
+}
+
+.pb-0 {
+  padding-bottom: 0 !important;
+}
+
+.pt-0 {
+  padding-top: 0 !important;
 }
 
 .mb-10 {
@@ -468,7 +480,7 @@ li.nav-item {
     overflow: hidden;
   }
 }
-.hero-area h1 {
+.hero-area h1, .lead {
   position: relative;
   z-index: 2;
 }
@@ -554,11 +566,18 @@ li.nav-item {
   vertical-align: middle;
   padding: 0px 0px 0 40px;
 }
+.img-wrapper-left.usnco {
+  width: 40%;
+}
 .about-text{
   padding: 0px 40px 40px 20px;
   width: 60%;
   display: inline-block;
   vertical-align: middle;
+}
+.about-text.usnco {
+  width: 55%;
+  padding: 0px 40px 0 20px;
 }
 @media (max-width: 1200px) {
   .img-wrapper-left {
@@ -585,15 +604,15 @@ li.nav-item {
   }
 }
 @media (max-width: 790px) {
-  .instructor-card.about {
+  .instructor-card.about, .instructor-card-usnco {
     text-align: center;
   }
-  .img-wrapper-left {
+  .img-wrapper-left, .img-wrapper-left.usnco {
     width: 100%;
     padding: 0 0px;
     float: left;
   }
-  .about-text {
+  .about-text, .about-text.usnco {
     width: 100%;
     display:inline-block;
   }
@@ -949,4 +968,8 @@ svg {
 }
 .page-nums > li.active-num {
   background-color: #FFE4AD;
+}
+
+.about-usnco {
+  display: flex;
 }
