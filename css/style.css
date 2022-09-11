@@ -148,11 +148,10 @@ body {
 ol,
 ul {
   margin: 0px;
-  padding-left: 2rem;
+  padding-left: 1.5rem;
 }
 
 ul li {
-  font-size: 1.3rem;
   color:#E24C35;
 }
 
@@ -953,6 +952,7 @@ svg {
   margin-bottom: 5px;
   border-radius: 5px;
   color:#E85928;
+  list-style-type: none;
 }
 
 
