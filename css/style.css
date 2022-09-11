@@ -145,11 +145,15 @@ body {
   overflow-x: hidden;
 }
 
-
 ol,
 ul {
-  list-style-type: none;
   margin: 0px;
+  padding-left: 2rem;
+}
+
+ul li {
+  font-size: 1.3rem;
+  color:#E24C35;
 }
 
 table ul {
@@ -251,6 +255,11 @@ a.link:hover {
 .text-light {
   color: #999999 !important;
 }
+
+.text-white {
+  color: white !important;
+}
+
 .text-sm {
   font-size: 15px;
 }
@@ -406,6 +415,7 @@ span.wow {
 }
 li.nav-item {
   position: relative;
+  list-style-type: none;
 }
 
 .navbar .nav-item .dropdown-menu{ 
@@ -933,12 +943,14 @@ svg {
   display: flex;
   margin: 15px 0;
   padding: 0;
+  flex-wrap: wrap;
 }
 
 .taglist > li {
   padding: 5px;
   background-color: #FFE4AD;
   margin-right: 5px;
+  margin-bottom: 5px;
   border-radius: 5px;
   color:#E85928;
 }
