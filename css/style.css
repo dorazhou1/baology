@@ -229,6 +229,7 @@ a.link:hover {
   background: #eaeaea !important;
 }
 
+
 .text-primary {
   color: #162D59 !important;
 }
@@ -374,7 +375,6 @@ span.wow {
   }
   .navigation {
     padding: 20px;
-    background: #FFD686;
   }
   .dropdown-item {
     text-align: center;

@@ -1,13 +1,73 @@
-.bg-primary-usnco {
-    background: #9fd5e3 !important;
+.bg-primary {
+    background: #B8DEDC !important;
+}
+.bg-dark {
+    background: #005A62 !important;
+}
+.lead {
+    background: #83C5BE !important;
+}
+/* .text-primary {
+    color: #C18C20 !important;
+}
+.text-primary-dark {
+    color: #392704 !important;
+} */
+.text-secondary {
+    color: #42999B !important;
+}
+.text-secondary-dark {
+    color: #006D77 !important;
 }
 
-.lead-usnco {
-    background: #9be4d3 !important;
+a {
+    color: #006D77;
 }
-.text-primary-usnco {
-    color: #0a9c86 !important;
+a.link:hover {
+    color: #006D77;
 }
-.text-primary-usnco-dark {
-    color: #0d584d !important;
+
+.navigation {
+    background-color: #83C5BE;
+}
+.navigation.nav-bg {
+    background-color: #83C5BE;
+}
+.navbar .nav-item .dropdown-menu{ 
+    background-color: #83C5BE;
+}
+
+ol.steps li:before {
+    color: #B8DEDC;
+    background: #42999B;
+}
+
+ul li::marker {
+    color: #42999B; 
+}
+
+
+thead {
+    background-color: #83C5BE;
+}
+td, tr, td, th {
+    border: none !important;
+}
+tr:nth-child(even) {
+    background-color: #B8DEDC;
+}
+
+
+.btn-primary {
+    background: #135D89;
+}
+.btn-primary:active {
+    background: #0F4A6C !important;
+}
+.btn-primary:hover {
+    background: #0F4A6C;
+}
+.btn-primary.focus, .btn-primary.active {
+    background: #0F4A6C !important;
+    box-shadow: none !important;
 }
