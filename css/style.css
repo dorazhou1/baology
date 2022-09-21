@@ -145,18 +145,14 @@ body {
   overflow-x: hidden;
 }
 
-ol,
-ul {
-  margin: 0px;
-  padding-left: 1.5rem;
-}
 
-ul li {
+ul li::marker {
   color:#E24C35;
 }
 
 table ul {
   padding: 0;
+  list-style-type: none;
 }
 
 img {
