@@ -48,13 +48,13 @@ ul li::marker {
 
 
 thead {
-    background-color: #83C5BE;
+    background-color: #B8DEDC;
 }
 td, tr, td, th {
     border: none !important;
 }
 tr:nth-child(even) {
-    background-color: #B8DEDC;
+    background-color: #DCEFEE;
 }
 
 
