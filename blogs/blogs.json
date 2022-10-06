@@ -1,14 +1,24 @@
 
 [
   {
+    "id": 3,
+    "date": "10/05/2022",
+    "name": "Blog Post 2: Kevin's USABO Textbook Tier List",
+    "subtitle": "Definitive Edition, 2022-3",
+    "description": "",
+    "link": "blogs/usabo-blog-2.html",
+    "imglink": "blogs/images/usabo-blog-2-textbook-tierlist-baomaker.png",
+    "tags":"Textbooks Tierlist Biology USABO Studying"
+  },
+  {
     "id": 2,
     "date": "08/30/2022",
     "name": "Blog Post 1: The One True Campbells (Textbook Review)",
     "subtitle": "Our review of the best book for USABO studying",
     "description": "",
-    "link": "blogs/usabo-blog-2.html",
-    "imglink": "blogs/images/usabo-blog-2-thumbnail.png",
-    "tags":"biology usabo textbook study campbells review"
+    "link": "blogs/usabo-blog-1.html",
+    "imglink": "blogs/images/usabo-blog-1-thumbnail.png",
+    "tags":"Campbells Biology Textbooks USABO Studying"
   },
   {
     "id": 1,
