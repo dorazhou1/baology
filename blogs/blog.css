@@ -23,3 +23,8 @@ h3 {
 img {
     max-width: 100%;
 }
+hr {
+    height: 30px;
+    border-width: 3px;
+    border-color: #FFD686;
+}
