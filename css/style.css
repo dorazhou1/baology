@@ -893,15 +893,20 @@ svg {
   background-color: #fef8ec;
   border-radius: 22px;
   height: 400px;
+  min-height: fit-content;
   display: flex;
   justify-content: flex-end;
   top: 0;
   overflow: hidden;
+  transition: top 0.3s ease;
+}
+
+.card-body {
+  overflow: auto;
 }
 
 .card:hover {
   top: -5px;
-  transition: .3s; 
 }
 
 .card-img-blog {
