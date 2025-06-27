@@ -28,3 +28,9 @@ hr {
     border-width: 3px;
     border-color: #FFD686;
 }
+
+.text-lastupdate {
+    /* color: #E24C35; */
+    font-style: italic;
+    font-size: 15px;
+}
