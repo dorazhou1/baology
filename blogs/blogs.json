@@ -1,21 +1,31 @@
 
 [
   {
+    "id": 4,
+    "date": "06/26/2025",
+    "name": "Baology's Recommended Textbooks for USABO",
+    "subtitle": "",
+    "description": "A comprehensive guide to the best textbooks for biology",
+    "link": "blogs/recommended-textbooks.html",
+    "imglink": "blogs/images/recommended-textbooks/cover.jpeg",
+    "tags":"General Textbooks Biology Studying USABO"
+  },
+  {
     "id": 3,
     "date": "10/05/2022",
     "name": "Blog Post 2: Kevin's Textbook Tier List",
-    "subtitle": "Definitive Edition, 2022-3",
-    "description": "",
+    "subtitle": "",
+    "description": "Definitive Edition",
     "link": "blogs/blog-2.html",
     "imglink": "blogs/images/blog-2-thumbnail.png",
-    "tags":"Textbooks Tierlist Biology Studying"
+    "tags":"General Textbooks Tierlist Biology Studying USABO"
   },
   {
     "id": 2,
     "date": "08/30/2022",
     "name": "Blog Post 1: The One True Campbells (Textbook Review)",
-    "subtitle": "Our review of the best book for biology studying",
-    "description": "",
+    "subtitle": "",
+    "description": "A comprehensive review of the best textbook for biology studying",
     "link": "blogs/blog-1.html",
     "imglink": "blogs/images/blog-1-thumbnail.png",
     "tags":"Campbells Biology Textbooks Studying"
