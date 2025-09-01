@@ -966,6 +966,8 @@ svg {
   font: 800 15px New York;
   font-family: "New York","Playfair Display", serif;
   margin-top: 50px;
+  list-style: none;
+  padding: 0;
 }
 .page-nums > li {
   margin: 10px;
