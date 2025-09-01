@@ -1,5 +1,34 @@
-
 [
+  {
+    "id": 7,
+    "date": "08/31/2025",
+    "name": "Jason's USABO Experience: Introduction",
+    "subtitle": "",
+    "description": "Start here to learn about Jason Wang's USABO journey!",
+    "link": "blogs/jasons-usabo-experience-intro.html",
+    "imglink": "blogs/images/jason-usabo-experience-intro/jason wang podium.jpg",
+    "tags": "Jason JasonWang USABO Story Introduction Advice Finals"
+  },
+  {
+    "id": 6,
+    "date": "08/31/2025",
+    "name": "Jason's USABO Experience: Freshman Year Part 1",
+    "subtitle": "",
+    "description": "Jason Wang discusses the first half of his freshman year in high school",
+    "link": "blogs/jasons-usabo-experience-freshman1.html",
+    "imglink": "blogs/images/jason-usabo-experience-intro/jason wang podium.jpg",
+    "tags": "Jason JasonWang USABO Story Part1 Advice Finals"
+  },
+  {
+    "id": 5,
+    "date": "08/31/2025",
+    "name": "Jason's USABO Experience: Freshman Year Part 2",
+    "subtitle": "",
+    "description": "Jason Wang discusses the second half of his freshman year — with a plot twist",
+    "link": "blogs/jasons-usabo-experience-freshman1.html",
+    "imglink": "blogs/images/jason-usabo-experience-intro/jason wang podium.jpg",
+    "tags": "Jason JasonWang USABO Story Part2 Advice Finals"
+  },
   {
     "id": 4,
     "date": "06/26/2025",
@@ -8,7 +37,7 @@
     "description": "A comprehensive guide to the best textbooks for biology",
     "link": "blogs/recommended-textbooks.html",
     "imglink": "blogs/images/recommended-textbooks/cover.jpeg",
-    "tags":"General Textbooks Biology Studying USABO"
+    "tags": "General Textbooks Biology Studying USABO"
   },
   {
     "id": 3,
@@ -18,7 +47,7 @@
     "description": "Definitive Edition",
     "link": "blogs/blog-2.html",
     "imglink": "blogs/images/blog-2-thumbnail.png",
-    "tags":"General Textbooks Tierlist Biology Studying USABO"
+    "tags": "General Textbooks Tierlist Biology Studying USABO"
   },
   {
     "id": 2,
@@ -28,7 +57,7 @@
     "description": "A comprehensive review of the best textbook for biology studying",
     "link": "blogs/blog-1.html",
     "imglink": "blogs/images/blog-1-thumbnail.png",
-    "tags":"Campbells Biology Textbooks Studying"
+    "tags": "Campbells Biology Textbooks Studying"
   },
   {
     "id": 1,
