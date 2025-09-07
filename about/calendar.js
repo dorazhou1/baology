@@ -58,24 +58,22 @@ function generateTableFromCSV(csvData, tableId) {
     // Skip header row (index 0) and process data rows
     for (let i = 1; i < csvData.length; i++) {
         const row = csvData[i];
-        if (row.length >= 6) { // Ensure we have all required columns
-            const tr = document.createElement('tr');
-            
-            // Week column (th)
-            const weekTh = document.createElement('th');
-            weekTh.setAttribute('scope', 'row');
-            weekTh.textContent = row[0];
-            tr.appendChild(weekTh);
-            
-            // Other columns (td)
-            for (let j = 1; j < row.length; j++) {
-                const td = document.createElement('td');
-                td.textContent = row[j];
-                tr.appendChild(td);
-            }
-            
-            tbody.appendChild(tr);
+        const tr = document.createElement('tr');
+        
+        // Week column (th)
+        const weekTh = document.createElement('th');
+        weekTh.setAttribute('scope', 'row');
+        weekTh.textContent = row[0] || '';
+        tr.appendChild(weekTh);
+        
+        // Other columns (td)
+        for (let j = 1; j < row.length; j++) {
+            const td = document.createElement('td');
+            td.textContent = row[j] || '';
+            tr.appendChild(td);
         }
+        
+        tbody.appendChild(tr);
     }
 }
 
@@ -96,9 +94,6 @@ async function loadSyllabusFromCSV(csvPath, tableId) {
 
 // Load syllabus when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    // Load the 2025 syllabus table
-    loadSyllabusFromCSV('syllabus-2025.csv', 'syllabus-table');
-    
-    // Load the 2024-2025 syllabus table
-    loadSyllabusFromCSV('syllabus-2024-2025.csv', 'syllabus-table-2024-2025');
+    loadSyllabusFromCSV('syllabus-s6s2.csv', 'syllabus-s6s2');
+    loadSyllabusFromCSV('syllabus-s6s1.csv', 'syllabus-s6s1');
 });

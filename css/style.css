@@ -759,9 +759,31 @@ p.description {
 .table{
   /* display: block !important; */
   overflow-x: auto !important;
-  max-width: calc(100vw - 80px) !important;
-  width: 100%; 
+  width: 100% !important;
   color: #162D59;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 thead {
   background-color: #FFD686;
@@ -777,64 +799,26 @@ tr:nth-child(even) {
 
 .calendar {
   width: 100%;
-}
-#smgc-cal-FCyEWK2VNfbhMhwH14lr-calendar-container {
-  border-width: 2px !important;
-  border-radius: 30px;
-  padding: 5vw;
-  border-color: #FFD686 !important;
-}
-.smgc-cal-FCyEWK2VNfbhMhwH14lr-button {
-  font-family: "Inter", sans-serif !important;
-  font-weight: bold;
-  padding: 3px !important;
-  margin: 0 !important; 
-  background-color: #FFE4AD !important;
-  border-radius: 10px !important;
-}
-.smgc-cal-FCyEWK2VNfbhMhwH14lr-calendar-month-title {
-  font-family: "New York","Playfair Display", serif !important;
-  font-size: 36px !important;
-}
-.smgc-cal-FCyEWK2VNfbhMhwH14lr-calendar-month-header {
-  margin-bottom: 20px;
-}
-#smgc-cal-FCyEWK2VNfbhMhwH14lr-day-of-week-letters {
-  margin-bottom: 8px;
-}
-#smgc-cal-FCyEWK2VNfbhMhwH14lr-day-of-week-letters span {
-  color: #F77F00 !important;
-  text-align: left !important;
-  padding: 5px !important;
-  font-weight: bold;
-  font-family: "New York","Playfair Display", serif !important;
-}
-#smgc-cal-FCyEWK2VNfbhMhwH14lr-calendar-container .smgc-cal-FCyEWK2VNfbhMhwH14lr-calendar-week .smgc-cal-FCyEWK2VNfbhMhwH14lr-month-day-container {
-  border-width: 0 !important;
-  font-family: "Inter", sans-serif !important;
-  padding: 5px !important;
-}
-.smgc-cal-FCyEWK2VNfbhMhwH14lr-default-header {
-  border-bottom-width: 0 !important;
-  text-align: left !important;
-  color: #254D9A !important; 
-  font-family: "New York","Playfair Display", serif !important;
-}
-.smgc-cal-FCyEWK2VNfbhMhwH14lr-event-start-time {
-  color: #CC6900 !important;
-}
-.smgc-cal-FCyEWK2VNfbhMhwH14lr-event-summary {
-  color: #F77F00 !important;
-}
-.add-calendar-button, span.plus, span.subscribe {
-  background-color:#F77F00 !important;
-  color: #fff !important;
-  border: 2px solid #F77F00 !important;
+  max-width: 100%;
+  height: 500px;
+  border: 2px solid #FFD686;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  overflow: hidden;
 }
 
-.smgc-watermark {
-  display: none;
+/* @media (max-width: 768px) {
+  .calendar {
+    height: 400px;
+  }
 }
+
+@media (max-width: 480px) {
+  .calendar {
+    height: 350px;
+  }
+} */
 
 input#query {
   font: 16px Inter;
