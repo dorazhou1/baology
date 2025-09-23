@@ -1,6 +1,16 @@
 [
   {
     "id": 7,
+    "date": "09/22/2025",
+    "name": "Jason Wang on High School Bio Competitions",
+    "subtitle": "",
+    "description": "Watch his webinar on all things biology!",
+    "link": "blogs/jasons-usabo-experience-video.html",
+    "imglink": "blogs/images/jason-usabo-experience-video/2025-09-22 jason thumbnail.png",
+    "tags": "Jason JasonWang USABO IBO RSI Research Video Webinar"
+  },
+  {
+    "id": 7,
     "date": "08/31/2025",
     "name": "Jason's USABO Experience: Introduction",
     "subtitle": "",
