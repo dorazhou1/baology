@@ -1108,12 +1108,12 @@ svg {
   margin-bottom: 20px;
 }
 
-.schedule-grid-top {
-  grid-template-columns: repeat(3, 1fr);
+.schedule-grid {
+  grid-template-columns: repeat(4, 1fr);
 }
 
-.schedule-grid-bottom {
-  grid-template-columns: repeat(4, 1fr);
+.schedule-cell-wide {
+  grid-column: span 2;
 }
 
 .schedule-cell {
@@ -1162,6 +1162,12 @@ svg {
 }
 
 .pricing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0px 16px 36px rgba(0, 0, 0, 0.12);
+}
+
+.pricing-card.selected {
+  background-color: #FFD686;
   transform: translateY(-6px);
   box-shadow: 0px 16px 36px rgba(0, 0, 0, 0.12);
 }
@@ -1236,9 +1242,12 @@ svg {
 }
 
 @media (max-width: 767px) {
-  .schedule-grid-top,
-  .schedule-grid-bottom {
+  .schedule-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .schedule-cell-wide {
+    grid-column: span 2;
   }
 
   .schedule-class {

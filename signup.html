@@ -118,12 +118,12 @@
         </div>
       </div>
 
-      <p class="schedule-note text-center wow fadeInUp">Hover over a level to preview your schedule.</p>
+      <p class="text-primary-dark text-center wow fadeInUp">Hover or click on a level to preview your schedule.</p>
 
-      <div class="schedule-grid schedule-grid-top wow fadeInUp" data-wow-delay=".2s">
-        <div class="schedule-cell shared" data-level="1 2 full">
+      <div class="schedule-grid wow fadeInUp" data-wow-delay=".2s">
+        <div class="schedule-cell shared schedule-cell-wide" data-level="1 2 full">
           <div class="schedule-day">Saturday</div>
-          <div class="schedule-class">Main Lecture<br>with Kevin Bao</div>
+          <div class="schedule-class">Main Lecture with Kevin Bao</div>
           <div class="schedule-details">7-9 PM EST<br>4-6 PM PST<br>Level 1 & 2</div>
         </div>
         <div class="schedule-cell level-specific" data-level="2 full">
@@ -136,9 +136,6 @@
           <div class="schedule-class">Skill Building</div>
           <div class="schedule-details">8-9 PM EST<br>5-6 PM PST<br>Level 2</div>
         </div>
-      </div>
-
-      <div class="schedule-grid schedule-grid-bottom wow fadeInUp" data-wow-delay=".3s">
         <div class="schedule-cell level-specific" data-level="1 full">
           <div class="schedule-day">Tuesday</div>
           <div class="schedule-class">Lecture Primer</div>
@@ -160,11 +157,15 @@
           <div class="schedule-details">8-9 PM EST<br>5-6 PM PST<br>Level 1 & 2</div>
         </div>
       </div>
+
+      <div class="text-center mt-50">
+        <a href="#register" class="btn btn-primary wow fadeInUp">REGISTER NOW</a>
+      </div>
     </div>
   </section>
   <!-- /Choose Your Level + Weekly Schedule -->
 
-  <section class="section">
+  <section id="register" class="section">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg col-md wow fadeInUp" data-wow-delay=".2s">
@@ -213,8 +214,7 @@
     $(function () {
       $("#header").load("header.html");
 
-      $(".pricing-card[data-tier]").on("mouseenter", function () {
-        var tier = $(this).data("tier").toString();
+      function highlightSchedule(tier) {
         $(".schedule-cell[data-level]").each(function () {
           var levels = $(this).data("level").toString().split(" ");
           if (levels.indexOf(tier) !== -1) {
@@ -223,10 +223,42 @@
             $(this).removeClass("highlighted");
           }
         });
+      }
+
+      function clearAll() {
+        $(".schedule-cell").removeClass("highlighted");
+        $(".pricing-card").removeClass("selected");
+      }
+
+      // Hover: preview on desktop (only when nothing is locked)
+      $(".pricing-card[data-tier]").on("mouseenter", function () {
+        if (!$(".pricing-card.selected").length) {
+          highlightSchedule($(this).data("tier").toString());
+        }
       });
 
       $(".pricing-card[data-tier]").on("mouseleave", function () {
-        $(".schedule-cell").removeClass("highlighted");
+        if (!$(".pricing-card.selected").length) {
+          $(".schedule-cell").removeClass("highlighted");
+        }
+      });
+
+      // Click: lock/unlock selection
+      $(".pricing-card[data-tier]").on("click", function () {
+        if ($(this).hasClass("selected")) {
+          clearAll();
+        } else {
+          $(".pricing-card").removeClass("selected");
+          $(this).addClass("selected");
+          highlightSchedule($(this).data("tier").toString());
+        }
+      });
+
+      // Click outside to deselect
+      $(document).on("click", function (e) {
+        if (!$(e.target).closest(".pricing-card").length) {
+          clearAll();
+        }
       });
     });
   </script>
