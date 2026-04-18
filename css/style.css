@@ -1119,14 +1119,16 @@ svg {
 .schedule-cell {
   border-radius: 12px;
   padding: 20px;
+  background-color: #FFF5E6;
+  transition: background-color 0.2s ease;
 }
 
 .schedule-cell.shared {
-  background-color: #FFD686;
+  border: 2px solid #E24C35;
 }
 
-.schedule-cell.level-specific {
-  background-color: #FFF5E6;
+.schedule-cell.highlighted {
+  background-color: #FFD686;
 }
 
 .schedule-day {
