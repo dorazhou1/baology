@@ -94,6 +94,5 @@ async function loadSyllabusFromCSV(csvPath, tableId) {
 
 // Load syllabus when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    loadSyllabusFromCSV('syllabus-s6s2.csv', 'syllabus-s6s2');
-    loadSyllabusFromCSV('syllabus-s6s1.csv', 'syllabus-s6s1');
+    loadSyllabusFromCSV('syllabus-s7s1.csv', 'syllabus-s7s1');
 });
