@@ -1101,40 +1101,142 @@ svg {
   display: flex;
 }
 
-/* Course Info Cards - Signup Page */
-.course-info-card {
-  background-color: #fff;
-  border-radius: 20px;
-  padding: 40px 30px;
-  text-align: center;
-  height: 100%;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.08);
+/* Weekly Schedule Grid - Signup Page */
+.schedule-grid {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-.course-info-icon {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 25px;
+.schedule-grid-top {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.schedule-grid-bottom {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.schedule-cell {
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.schedule-cell.shared {
   background-color: #FFD686;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.course-info-icon i {
+.schedule-cell.level-specific {
+  background-color: #FFF5E6;
+}
+
+.schedule-day {
+  font-size: 14px;
+  color: #E24C35;
+  margin-bottom: 4px;
+}
+
+.schedule-class {
+  font-family: "New York", "Playfair Display", serif;
+  font-size: 24px;
+  color: #E24C35;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.schedule-details {
+  font-size: 14px;
+  color: #E24C35;
+  line-height: 1.6;
+}
+
+/* Pricing Cards - Signup Page */
+.pricing-card {
+  background-color: #FFF5E6;
+  border-radius: 12px;
+  padding: 30px 24px;
+  height: 100%;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0px 16px 36px rgba(0, 0, 0, 0.12);
+}
+
+.pricing-card .tier-name {
+  font-family: "New York", "Playfair Display", serif;
+  font-size: 28px;
+  color: #E24C35;
+  margin-bottom: 8px;
+}
+
+.pricing-card .tier-icon {
+  font-size: 16px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.pricing-card .tier-desc {
+  font-size: 14px;
+  color: #E24C35;
+  margin-bottom: 16px;
+}
+
+.pricing-card .price {
+  font-family: "New York", "Playfair Display", serif;
   font-size: 32px;
-  color: #162D59;
+  font-weight: 700;
+  color: #E24C35;
+  margin-bottom: 12px;
 }
 
-.course-price {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 10px 25px;
-  background: linear-gradient(135deg, #E24C35 0%, #c93a25 100%);
-  color: #fff;
-  font-size: 22px;
-  font-weight: bold;
-  border-radius: 25px;
-  font-family: 'Ropa Sans', sans-serif;
+.pricing-card .includes-label {
+  font-size: 14px;
+  color: #E24C35;
+  margin-bottom: 8px;
+}
+
+.pricing-card ul {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.pricing-card ul li {
+  font-family: "New York", "Playfair Display", serif;
+  font-size: 18px;
+  color: #E24C35;
+  margin-bottom: 4px;
+}
+
+.pricing-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background-color: #FFD686;
+  color: #E24C35;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+
+.schedule-note {
+  font-size: 14px;
+  color: #E24C35;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 767px) {
+  .schedule-grid-top,
+  .schedule-grid-bottom {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .schedule-class {
+    font-size: 18px;
+  }
 }
