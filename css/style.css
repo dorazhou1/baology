@@ -789,6 +789,13 @@ blockquote {
   line-height: 1.7;
 }
 
+ul.course-overview-list li {
+  font-size: 22px;
+  line-height: 36px;
+  list-style-type: disc;
+  margin-bottom: 10px;
+}
+
 ol.steps {
   list-style: none !important;
 }
