@@ -80,14 +80,9 @@
   <!-- /Course Overview -->
 
   <!-- Choose Your Level + Weekly Schedule -->
-  <section class="section">
+  <section class="section" style="padding-bottom: 40px;">
     <div class="container">
       <h2 class="text-secondary text-center wow fadeInDown mb-3">Choose Your Level</h2>
-
-      <p class="text-primary-dark text-center wow fadeInUp">Hover or click on a level below to preview your schedule.</p>
-      <div class="text-center mb-30">
-        <a href="#register" class="btn btn-primary wow fadeInUp">SIGN UP TODAY</a>
-      </div>
 
       <div class="row justify-content-center mb-30">
         <div class="col-lg-4 col-md-6 mb-30">
@@ -103,6 +98,7 @@
               <li>Case Study</li>
               <li>Homework</li>
             </ul>
+            <a href="#register" class="btn btn-primary btn-sm mt-3 w-100">Register Now →</a>
           </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-30">
@@ -118,6 +114,7 @@
               <li>Case Study</li>
               <li>Homework Review</li>
             </ul>
+            <a href="#register" class="btn btn-primary btn-sm mt-3 w-100">Register Now →</a>
           </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-30">
@@ -136,11 +133,12 @@
               <li>Case Study</li>
               <li>Homework Review</li>
             </ul>
+            <a href="#register" class="btn btn-primary btn-sm mt-3 w-100">Register Now →</a>
           </div>
         </div>
       </div>
 
-      <div class="schedule-grid wow fadeInUp" data-wow-delay=".2s">
+      <!-- <div class="schedule-grid wow fadeInUp" data-wow-delay=".2s">
         <div class="schedule-cell shared schedule-cell-wide" data-level="1 2 full">
           <div class="schedule-day">Saturday</div>
           <div class="schedule-class">Main Lecture with Kevin Bao</div>
@@ -176,31 +174,31 @@
           <div class="schedule-class">Homework Review</div>
           <div class="schedule-details">8-9 PM EST<br>5-6 PM PST<br>Level 1 & 2</div>
         </div>
-      </div>
+      </div> -->
 
     </div>
   </section>
   <!-- /Choose Your Level + Weekly Schedule -->
 
-  <section class="section" id="register">
+  <section class="section" id="register" style="padding-top: 40px;">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg col-md wow fadeInUp" data-wow-delay=".2s">
           <h2 class="wow fadeInLeft text-secondary mb-40" data-wow-delay=".2s" data-wow-duration=".8s">How to Register</h2>
           <ol class="steps text-primary-dark">
-            <li>Fill out the <a class="link" href="https://forms.gle/mFWNSbckf6uGMTgG7" target="_blank">form</a> on this
+            <li>Fill out the <a class="link" data-site-href="formUrl" target="_blank">form</a> on this
               page.</li>
             <li>Send the course fee through Zelle to <a class="link"
-                href="mailto:kevinbaobiology@yahoo.com">kevinbaobiology@yahoo.com</a></li>
+                data-site-href="contactEmailHref">kevinbaobiology@yahoo.com</a></li>
             <li>You will receive a confirmation email from <a class="link"
-                href="mailto:kevinbaobiology@yahoo.com">kevinbaobiology@yahoo.com</a> and an invite to the Canvas
+                data-site-href="contactEmailHref">kevinbaobiology@yahoo.com</a> and an invite to the Canvas
               Classroom</li>
           </ol>
           <p>Please email us if you have any further questions!</p>
         </div>
         <div class="col-lg col-md text-center wow fadeInUp" data-wow-delay=".4s">
           <iframe
-            src="https://docs.google.com/forms/d/e/1FAIpQLScUolfD-mBgd_5usmLfpuUr6dcK5imKUAn2PmlaguLoEa8yqA/viewform?embedded=true"
+            data-site-src="formEmbedUrl"
             frameborder="0" marginheight="0" marginwidth="0" style="width:100%; height: 80vh">Loading…</iframe>
         </div>
       </div>
@@ -225,56 +223,24 @@
   <script src="plugins/wow/wow.min.js"></script>
   <!-- Main Script -->
   <script src="js/script.js"></script>
+  <!-- Site config — update js/site-config.js when any link, email, or form changes -->
+  <script src="js/site-config.js"></script>
 
   <script>
     $(function () {
       $("#header").load("header.html");
 
-      function highlightSchedule(tier) {
-        $(".schedule-cell[data-level]").each(function () {
-          var levels = $(this).data("level").toString().split(" ");
-          if (levels.indexOf(tier) !== -1) {
-            $(this).addClass("highlighted");
-          } else {
-            $(this).removeClass("highlighted");
-          }
-        });
-      }
+      var loadedTier = null;
 
-      function clearAll() {
-        $(".schedule-cell").removeClass("highlighted");
-        $(".pricing-card").removeClass("selected");
-      }
-
-      // Hover: preview on desktop (only when nothing is locked)
-      $(".pricing-card[data-tier]").on("mouseenter", function () {
-        if (!$(".pricing-card.selected").length) {
-          highlightSchedule($(this).data("tier").toString());
+      $(".pricing-card .btn").on("click", function (e) {
+        e.preventDefault();
+        var tier = $(this).closest(".pricing-card").data("tier").toString();
+        if (tier !== loadedTier) {
+          var src = SITE_CONFIG.formEmbedUrl + "&" + SITE_CONFIG.formEntryCourse + "=" + encodeURIComponent(SITE_CONFIG.tierValues[tier]);
+          $("iframe").attr("src", src);
+          loadedTier = tier;
         }
-      });
-
-      $(".pricing-card[data-tier]").on("mouseleave", function () {
-        if (!$(".pricing-card.selected").length) {
-          $(".schedule-cell").removeClass("highlighted");
-        }
-      });
-
-      // Click: lock/unlock selection
-      $(".pricing-card[data-tier]").on("click", function () {
-        if ($(this).hasClass("selected")) {
-          clearAll();
-        } else {
-          $(".pricing-card").removeClass("selected");
-          $(this).addClass("selected");
-          highlightSchedule($(this).data("tier").toString());
-        }
-      });
-
-      // Click outside to deselect
-      $(document).on("click", function (e) {
-        if (!$(e.target).closest(".pricing-card").length) {
-          clearAll();
-        }
+        $("html, body").animate({ scrollTop: $("#register").offset().top }, 600);
       });
     });
   </script>

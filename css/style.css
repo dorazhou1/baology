@@ -1166,6 +1166,8 @@ svg {
   height: 100%;
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .pricing-card:hover {
@@ -1219,6 +1221,7 @@ svg {
   list-style: disc;
   padding-left: 20px;
   margin: 0;
+  flex: 1;
 }
 
 .pricing-card ul li {
