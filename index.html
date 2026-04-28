@@ -274,12 +274,49 @@
   <!-- Main Script -->
   <script src="js/script.js"></script>
   <script src="js/site-config.js"></script>
+  <script src="js/countdown-popup.js"></script>
 
   <script>
     $(function () {
       $("#header").load("header.html");
     });
   </script>
+
+  <!-- Course countdown popup -->
+  <div class="modal fade" id="courseCountdownModal" tabindex="-1" role="dialog" aria-labelledby="courseCountdownLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content countdown-modal">
+        <button type="button" class="close countdown-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="modal-body text-center p-4">
+          <h3 id="courseCountdownLabel" class="text-secondary font-primary mb-3" data-countdown-pre-title>
+            Season 7 starts in
+          </h3>
+          <h3 class="text-secondary font-primary mb-3 d-none" data-countdown-post-title>
+            The course has started!
+          </h3>
+
+          <div class="countdown-timer mb-4" data-countdown-timer>
+            <span class="cd-block"><span data-cd="days">0</span><small>days</small></span>
+            <span class="cd-block"><span data-cd="hours">0</span><small>hrs</small></span>
+            <span class="cd-block"><span data-cd="minutes">0</span><small>min</small></span>
+            <span class="cd-block"><span data-cd="seconds">0</span><small>sec</small></span>
+          </div>
+
+          <p class="text-primary-dark mb-4" data-countdown-message>
+            Don't miss your seat &mdash; the first lecture is just around the corner.
+          </p>
+
+          <div class="countdown-actions">
+            <a href="signup.html" class="btn btn-primary">SIGN&nbsp;UP</a>
+            <a data-site-href="infoSessionRecordingUrl" target="_blank" rel="noopener"
+               class="btn btn-secondary">WATCH&nbsp;INFO&nbsp;SESSION</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </body>
 

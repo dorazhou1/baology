@@ -32,7 +32,13 @@ var SITE_CONFIG = {
   },
 
   // Official advertisement (Google Drive)
-  officialAdUrl: "https://drive.google.com/file/d/1n_AfquzAWqFwgy2MmYMihsx1TEDwfunh/view?usp=sharing"
+  officialAdUrl: "https://drive.google.com/file/d/1n_AfquzAWqFwgy2MmYMihsx1TEDwfunh/view?usp=sharing",
+
+  // Season 7 first main lecture: May 2, 2026 at 4:00 PM Pacific (PDT, UTC-7 in May)
+  courseStartIso: "2026-05-02T16:00:00-07:00",
+
+  // Recording of the April 27 info session (Zoom)
+  infoSessionRecordingUrl: "https://us02web.zoom.us/rec/play/qVHwtO3SF_3lUnGw1zoTq9kDsxSU9zzq14Q8rpFyxj4CRMy0uD4Gg8T3Q3qTrJ5VA_vzbB_XP9M7HUOo.S6zh8BPgQteQVIKy?eagerLoadZvaPages=sidemenu.billing.plan_management&accessLevel=meeting&canPlayFromShare=true&from=share_recording_detail&startTime=1777334440000&oldStyle=true&pwd=DOfqMutw_8j2ld801QAAIAAAAE_2HP_la0hC830osH4hJv9uh448uiA1Vo8PnaWoLf6zcsN0k3jYpHj127OLSBI6sDAwMDAwNA"
 };
 
 // Auto-apply config to any element with data-site-href or data-site-src.
