@@ -1265,6 +1265,36 @@ svg {
   }
 }
 
+/* Hero signup card */
+.signup-card {
+  border-radius: 32px;
+  border: none;
+  margin-top: 50px;
+  height: auto;
+  min-height: 400px;
+}
+
+.signup-card .card-body {
+  padding: 40px 32px;
+  overflow: visible;
+}
+
+.signup-card-title {
+  margin-bottom: 28px;
+  text-wrap: balance;
+}
+
+.signup-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.signup-card-actions .btn {
+  white-space: nowrap;
+}
+
 /* Countdown popup */
 .countdown-modal {
   border-radius: 32px;
