@@ -57,7 +57,7 @@
         if (els.timer)     els.timer.classList.add("d-none");
         if (els.postTitle) els.postTitle.classList.remove("d-none");
         if (els.message) {
-          els.message.textContent = "It's not too late — sign up or catch the recording below.";
+          els.message.textContent = "It's not too late! Sign up or watch the recording below.";
         }
         if (intervalId) { clearInterval(intervalId); intervalId = null; }
       }
