@@ -485,7 +485,7 @@ span.wow {
   height: 22px;
 }
 
-.navbar-toggler .burger > span {
+.navbar-toggler .burger>span {
   position: absolute;
   left: 0;
   width: 100%;
@@ -495,20 +495,28 @@ span.wow {
   transition: top 0.3s ease, transform 0.3s ease, opacity 0.2s ease;
 }
 
-.navbar-toggler .burger > span:nth-child(1) { top: 0; }
-.navbar-toggler .burger > span:nth-child(2) { top: 9px; }
-.navbar-toggler .burger > span:nth-child(3) { top: 18px; }
+.navbar-toggler .burger>span:nth-child(1) {
+  top: 0;
+}
 
-.navbar-toggler[aria-expanded="true"] .burger > span:nth-child(1) {
+.navbar-toggler .burger>span:nth-child(2) {
+  top: 9px;
+}
+
+.navbar-toggler .burger>span:nth-child(3) {
+  top: 18px;
+}
+
+.navbar-toggler[aria-expanded="true"] .burger>span:nth-child(1) {
   top: 9px;
   transform: rotate(45deg);
 }
 
-.navbar-toggler[aria-expanded="true"] .burger > span:nth-child(2) {
+.navbar-toggler[aria-expanded="true"] .burger>span:nth-child(2) {
   opacity: 0;
 }
 
-.navbar-toggler[aria-expanded="true"] .burger > span:nth-child(3) {
+.navbar-toggler[aria-expanded="true"] .burger>span:nth-child(3) {
   top: 9px;
   transform: rotate(-45deg);
 }
@@ -872,21 +880,26 @@ ol.steps li:before {
 
 /*collapse*/
 .collapsible {
-  background-color: #fff;
+  background-color: #FFF8EC;
   color: #E24C35;
   font-weight: 600;
   border: none;
   border-bottom: 2px solid #eee;
   cursor: pointer;
-  padding: 15px;
+  padding: 15px 50px 15px 15px;
   width: 100%;
   text-align: left;
   outline: none;
   font-size: 18px;
-  transition: 1s;
+  position: relative;
+  transition: background-color 0.2s ease;
 }
 
-.active {
+.collapsible:hover {
+  background-color: #FFE4AD;
+}
+
+.collapsible.active {
   background-color: #FFE4AD;
 }
 
@@ -894,11 +907,15 @@ ol.steps li:before {
   content: '\002B';
   color: #F77F00;
   font-weight: bold;
-  float: right;
-  margin-left: 5px;
+  font-size: 1.4em;
+  line-height: 1;
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translate(0, -55%);
 }
 
-.active:after {
+.collapsible.active:after {
   content: "\2212";
 }
 
@@ -908,6 +925,10 @@ ol.steps li:before {
   overflow: hidden;
   transition: max-height 0.2s ease-out;
   background-color: #EFF3FB;
+}
+
+.content>.table-responsive {
+  margin-top: 1rem;
 }
 
 p.description {
