@@ -274,6 +274,10 @@ a.link:hover {
   background: #eaeaea !important;
 }
 
+.bg-yellow {
+  background: #FFD686 !important;
+}
+
 
 .text-primary {
   color: #162D59 !important;
@@ -564,6 +568,16 @@ li.nav-item {
   background-color: transparent;
 }
 
+/* Standardized blog-card drop shadow (used on Explore landing + blog-main) */
+.blog-card-shadow {
+  box-shadow: 0 12px 28px rgba(22, 45, 89, 0.18), 0 4px 10px rgba(22, 45, 89, 0.1);
+  transition: box-shadow 0.3s ease, top 0.3s ease;
+}
+
+.blog-card-shadow:hover {
+  box-shadow: 0 18px 36px rgba(22, 45, 89, 0.25), 0 6px 14px rgba(22, 45, 89, 0.14);
+}
+
 @keyframes rotateX {
   0% {
     opacity: 1;
@@ -781,13 +795,23 @@ li.nav-item {
 
 /* slick slider */
 .slick-dots {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
   padding-left: 0;
+  list-style: none;
+  margin: 0;
+  left: 0;
+  right: 0;
 }
 
 .slick-dots li {
-  display: inline-block;
-  margin: 2px;
+  display: block;
+  margin: 0;
+  width: auto;
+  height: 6px;
+  line-height: 0;
 }
 
 .slick-dots li.slick-active button {
@@ -802,31 +826,132 @@ li.nav-item {
   color: transparent;
   border-radius: 10px;
   overflow: hidden;
-  transition: 0.2s ease;
+  transition: width 0.3s ease, background 0.2s ease;
   border: 0;
+  padding: 0;
 }
 
-.slick-prev,
-.slick-next {
-  background-color: transparent;
-  border: none;
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  /* IE 9 */
-  -webkit-transform: translateY(-50%);
-  /* Safari */
-  transform: translateY(-50%);
+.slick-dots li button:before {
+  /* suppress slick-theme.css's • pseudo-element so our pill dots stay clean */
+  content: none;
 }
 
+/* Suppress the theme's font-glyph ::before — SVG is delivered via background-image instead. */
+.slick-prev:before,
+.slick-next:before {
+  content: none;
+}
+
+/* Black chevrons by default (gallery / light sections). */
 .slick-prev {
-  left: -10%;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M10 3 L5 8 L10 13' stroke='black' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+.slick-next {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M6 3 L11 8 L6 13' stroke='black' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
 }
 
-.slick-next {
-  right: -10%;
+/* White chevrons on dark sections (testimonials) for legibility. */
+.bg-dark .slick-prev {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M10 3 L5 8 L10 13' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+.bg-dark .slick-next {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M6 3 L11 8 L6 13' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+
+/* Larger, circular hit-target with an SVG chevron rendered via
+   background-image. SVG paths are drawn at the viewBox center, so
+   centering is pixel-deterministic — no font hinting, no rotation. */
+button.slick-prev,
+button.slick-next {
+  z-index: 5;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.35);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 22px 22px;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button.slick-prev:hover,
+button.slick-next:hover,
+button.slick-prev:focus,
+button.slick-next:focus {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.bg-dark button.slick-prev,
+.bg-dark button.slick-next {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.bg-dark button.slick-prev:hover,
+.bg-dark button.slick-next:hover,
+.bg-dark button.slick-prev:focus,
+.bg-dark button.slick-next:focus {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.slick-prev { left: 12px; }
+.slick-next { right: 12px; }
+
+[data-testimonial-slider] {
+  padding-left: 84px;
+  padding-right: 84px;
+}
+
+@media (max-width: 575px) {
+  [data-testimonial-slider] {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+}
+
+/* Explore landing — gallery uses an external arrow frame so arrows sit
+   outside the slick container entirely. Symmetric flex layout means
+   spacing is determined by `gap`, not pixel offsets. */
+.gallery-frame {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.gallery-frame > .gallery-preview {
+  flex: 1;
+  min-width: 0;
+}
+
+.gallery-arrow {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  background-color: #E24C35;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 22px 22px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.2s ease;
+}
+
+.gallery-arrow:hover,
+.gallery-arrow:focus {
+  outline: none;
+  background-color: #C73D29;
+}
+
+/* SVG chevrons — centered in their 16×16 viewBox, no rotation/font issues */
+.gallery-arrow-prev {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M10 3 L5 8 L10 13' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+
+.gallery-arrow-next {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M6 3 L11 8 L6 13' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
 }
 
 /* /slick slider */
@@ -1173,6 +1298,72 @@ svg {
   background-color: #FFE4AD;
 }
 
+/* Explore landing — gallery preview (Slick carousel: autoplay + arrows + drag) */
+.gallery-preview {
+  padding-top: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+.gallery-preview .slick-slide {
+  padding: 0 8px;
+}
+
+.gallery-preview .slick-list {
+  margin: 0 -8px;
+}
+
+.gallery-tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 200px;
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+}
+
+.gallery-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 250ms ease;
+}
+
+.gallery-tile:hover img {
+  transform: scale(1.05);
+}
+
+.gallery-tile-caption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 10px 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+  color: #fff;
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+.gallery-tile:hover .gallery-tile-caption {
+  opacity: 1;
+}
+
+.gallery-tile-caption .loc {
+  font-weight: 600;
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+.gallery-tile-caption .desc {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+
 .about-usabointro {
   display: flex;
 }
@@ -1420,3 +1611,4 @@ svg {
   margin-top: 6px;
   opacity: 0.85;
 }
+

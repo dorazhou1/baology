@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <title>Explore | Baology Prep</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description"
+    content="Meet the Baology community — testimonials, gallery, and recent stories from our students.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Baology Prep">
+  <link rel="shortcut icon" href="images/favicon.ico" />
+
+  <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="plugins/slick/slick.css">
+  <link rel="stylesheet" href="plugins/slick/slick-theme.css">
+  <link rel="stylesheet" href="plugins/wow/animate.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+  <!--Navigation bar-->
+  <div id="header"></div>
+
+  <!-- hero area -->
+  <section class="hero-area bg-primary" style="padding-bottom: 20vh;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-11 mx-auto">
+          <h1 class="font-tertiary text-primary-dark"><span class="wow fadeInLeft" data-wow-delay=".4s"
+              data-wow-duration="1.3s">Explore</span></h1>
+        </div>
+      </div>
+    </div>
+    <div class="layer wow fadeInLeft" id="l3"></div>
+    <div class="layer wow fadeInRight" id="l4">
+      <img src="images/illustrations/dots-orange.png" alt="bg-shape">
+    </div>
+    <div class="layer wow fadeInLeft" id="l5">
+      <img src="images/illustrations/leaf-yellow.png" alt="bg-shape">
+    </div>
+    <div class="layer wow fadeInDown" id="l6">
+      <img src="images/illustrations/dots-group-orange.png" alt="bg-shape">
+    </div>
+  </section>
+  <!-- /hero area -->
+
+  <!-- testimonials carousel -->
+  <section class="section bg-dark">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h2 class="text-white mb-5 wow fadeInDown" data-wow-delay=".2s">Testimonials</h2>
+        </div>
+        <div class="col-lg-10 mx-auto" data-testimonial-slider></div>
+      </div>
+      <div class="text-center mt-5">
+        <a href="explore/testimonials.html" class="btn btn-white">View all testimonials</a>
+      </div>
+    </div>
+  </section>
+  <!-- /testimonials carousel -->
+
+  <!-- gallery preview -->
+  <section class="section bg-primary">
+    <div class="container">
+      <div class="text-center">
+        <h2 class="text-primary-dark mb-3 wow fadeInDown" data-wow-delay=".2s">Gallery</h2>
+        <p class="text-primary-dark mb-5 wow fadeInLeft" data-wow-delay=".3s">A look at competition days, training
+          weekends, and everything in between.</p>
+      </div>
+      <div class="gallery-frame">
+        <button type="button" class="gallery-arrow gallery-arrow-prev" aria-label="Previous"></button>
+        <div class="gallery-preview" data-gallery-preview></div>
+        <button type="button" class="gallery-arrow gallery-arrow-next" aria-label="Next"></button>
+      </div>
+      <div class="text-center mt-5">
+        <a href="explore/gallery.html" class="btn btn-primary">View all photos</a>
+      </div>
+    </div>
+  </section>
+  <!-- /gallery preview -->
+
+  <!-- recent blogs -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center">
+        <h2 class="text-primary-dark mb-3 wow fadeInDown" data-wow-delay=".2s">Blog Posts</h2>
+        <p class="text-primary-dark mb-5 wow fadeInLeft" data-wow-delay=".3s">Check out our latest blog posts.</p>
+      </div>
+      <div class="blog-cards" data-blog-cards-container></div>
+      <template data-blog-template>
+        <a class="card wow fadeInLeft blog-card-shadow">
+          <img class="card-img-blog" data-img>
+          <div class="card-label">
+            <div class="header" data-header></div>
+            <div class="subtitle" data-subtitle></div>
+            <div class="body" data-body></div>
+            <ul class="taglist" data-taglist></ul>
+            <div class="date" data-date></div>
+          </div>
+        </a>
+      </template>
+      <div class="text-center mt-5">
+        <a href="blog-main.html" class="btn btn-primary">View all posts</a>
+      </div>
+    </div>
+  </section>
+  <!-- /recent blogs -->
+
+  <!-- footer -->
+  <footer class="bg-dark footer-section">
+    <div class="text-center py-5">
+      <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</p>
+      <p class="mb-0 text-sm text-white">Baology is not affiliated in any way with the USA Biology Olympiad Exam</p>
+    </div>
+  </footer>
+  <!-- /footer -->
+
+  <!-- jQuery -->
+  <script src="plugins/jQuery/jquery.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="plugins/bootstrap/bootstrap.min.js"></script>
+  <!-- slick slider -->
+  <script src="plugins/slick/slick.min.js"></script>
+  <!-- wow js -->
+  <script src="plugins/wow/wow.min.js"></script>
+  <!-- Main Script -->
+  <script src="js/script.js"></script>
+  <!-- Explore landing helpers -->
+  <script src="js/blog-card.js"></script>
+  <script src="js/explore.js"></script>
+
+  <script>
+    $(function () {
+      $("#header").load("header.html");
+    });
+  </script>
+
+</body>
+
+</html>

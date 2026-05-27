@@ -1,0 +1,82 @@
+[
+  {
+    "src": "images/team/kevin-bao.jpeg",
+    "alt": "Placeholder gallery image",
+    "location": "USABO Finals, Mt. Holyoke College",
+    "date": "2024-06-15",
+    "description": "Day 1 lab practical (placeholder image)",
+    "year": 2024
+  },
+  {
+    "src": "images/team/jason_wang.png",
+    "alt": "Placeholder gallery image",
+    "location": "USABO Finals, Mt. Holyoke College",
+    "date": "2024-06-16",
+    "description": "Awards ceremony (placeholder image)",
+    "year": 2024
+  },
+  {
+    "src": "images/team/joseph-dong.jpeg",
+    "alt": "Placeholder gallery image",
+    "location": "IBO 2024, Astana, Kazakhstan",
+    "date": "2024-07-10",
+    "description": "Team USA at opening ceremony (placeholder image)",
+    "year": 2024
+  },
+  {
+    "src": "images/team/vishal_surya.jpg",
+    "alt": "Placeholder gallery image",
+    "location": "Baology summer retreat",
+    "date": "2024-08-02",
+    "description": "Group portrait (placeholder image)",
+    "year": 2024
+  },
+  {
+    "src": "images/team/suzuko_ohshima.png",
+    "alt": "Placeholder gallery image",
+    "location": "USABO Finals, Marymount University",
+    "date": "2023-06-13",
+    "description": "Theory exam morning (placeholder image)",
+    "year": 2023
+  },
+  {
+    "src": "images/team/sunipun_biswas.jpg",
+    "alt": "Placeholder gallery image",
+    "location": "USABO Finals, Marymount University",
+    "date": "2023-06-14",
+    "description": "Lab practical setup (placeholder image)",
+    "year": 2023
+  },
+  {
+    "src": "blogs/images/jason-usabo-experience-intro/jason wang podium.jpg",
+    "alt": "Placeholder gallery image",
+    "location": "IBO 2023, Al Ain, UAE",
+    "date": "2023-07-08",
+    "description": "Podium (placeholder image)",
+    "year": 2023
+  },
+  {
+    "src": "images/team/albert-tam.jpeg",
+    "alt": "Placeholder gallery image",
+    "location": "Baology end-of-season dinner",
+    "date": "2023-08-20",
+    "description": "Instructors and finalists (placeholder image)",
+    "year": 2023
+  },
+  {
+    "src": "images/team/caleb-zhao.png",
+    "alt": "Placeholder gallery image",
+    "location": "USABO Finals, Marymount University",
+    "date": "2022-06-12",
+    "description": "Day 2 review session (placeholder image)",
+    "year": 2022
+  },
+  {
+    "src": "images/team/greycen-ren.jpeg",
+    "alt": "Placeholder gallery image",
+    "location": "Baology in-person workshop",
+    "date": "2022-07-23",
+    "description": "Skills workshop (placeholder image)",
+    "year": 2022
+  }
+]
