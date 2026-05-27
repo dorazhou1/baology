@@ -18,7 +18,7 @@ body {
   line-height: 1.2;
   font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
-  font-size: 15px;
+  font-size: 16px;
   color: #4c4c4c;
 }
 
@@ -1285,7 +1285,7 @@ svg {
   justify-content: flex-end;
   top: 0;
   overflow: hidden;
-  transition: top 0.3s ease;
+  transition: top 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card-body {
@@ -1692,4 +1692,72 @@ svg {
   margin-top: 6px;
   opacity: 0.85;
 }
+
+/* Testimonials page — CSS-columns masonry. Each card's height fits its
+   content; columns scale 3 → 2 → 1 with viewport. No hardcoded heights,
+   no JS, gaps are consistent on both axes. */
+.testimonials-grid {
+  columns: 3;
+  column-gap: 1.5rem;
+}
+
+@media (max-width: 991px) {
+  .testimonials-grid {
+    columns: 2;
+  }
+}
+
+@media (max-width: 575px) {
+  .testimonials-grid {
+    columns: 1;
+  }
+}
+
+.testimonials-grid > .testimonial-card {
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
+  display: inline-block; /* prevents Safari column-break quirks on flow children */
+  width: 100%;
+}
+
+.testimonial-card {
+  background: #fef8ec;
+  border-radius: 22px;
+  padding: 28px 24px 24px;
+}
+
+.testimonial-card .icon {
+  color: #E24C35;
+  font-size: 1.6rem;
+}
+
+.testimonial-card .quote {
+  color: #162D59;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+/* Shared name + placement typography (used by the landing carousel
+   slide AND the full Testimonials page card). Sized relative to the
+   18px paragraph baseline: name is larger than body copy, placement
+   matches body so it reads as a caption. */
+.testimonial-name {
+  color: #162D59;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-bottom: 0.25rem;
+}
+
+.testimonial-placement {
+  color: #E24C35;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* On dark backgrounds (landing carousel), flip the name to white. */
+.bg-dark .testimonial-name {
+  color: #fff;
+}
+
 

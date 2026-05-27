@@ -20,8 +20,8 @@ function initTestimonialsCarousel() {
         slide.innerHTML = `
           <i class="fa-solid fa-quote-left icon mb-4 d-inline-block"></i>
           <p class="text-white mb-4">${escapeHtml(t.quote)}</p>
-          <h4 class="text-white">${escapeHtml(t.name)}</h4>
-          <h6 class="text-secondary mb-4">${escapeHtml(t.placement)} · ${t.year}</h6>
+          <h5 class="testimonial-name">${escapeHtml(t.name)}</h5>
+          <div class="testimonial-placement mb-4">${escapeHtml(t.placement)} · ${t.year}</div>
         `;
         slider.appendChild(slide);
       });
