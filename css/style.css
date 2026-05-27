@@ -438,6 +438,41 @@ span.wow {
   .dropdown-item {
     text-align: center;
   }
+
+  /* Mobile nav: ensure each nav-item takes the full burger-menu width
+     so its dropdown can render full-width-centered inside it. */
+  .navbar-nav .nav-item {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Drop the desktop absolute-positioned dropdown. Render sub-items
+     inline below their parent, always visible (the burger menu is the
+     toggle), with smaller + dimmer text so hierarchy reads at a glance.
+     !important is used because the desktop rule at line ~558 sets
+     `display: none` with the same specificity and appears later in the
+     cascade. */
+  .navbar .nav-item .dropdown-menu {
+    display: block !important;
+    position: static !important;
+    transform: none !important;
+    animation: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 4px 0 12px !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .navbar .nav-item .dropdown-menu .dropdown-item {
+    font-size: 0.85em;
+    opacity: 0.75;
+    padding: 4px 0;
+    display: block;
+  }
 }
 
 @media (min-width: 991px) {
@@ -842,20 +877,52 @@ li.nav-item {
   content: none;
 }
 
-/* Black chevrons by default (gallery / light sections). */
-.slick-prev {
+/* Black chevrons by default (gallery / light sections). Repeat the
+   background-image in :hover/:focus because slick-theme.css's hover
+   rule uses `background: transparent` (shorthand) which would otherwise
+   wipe the chevron mid-hover. */
+/* Chevron SVG + position/size/repeat must be redeclared in every state
+   that slick-theme.css resets (it uses `background: transparent`
+   shorthand on :hover/:focus, which wipes ALL background properties
+   including size). Without re-pinning size, the SVG falls back to
+   the browser's default (300×150ish) and looks giant on hover. */
+.slick-prev,
+.slick-prev:hover,
+.slick-prev:focus-visible,
+.slick-prev:focus {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M10 3 L5 8 L10 13' stroke='black' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-size: 22px 22px;
+  background-position: center;
+  background-repeat: no-repeat;
 }
-.slick-next {
+.slick-next,
+.slick-next:hover,
+.slick-next:focus-visible,
+.slick-next:focus {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M6 3 L11 8 L6 13' stroke='black' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-size: 22px 22px;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* White chevrons on dark sections (testimonials) for legibility. */
-.bg-dark .slick-prev {
+.bg-dark .slick-prev,
+.bg-dark .slick-prev:hover,
+.bg-dark .slick-prev:focus-visible,
+.bg-dark .slick-prev:focus {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M10 3 L5 8 L10 13' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-size: 22px 22px;
+  background-position: center;
+  background-repeat: no-repeat;
 }
-.bg-dark .slick-next {
+.bg-dark .slick-next,
+.bg-dark .slick-next:hover,
+.bg-dark .slick-next:focus-visible,
+.bg-dark .slick-next:focus {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M6 3 L11 8 L6 13' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-size: 22px 22px;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* Larger, circular hit-target with an SVG chevron rendered via
@@ -877,10 +944,17 @@ button.slick-next {
 }
 
 button.slick-prev:hover,
-button.slick-next:hover,
-button.slick-prev:focus,
-button.slick-next:focus {
+button.slick-next:hover {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Mouse-click focus must not leave a persistent darken. Force the bg
+   back to the default whenever focused-but-not-hovered, regardless of
+   whether the browser honors :focus-visible on mouse activation. */
+button.slick-prev:focus:not(:hover),
+button.slick-next:focus:not(:hover) {
+  background-color: rgba(0, 0, 0, 0.35);
+  outline: none;
 }
 
 .bg-dark button.slick-prev,
@@ -889,10 +963,14 @@ button.slick-next:focus {
 }
 
 .bg-dark button.slick-prev:hover,
-.bg-dark button.slick-next:hover,
-.bg-dark button.slick-prev:focus,
-.bg-dark button.slick-next:focus {
+.bg-dark button.slick-next:hover {
   background-color: rgba(255, 255, 255, 0.3);
+}
+
+.bg-dark button.slick-prev:focus:not(:hover),
+.bg-dark button.slick-next:focus:not(:hover) {
+  background-color: rgba(255, 255, 255, 0.15);
+  outline: none;
 }
 
 .slick-prev { left: 12px; }
@@ -939,10 +1017,13 @@ button.slick-next:focus {
   transition: background-color 0.2s ease;
 }
 
-.gallery-arrow:hover,
-.gallery-arrow:focus {
-  outline: none;
+.gallery-arrow:hover {
   background-color: #C73D29;
+}
+
+.gallery-arrow:focus:not(:hover) {
+  background-color: #E24C35;
+  outline: none;
 }
 
 /* SVG chevrons — centered in their 16×16 viewBox, no rotation/font issues */
