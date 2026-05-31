@@ -6,18 +6,18 @@
   <title>Gallery | Baology Prep</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description"
-    content="Photo gallery from Baology students and competition seasons — full page coming soon.">
+    content="Photos from Baology students and competition seasons.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="author" content="Baology Prep">
   <link rel="shortcut icon" href="../images/favicon.ico" />
   <link rel="stylesheet" href="../plugins/bootstrap/bootstrap.min.css">
   <link rel="stylesheet" href="../plugins/slick/slick.css">
+  <link rel="stylesheet" href="../plugins/glightbox/glightbox.min.css">
   <link rel="stylesheet" href="../plugins/wow/animate.css">
   <link href="../css/style.css" rel="stylesheet">
 </head>
 
 <body>
-  <!-- PHASE 1 STUB — full Gallery page comes in phase 2 -->
   <!--Navigation bar-->
   <div id="header"></div>
 
@@ -44,12 +44,572 @@
   <!-- /hero area -->
 
   <section class="section">
-    <div class="container text-center">
-      <h2 class="text-primary-dark mb-3 wow fadeInDown">Coming soon</h2>
-      <p class="text-primary-dark mb-5 wow fadeInUp">The full gallery is on the way, including filtering by year and a
-        lightbox view. A random selection is currently showing on the <a href="../explore.html">Explore landing
-          page</a>.</p>
-      <a href="../explore.html" class="btn btn-primary">Back to Explore</a>
+    <div class="container">
+      <p class="text-primary-dark text-center mb-4 wow fadeInUp" data-wow-delay=".1s">
+        Check out what the Baology community has been up to, from competition days to informal meetups!
+      </p>
+
+      <div class="gallery-filter" data-gallery-filter></div>
+
+      <div class="gallery-grid" data-gallery-grid>
+        <!-- BUILD:gallery-grid -->
+      <div class="gallery-col">
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2026/2026-scioly-expo-table-photo-2.jpeg"
+           data-year="2026"
+           data-aspect="0.7500">
+          <img src="../images/gallery/2026/2026-scioly-expo-table-photo-2.jpeg" alt="Two people talking to a group of students at an orange table at a science expo">
+          <div class="gallery-tile-caption">
+            <div class="loc">National Science Olympiad Expo, University of Southern California</div>
+            <div class="desc">May 2026 · Baology TAs tabling at the 2026 SciOly Expo</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/staff/greycen-ren.jpg"
+           data-year="2026"
+           data-aspect="1.0000">
+          <img src="../images/gallery/staff/greycen-ren.jpg" alt="Portrait of former Baology instructor Greycen Ren">
+          <div class="gallery-tile-caption">
+            <div class="loc">Greycen Ren</div>
+            <div class="desc">2026 · Instructor 2023-2026, MIT Computational Biology; USABO Finalist 2021 and 2022, USABO 2022 Gold medalist, IBO 2022 Silver medal</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2025/2025-xmas-party.jpg"
+           data-year="2025"
+           data-aspect="0.7534">
+          <img src="../images/gallery/2025/2025-xmas-party.jpg" alt="Several Baology alumni gather for a group photo in a house">
+          <div class="gallery-tile-caption">
+            <div class="loc">Christmas meetup</div>
+            <div class="desc">Dec 2025 · Baology alumni meeting up at a Christmas house party</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2025/2025-finals-suzuko-centered.png"
+           data-year="2025"
+           data-aspect="0.9281">
+          <img src="../images/gallery/2025/2025-finals-suzuko-centered.png" alt="Three students watch an instructor&#39;s computer screen">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Harvard University</div>
+            <div class="desc">2025 · Baology students at USABO Finals watch Suzuko&#39;s computer demonstration</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2025/2025-IBO-flag.jpg"
+           data-year="2025"
+           data-aspect="1.0939">
+          <img src="../images/gallery/2025/2025-IBO-flag.jpg" alt="Four students pose with medals in front of the US flag">
+          <div class="gallery-tile-caption">
+            <div class="loc">IBO, Quezon City, Philippines</div>
+            <div class="desc">2025 · Baology-affiliated students win Gold and Silver at the International Biology Olympiad</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2025/2025-stickynote-drawing-of-joseph.png"
+           data-year="2025"
+           data-aspect="1.0000">
+          <img src="../images/gallery/2025/2025-stickynote-drawing-of-joseph.png" alt="A yellow sticky note with a drawing of a person with glasses">
+          <div class="gallery-tile-caption">
+            <div class="loc">Baology Course</div>
+            <div class="desc">2025 · A drawing of Joseph made during lecture</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2025/2025-madison-meetup.jpeg"
+           data-year="2025"
+           data-aspect="0.7500">
+          <img src="../images/gallery/2025/2025-madison-meetup.jpeg" alt="Three people posing for a selfie at a restaurant">
+          <div class="gallery-tile-caption">
+            <div class="loc">Madison, Wisconsin</div>
+            <div class="desc">2025 · Arjun, Joseph, and Kevin meet up for dinner in Madison</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2025/2025-socal-meetup.jpeg"
+           data-year="2025"
+           data-aspect="0.8306">
+          <img src="../images/gallery/2025/2025-socal-meetup.jpeg" alt="Two students getting a selfie in a building">
+          <div class="gallery-tile-caption">
+            <div class="loc">National Science Bowl Tournament, Southern California</div>
+            <div class="desc">2025 · Baology-affiliated students meet up at a NSB tournament in SoCal</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2024/2024-ibo-team-photo-flag.png"
+           data-year="2024"
+           data-aspect="0.7998">
+          <img src="../images/gallery/2024/2024-ibo-team-photo-flag.png" alt="Four students in suits in a group photo wearing gold medals in front of the US flag">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Marymount University</div>
+            <div class="desc">2024 · Baology-affiliated students win Gold at the USABO Finals camp.</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/staff/caleb-zhao.jpg"
+           data-year="2024"
+           data-aspect="1.0000">
+          <img src="../images/gallery/staff/caleb-zhao.jpg" alt="Portrait of former Baology instructor Caleb Zhao">
+          <div class="gallery-tile-caption">
+            <div class="loc">Caleb Zhao</div>
+            <div class="desc">2024 · Instructor 2023-2024, MIT; USABO 2021 Finalist and Bronze medalist</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/staff/jasper-lee.jpg"
+           data-year="2024"
+           data-aspect="0.9477">
+          <img src="../images/gallery/staff/jasper-lee.jpg" alt="Portrait of former Baology instructor Jasper Lee">
+          <div class="gallery-tile-caption">
+            <div class="loc">Jasper Lee</div>
+            <div class="desc">2024 · Instructor 2023-2024, Harvard Med PhD; USABO 2016 Finalist</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2023/2023-kaiden-at-finals.png"
+           data-year="2023"
+           data-aspect="1.3273">
+          <img src="../images/gallery/2023/2023-kaiden-at-finals.png" alt="A student reading a textbook with butterfly illustrations">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Marymount University</div>
+            <div class="desc">2023 · Kaiden reads a notebook on butterflies</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2023/2023-ian-looking-at-caterpillar.jpg"
+           data-year="2023"
+           data-aspect="1.3333">
+          <img src="../images/gallery/2023/2023-ian-looking-at-caterpillar.jpg" alt="A student looking at a green caterpillar">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Marymount University</div>
+            <div class="desc">2023 · Two opisthokonts (Ian and a caterpillar)</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/staff/roy-han.jpg"
+           data-year="2023"
+           data-aspect="0.9921">
+          <img src="../images/gallery/staff/roy-han.jpg" alt="Portrait of former Baology instructor Roy Han">
+          <div class="gallery-tile-caption">
+            <div class="loc">Roy Han</div>
+            <div class="desc">2023 · Instructor 2020-2023, Harvard; IBO 2019 merit award</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2023/2023-greycen-and-joseph-at-finals.png"
+           data-year="2023"
+           data-aspect="0.5556">
+          <img src="../images/gallery/2023/2023-greycen-and-joseph-at-finals.png" alt="Instructors Joseph Dong and Greycen Ren setting up a practical in a lab">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Marymount University</div>
+            <div class="desc">2023 · Instructors setting up a practical exam at Finals</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2022/2022-team-usa-jacky-rosen.jpg"
+           data-year="2022"
+           data-aspect="0.7500">
+          <img src="../images/gallery/2022/2022-team-usa-jacky-rosen.jpg" alt="Four students in suits posing with Senator Jacky Rosen">
+          <div class="gallery-tile-caption">
+            <div class="loc">Washington, D.C.</div>
+            <div class="desc">2022 · Team USA meets up with Senator Jacky Rosen at the Capitol ahead of the International Biology Olympiad</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/staff/jun-yang.jpg"
+           data-year="2022"
+           data-aspect="0.7500">
+          <img src="../images/gallery/staff/jun-yang.jpg" alt="Portrait of former Baology chemistry instructor Jun Yang">
+          <div class="gallery-tile-caption">
+            <div class="loc">Jun Yang</div>
+            <div class="desc">2022 · USNCO chemistry instructor 2021-2022, Harvard PhD; 2x USNCO Top 20 Finalist</div>
+          </div>
+        </a>
+      </div>
+      <div class="gallery-col">
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2026/2026-scioly-expo-selfie.jpeg"
+           data-year="2026"
+           data-aspect="0.7500">
+          <img src="../images/gallery/2026/2026-scioly-expo-selfie.jpeg" alt="Three students getting a selfie in a building wearing various science competition shirts and jackets">
+          <div class="gallery-tile-caption">
+            <div class="loc">National Science Olympiad Expo, University of Southern California</div>
+            <div class="desc">May 2026 · Baology alumni and TAs tabling at the 2026 SciOly Expo</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/staff/lawrence-long.jpg"
+           data-year="2026"
+           data-aspect="1.0029">
+          <img src="../images/gallery/staff/lawrence-long.jpg" alt="Portrait of former Baology instructor Lawrence Long">
+          <div class="gallery-tile-caption">
+            <div class="loc">Lawrence Long</div>
+            <div class="desc">2026 · Instructor 2023-2026, MIT Biophysics; USABO Finalist 2021 and 2022, USABO 2022 Gold medalist</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/staff/ian-chang.jpg"
+           data-year="2026"
+           data-aspect="1.0041">
+          <img src="../images/gallery/staff/ian-chang.jpg" alt="Portrait of former Baology instructor Ian Chang">
+          <div class="gallery-tile-caption">
+            <div class="loc">Ian Chang</div>
+            <div class="desc">2026 · Instructor 2024-2026, Cornell Statistics; USABO 2023 Finalist</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2025/2025-camp-photo-covered.png"
+           data-year="2025"
+           data-aspect="0.7861">
+          <img src="../images/gallery/2025/2025-camp-photo-covered.png" alt="Five Baology students in a group photo wearing lab coats in a laboratory">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Harvard University</div>
+            <div class="desc">2025 · Baology students get ready for laboratory experiments at the USABO Finals camp.</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2025/2025-baology-students-meetup-second.jpg"
+           data-year="2025"
+           data-aspect="1.3333">
+          <img src="../images/gallery/2025/2025-baology-students-meetup-second.jpg" alt="Three Baology students in a group photo in a stadium">
+          <div class="gallery-tile-caption">
+            <div class="loc">Alumni Meetup</div>
+            <div class="desc">2025 · Baology alumni meetup</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2025/2025-dissection-practical.jpg"
+           data-year="2025"
+           data-aspect="1.3333">
+          <img src="../images/gallery/2025/2025-dissection-practical.jpg" alt="A student wearing a lab coat dissecting a sample">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Harvard University</div>
+            <div class="desc">2025 · Dissection practicals at USABO Finals</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/staff/yufei-chen.jpg"
+           data-year="2025"
+           data-aspect="1.3326">
+          <img src="../images/gallery/staff/yufei-chen.jpg" alt="Portrait of former Baology instructor Yufei Chen">
+          <div class="gallery-tile-caption">
+            <div class="loc">Yufei Chen</div>
+            <div class="desc">2025 · Instructor 2024-2025, MIT student; USABO Finalist 2023 and Gold medalist, IBO #1 Worldwide</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2024/2024-dmv-camper-meetup.jpeg"
+           data-year="2024"
+           data-aspect="0.7500">
+          <img src="../images/gallery/2024/2024-dmv-camper-meetup.jpeg" alt="People sitting around a round dinner table with hands in the lowered steeple position">
+          <div class="gallery-tile-caption">
+            <div class="loc">Baology Meetup, Washington metropolitian area</div>
+            <div class="desc">2024 · Baology alumni and staff have dinner with Dr. Kevin Bao</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/staff/kaiden-wu.jpg"
+           data-year="2024"
+           data-aspect="1.0026">
+          <img src="../images/gallery/staff/kaiden-wu.jpg" alt="Portrait of former Baology instructor Kaiden Wu">
+          <div class="gallery-tile-caption">
+            <div class="loc">Kaiden Wu</div>
+            <div class="desc">2024 · Instructor 2023-2024, UChicago; USABO 2023 Finalist and Gold medalist, IBO 2023 Gold medal</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2023/2023-finals-dinner.png"
+           data-year="2023"
+           data-aspect="1.0579">
+          <img src="../images/gallery/2023/2023-finals-dinner.png" alt="Baology students and a teacher sit around a table discussing and eating dinner">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Marymount University</div>
+            <div class="desc">2023 · Dinner at the USABO Finals camp featuring Baology students and Dr. Kevin Bao</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2023/2023-ibo-team.png"
+           data-year="2023"
+           data-aspect="0.9149">
+          <img src="../images/gallery/2023/2023-ibo-team.png" alt="A group photo of three students in suits before a white background">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Marymount University</div>
+            <div class="desc">2023 · Baology-affiliated Gold medalists at USABO Finals, who will go on to represent USA in the International Biology Olympiad</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2023/2023-flame-sterilization.jpg"
+           data-year="2023"
+           data-aspect="1.3333">
+          <img src="../images/gallery/2023/2023-flame-sterilization.jpg" alt="A student in a lab coat sterilizing tongs">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Marymount University</div>
+            <div class="desc">2023 · A Baology student demonstrates flame sterilization using a Bunsen burner</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2023/2023-janet-owl.PNG"
+           data-year="2023"
+           data-aspect="0.6673">
+          <img src="../images/gallery/2023/2023-janet-owl.PNG" alt="A woman poses with a large owl">
+          <div class="gallery-tile-caption">
+            <div class="loc">Japan</div>
+            <div class="desc">2023 · Two opisthokonts (Janet and a very large owl)</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/staff/albert-tam.jpg"
+           data-year="2023"
+           data-aspect="1.0000">
+          <img src="../images/gallery/staff/albert-tam.jpg" alt="Portrait of former Baology instructor Albert Tam">
+          <div class="gallery-tile-caption">
+            <div class="loc">Albert Tam</div>
+            <div class="desc">2023 · Instructor 2022-2023, MIT; USABO Top 20 Finalist and Bronze medalist</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2022/2022-Capitol-IBO-visit.jpg"
+           data-year="2022"
+           data-aspect="0.8676">
+          <img src="../images/gallery/2022/2022-Capitol-IBO-visit.jpg" alt="Four students in dark suits stand beside an American flag in a marble Capitol building">
+          <div class="gallery-tile-caption">
+            <div class="loc">Washington D.C.</div>
+            <div class="desc">2022 · Team USA visits the US Capitol ahead of the International Biology Olympiad.</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2022/2022-Kevin-kpop.JPEG"
+           data-year="2022"
+           data-aspect="0.7500">
+          <img src="../images/gallery/2022/2022-Kevin-kpop.JPEG" alt="A person posing with a cardboard cutout of Jennie from Blackpink">
+          <div class="gallery-tile-caption">
+            <div class="loc">Madison, Wisconsin</div>
+            <div class="desc">2022 · Kevin poses with famous opisthokont Jennie from BLACKPINK</div>
+          </div>
+        </a>
+      </div>
+      <div class="gallery-col">
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2026/2026-scioly-expo-table-photo-1.jpeg"
+           data-year="2026"
+           data-aspect="0.7500">
+          <img src="../images/gallery/2026/2026-scioly-expo-table-photo-1.jpeg" alt="Three people in a group photo standing behind an orange table with a banner reading Baology, wearing various school merchandise, attending a science expo">
+          <div class="gallery-tile-caption">
+            <div class="loc">National Science Olympiad Expo, University of Southern California</div>
+            <div class="desc">May 2026 · Baology alumni and TAs tabling at the 2026 SciOly Expo</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2026/2026-scioly-expo-table-photo-3.jpeg"
+           data-year="2026"
+           data-aspect="0.7500">
+          <img src="../images/gallery/2026/2026-scioly-expo-table-photo-3.jpeg" alt="Two people talking to a group of students at an orange table at a science expo">
+          <div class="gallery-tile-caption">
+            <div class="loc">National Science Olympiad Expo, University of Southern California</div>
+            <div class="desc">May 2026 · Baology TAs tabling at the 2026 SciOly Expo</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2025/2025-baology-students-meetup.jpg"
+           data-year="2025"
+           data-aspect="1.3333">
+          <img src="../images/gallery/2025/2025-baology-students-meetup.jpg" alt="Three Baology students in a group photo">
+          <div class="gallery-tile-caption">
+            <div class="loc">Alumni Meetup</div>
+            <div class="desc">2025 · Baology alumni meetup</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2025/2025-IBO-blue.jpg"
+           data-year="2025"
+           data-aspect="1.0024">
+          <img src="../images/gallery/2025/2025-IBO-blue.jpg" alt="Four students pose with medals in front of a blue background">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Harvard University</div>
+            <div class="desc">2025 · Baology-affiliated students win Gold at USABO Finals</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2025/2025-observing-at-camp.jpeg"
+           data-year="2025"
+           data-aspect="1.3333">
+          <img src="../images/gallery/2025/2025-observing-at-camp.jpeg" alt="Two students looking through binoculars">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Harvard University</div>
+            <div class="desc">2025 · Students observing the natural environment of a biology competition</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2025/2025-campers-medaling-column.jpg"
+           data-year="2025"
+           data-aspect="0.7534">
+          <img src="../images/gallery/2025/2025-campers-medaling-column.jpg" alt="Baology students in suits taking a group photo">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Harvard University</div>
+            <div class="desc">2025 · Baology students win medals at USABO Finals</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2025/2025-joseph-usrse-conference.jpg"
+           data-year="2025"
+           data-aspect="0.7500">
+          <img src="../images/gallery/2025/2025-joseph-usrse-conference.jpg" alt="A person in a suit poses in front of a poster at a conference">
+          <div class="gallery-tile-caption">
+            <div class="loc">USRSE Conference, Philadelphia, Pennsylvania</div>
+            <div class="desc">2025 · Joseph presents a poster at the 2025 US Research Software Engineering conference</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2024/2024-ibo-team-photo-public.jpeg"
+           data-year="2024"
+           data-aspect="1.2407">
+          <img src="../images/gallery/2024/2024-ibo-team-photo-public.jpeg" alt="Four students in a group photo in suits with gold medals standing amongst flags">
+          <div class="gallery-tile-caption">
+            <div class="loc">IBO, Astana, Kazakhstan</div>
+            <div class="desc">2024 · Baology-affiliated students all win Gold medals at the International Biology Olympiad!</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2024/2024-camp-examining-leaf.jpg"
+           data-year="2024"
+           data-aspect="0.7500">
+          <img src="../images/gallery/2024/2024-camp-examining-leaf.jpg" alt="Students in lab coats examining a leaf with a caterpillar">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Marymount University</div>
+            <div class="desc">2024 · Baology students at USABO Finals examine a green caterpillar (hidden) on a leaf</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2023/2023-finals-yufei-and-daniel.png"
+           data-year="2023"
+           data-aspect="1.6284">
+          <img src="../images/gallery/2023/2023-finals-yufei-and-daniel.png" alt="Two students examine a spider">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Marymount University</div>
+            <div class="desc">2023 · Yufei and Daniel examine a spider at USABO Finals</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2023/2023-pinecone.jpg"
+           data-year="2023"
+           data-aspect="1.3333">
+          <img src="../images/gallery/2023/2023-pinecone.jpg" alt="A student holding a pinecone and drawing it in a lab notebook">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Marymount University</div>
+            <div class="desc">2023 · A Baology student draws a pinecone at USABO Finals</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2023/2023-ibo-team-singapore-kevin-bao.JPG"
+           data-year="2023"
+           data-aspect="1.3333">
+          <img src="../images/gallery/2023/2023-ibo-team-singapore-kevin-bao.JPG" alt="Four students posing with a teacher on a bus">
+          <div class="gallery-tile-caption">
+            <div class="loc">IBO, Al Ain, United Arab Emirates</div>
+            <div class="desc">2023 · Dr. Kevin Bao poses with Team Singapore at the 2023 International Biology Olympiad held at UAE</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2023/2023-finals-eating-pizza.jpg"
+           data-year="2023"
+           data-aspect="0.7534">
+          <img src="../images/gallery/2023/2023-finals-eating-pizza.jpg" alt="Two students at an outdoor table eating pizza">
+          <div class="gallery-tile-caption">
+            <div class="loc">USABO Finals, Marymount University</div>
+            <div class="desc">2023 · Baology students eating pizza at USABO Finals (yum!)</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2022/2022-ian-conference.jpeg"
+           data-year="2022"
+           data-aspect="1.3333">
+          <img src="../images/gallery/2022/2022-ian-conference.jpeg" alt="A student in a dress shirt presenting at a conference">
+          <div class="gallery-tile-caption">
+            <div class="loc">Evolution Conference, Madison, Wisconsin</div>
+            <div class="desc">Jun 2022 · Ian presenting a poster at the 2022 Evolution conference.</div>
+          </div>
+        </a>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp"
+           href="../images/gallery/2022/2022-madison-meetup-with-students.JPG"
+           data-year="2022"
+           data-aspect="0.7500">
+          <img src="../images/gallery/2022/2022-madison-meetup-with-students.JPG" alt="Three people pose for a group photo in front of an apartment complex">
+          <div class="gallery-tile-caption">
+            <div class="loc">Baology Meetup, Madison, Wisconsin</div>
+            <div class="desc">2022 · Jason and Ian meet up with Kevin in Madison</div>
+          </div>
+        </a>
+      </div>
+        <!-- /BUILD:gallery-grid -->
+      </div>
+
+      <div data-gallery-hidden-source style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+        <!-- BUILD:gallery-lightbox-sources -->
+        <a class="gallery-lightbox-source" href="../images/gallery/2026/2026-scioly-expo-selfie.jpeg" data-glightbox="title: National Science Olympiad Expo, University of Southern California; description: May 2026 · Baology alumni and TAs tabling at the 2026 SciOly Expo"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2026/2026-scioly-expo-table-photo-1.jpeg" data-glightbox="title: National Science Olympiad Expo, University of Southern California; description: May 2026 · Baology alumni and TAs tabling at the 2026 SciOly Expo"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2026/2026-scioly-expo-table-photo-2.jpeg" data-glightbox="title: National Science Olympiad Expo, University of Southern California; description: May 2026 · Baology TAs tabling at the 2026 SciOly Expo"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2026/2026-scioly-expo-table-photo-3.jpeg" data-glightbox="title: National Science Olympiad Expo, University of Southern California; description: May 2026 · Baology TAs tabling at the 2026 SciOly Expo"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/staff/lawrence-long.jpg" data-glightbox="title: Lawrence Long; description: 2026 · Instructor 2023-2026, MIT Biophysics; USABO Finalist 2021 and 2022, USABO 2022 Gold medalist"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/staff/greycen-ren.jpg" data-glightbox="title: Greycen Ren; description: 2026 · Instructor 2023-2026, MIT Computational Biology; USABO Finalist 2021 and 2022, USABO 2022 Gold medalist, IBO 2022 Silver medal"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/staff/ian-chang.jpg" data-glightbox="title: Ian Chang; description: 2026 · Instructor 2024-2026, Cornell Statistics; USABO 2023 Finalist"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2025/2025-xmas-party.jpg" data-glightbox="title: Christmas meetup; description: Dec 2025 · Baology alumni meeting up at a Christmas house party"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2025/2025-baology-students-meetup.jpg" data-glightbox="title: Alumni Meetup; description: 2025 · Baology alumni meetup"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2025/2025-camp-photo-covered.png" data-glightbox="title: USABO Finals, Harvard University; description: 2025 · Baology students get ready for laboratory experiments at the USABO Finals camp."></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2025/2025-finals-suzuko-centered.png" data-glightbox="title: USABO Finals, Harvard University; description: 2025 · Baology students at USABO Finals watch Suzuko&#39;s computer demonstration"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2025/2025-IBO-blue.jpg" data-glightbox="title: USABO Finals, Harvard University; description: 2025 · Baology-affiliated students win Gold at USABO Finals"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2025/2025-IBO-flag.jpg" data-glightbox="title: IBO, Quezon City, Philippines; description: 2025 · Baology-affiliated students win Gold and Silver at the International Biology Olympiad"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2025/2025-baology-students-meetup-second.jpg" data-glightbox="title: Alumni Meetup; description: 2025 · Baology alumni meetup"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2025/2025-observing-at-camp.jpeg" data-glightbox="title: USABO Finals, Harvard University; description: 2025 · Students observing the natural environment of a biology competition"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2025/2025-stickynote-drawing-of-joseph.png" data-glightbox="title: Baology Course; description: 2025 · A drawing of Joseph made during lecture"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2025/2025-campers-medaling-column.jpg" data-glightbox="title: USABO Finals, Harvard University; description: 2025 · Baology students win medals at USABO Finals"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2025/2025-dissection-practical.jpg" data-glightbox="title: USABO Finals, Harvard University; description: 2025 · Dissection practicals at USABO Finals"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2025/2025-madison-meetup.jpeg" data-glightbox="title: Madison, Wisconsin; description: 2025 · Arjun, Joseph, and Kevin meet up for dinner in Madison"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2025/2025-joseph-usrse-conference.jpg" data-glightbox="title: USRSE Conference, Philadelphia, Pennsylvania; description: 2025 · Joseph presents a poster at the 2025 US Research Software Engineering conference"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2025/2025-socal-meetup.jpeg" data-glightbox="title: National Science Bowl Tournament, Southern California; description: 2025 · Baology-affiliated students meet up at a NSB tournament in SoCal"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/staff/yufei-chen.jpg" data-glightbox="title: Yufei Chen; description: 2025 · Instructor 2024-2025, MIT student; USABO Finalist 2023 and Gold medalist, IBO #1 Worldwide"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2024/2024-ibo-team-photo-public.jpeg" data-glightbox="title: IBO, Astana, Kazakhstan; description: 2024 · Baology-affiliated students all win Gold medals at the International Biology Olympiad!"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2024/2024-ibo-team-photo-flag.png" data-glightbox="title: USABO Finals, Marymount University; description: 2024 · Baology-affiliated students win Gold at the USABO Finals camp."></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2024/2024-dmv-camper-meetup.jpeg" data-glightbox="title: Baology Meetup, Washington metropolitian area; description: 2024 · Baology alumni and staff have dinner with Dr. Kevin Bao"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2024/2024-camp-examining-leaf.jpg" data-glightbox="title: USABO Finals, Marymount University; description: 2024 · Baology students at USABO Finals examine a green caterpillar (hidden) on a leaf"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/staff/caleb-zhao.jpg" data-glightbox="title: Caleb Zhao; description: 2024 · Instructor 2023-2024, MIT; USABO 2021 Finalist and Bronze medalist"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/staff/kaiden-wu.jpg" data-glightbox="title: Kaiden Wu; description: 2024 · Instructor 2023-2024, UChicago; USABO 2023 Finalist and Gold medalist, IBO 2023 Gold medal"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/staff/jasper-lee.jpg" data-glightbox="title: Jasper Lee; description: 2024 · Instructor 2023-2024, Harvard Med PhD; USABO 2016 Finalist"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2023/2023-finals-dinner.png" data-glightbox="title: USABO Finals, Marymount University; description: 2023 · Dinner at the USABO Finals camp featuring Baology students and Dr. Kevin Bao"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2023/2023-finals-yufei-and-daniel.png" data-glightbox="title: USABO Finals, Marymount University; description: 2023 · Yufei and Daniel examine a spider at USABO Finals"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2023/2023-ibo-team.png" data-glightbox="title: USABO Finals, Marymount University; description: 2023 · Baology-affiliated Gold medalists at USABO Finals, who will go on to represent USA in the International Biology Olympiad"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2023/2023-kaiden-at-finals.png" data-glightbox="title: USABO Finals, Marymount University; description: 2023 · Kaiden reads a notebook on butterflies"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2023/2023-pinecone.jpg" data-glightbox="title: USABO Finals, Marymount University; description: 2023 · A Baology student draws a pinecone at USABO Finals"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2023/2023-flame-sterilization.jpg" data-glightbox="title: USABO Finals, Marymount University; description: 2023 · A Baology student demonstrates flame sterilization using a Bunsen burner"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2023/2023-ian-looking-at-caterpillar.jpg" data-glightbox="title: USABO Finals, Marymount University; description: 2023 · Two opisthokonts (Ian and a caterpillar)"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2023/2023-ibo-team-singapore-kevin-bao.JPG" data-glightbox="title: IBO, Al Ain, United Arab Emirates; description: 2023 · Dr. Kevin Bao poses with Team Singapore at the 2023 International Biology Olympiad held at UAE"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2023/2023-janet-owl.PNG" data-glightbox="title: Japan; description: 2023 · Two opisthokonts (Janet and a very large owl)"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2023/2023-finals-eating-pizza.jpg" data-glightbox="title: USABO Finals, Marymount University; description: 2023 · Baology students eating pizza at USABO Finals (yum!)"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/staff/roy-han.jpg" data-glightbox="title: Roy Han; description: 2023 · Instructor 2020-2023, Harvard; IBO 2019 merit award"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/staff/albert-tam.jpg" data-glightbox="title: Albert Tam; description: 2023 · Instructor 2022-2023, MIT; USABO Top 20 Finalist and Bronze medalist"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2023/2023-greycen-and-joseph-at-finals.png" data-glightbox="title: USABO Finals, Marymount University; description: 2023 · Instructors setting up a practical exam at Finals"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2022/2022-ian-conference.jpeg" data-glightbox="title: Evolution Conference, Madison, Wisconsin; description: Jun 2022 · Ian presenting a poster at the 2022 Evolution conference."></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2022/2022-Capitol-IBO-visit.jpg" data-glightbox="title: Washington D.C.; description: 2022 · Team USA visits the US Capitol ahead of the International Biology Olympiad."></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2022/2022-team-usa-jacky-rosen.jpg" data-glightbox="title: Washington, D.C.; description: 2022 · Team USA meets up with Senator Jacky Rosen at the Capitol ahead of the International Biology Olympiad"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2022/2022-madison-meetup-with-students.JPG" data-glightbox="title: Baology Meetup, Madison, Wisconsin; description: 2022 · Jason and Ian meet up with Kevin in Madison"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/2022/2022-Kevin-kpop.JPEG" data-glightbox="title: Madison, Wisconsin; description: 2022 · Kevin poses with famous opisthokont Jennie from BLACKPINK"></a>
+        <a class="gallery-lightbox-source" href="../images/gallery/staff/jun-yang.jpg" data-glightbox="title: Jun Yang; description: 2022 · USNCO chemistry instructor 2021-2022, Harvard PhD; 2x USNCO Top 20 Finalist"></a>
+        <!-- /BUILD:gallery-lightbox-sources -->
+      </div>
+
+      <p class="gallery-removal-notice text-center">
+        Are you in one of these photos and would like to be removed?
+        Please <a data-site-href="contactEmailHref">write to us</a>
+        and we'll take it down right away.
+      </p>
+
+      <template data-gallery-tile-template>
+        <a class="gallery-tile gallery-tile--page wow fadeInUp" href="" data-glightbox="">
+          <img src="" alt="">
+          <div class="gallery-tile-caption">
+            <div class="loc"></div>
+            <div class="desc"></div>
+          </div>
+        </a>
+      </template>
     </div>
   </section>
 
@@ -66,7 +626,11 @@
   <script src="../plugins/bootstrap/bootstrap.min.js"></script>
   <script src="../plugins/slick/slick.min.js"></script>
   <script src="../plugins/wow/wow.min.js"></script>
+  <script src="../plugins/glightbox/glightbox.min.js"></script>
+  <script src="../plugins/js-yaml/js-yaml.min.js"></script>
   <script src="../js/script.js"></script>
+  <script src="../js/site-config.js"></script>
+  <script src="../js/gallery.js"></script>
   <script>
     $(function () {
       $("#header").load("../header.html");

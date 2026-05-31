@@ -1,6 +1,9 @@
 
-// WOW active
-new WOW().init();
+// WOW active. Exposed on window so dynamic re-renders (e.g. gallery filter
+// changes, testimonials post-fetch) can call window.wow.sync() to re-scan the
+// DOM for newly-inserted `wow ...` elements.
+window.wow = new WOW();
+window.wow.init();
 
 (function ($) {
     'use strict';

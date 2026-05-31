@@ -45,6 +45,29 @@ searchForm.addEventListener("submit", e => {
 fetch("./blogs/blogs.json")
     .then(res => res.json())
     .then(data => {
+        const existingCards = blogCardContainer.querySelectorAll(".card");
+        if (existingCards.length > 0) {
+            // Pre-rendered cards from scripts/build.js — bind search to existing
+            // DOM instead of rebuilding from scratch (so SEO content stays in HTML
+            // and there's no flash on load). Tag click handlers can't be baked
+            // into static HTML, so re-attach them here.
+            let maxnum = 1;
+            blogs = data.map((blog, i) => {
+                const card = existingCards[i];
+                if (!card) return null;
+                card.querySelectorAll(".taglist li").forEach(li => {
+                    const val = (li.textContent || "").trim();
+                    li.onclick = () => { displaySearch(val.toLowerCase()); return false; };
+                });
+                const page = Math.floor(i / 6) + 1;
+                maxnum = Math.max(maxnum, page);
+                return { name: blog.name, description: blog.description, tags: blog.tags, element: card };
+            }).filter(Boolean);
+            limitDisplay(1, maxnum);
+            return;
+        }
+
+        // Fallback for when build script hasn't been run.
         let c = 0;
         let maxnum = 1;
         blogs = data.map(blog => {
@@ -75,7 +98,6 @@ fetch("./blogs/blogs.json")
                 li.appendChild(document.createTextNode(val));
                 li.onclick = () => {displaySearch(val); return false}
                 taglist = taglist.substr(ind+1, taglist.length)
-                console.log(taglist)
                 tags.appendChild(li);
             }
             //links and imgs

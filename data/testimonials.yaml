@@ -1,0 +1,96 @@
+# Student testimonials — shown on /explore/testimonials.html and (featured ones) on /explore.html
+#
+# Schema:
+#   - name:        student's name (required)
+#     quote:       multi-line OK with the `>` folded-scalar prefix (required)
+#     placements:  list of medals/years they earned. One entry per medal per year.
+#                  (required, at least one)
+#                  Each item: { medal: "...", year: YYYY }
+#     featured:    true → eligible for the landing-page carousel
+#                  false / omitted → only appears on the full testimonials page
+#
+# Add a testimonial:
+#   1. Append a new entry below following the shape of existing entries.
+#   2. List EVERY medal+year combination in `placements` — they render as
+#      individual color-coded badges on the card. The card sorts by the most
+#      recent year, then by the highest-ranking medal among the entries:
+#      Gold > Silver > Bronze > Finalist > Semifinalist.
+#   3. `year` is the literal year (or years) the placement covers.
+#      Accepted forms:
+#        - Single year:          year: 2025                  → "2025"
+#        - Contiguous list:      year: [2021, 2022, 2023]    → "2021–2023"
+#        - Non-contiguous list:  year: [2021, 2023]          → "2021, 2023"
+#        - Mixed:                year: [2020, 2021, 2023]    → "2020–2021, 2023"
+#      List every year you want shown — the badge auto-collapses consecutive
+#      runs into ranges. Sort uses the latest year in the list.
+#
+# Indentation matters — 2 spaces under each `- name:`. Don't mix tabs and spaces.
+
+- name: Sunipun Biswas
+  quote: >
+    Baology has helped me with so much more than just simply being able to become a Finalist. It introduced me to a multigenerational community of talented people from whom I was able to learn about biology, college admissions and so much more about life in general. Kevin and the other TA's in Baology truly went above and beyond in creating extremely content rich and interactive lectures that cover the various challenging concepts frequently tested on USABO. Moreover, the class also discusses a lot of content that are extremely useful even outside USABO such as in doing wet lab or computational biology research. Plus, Kevin's genius acronyms for every topic covered in class provides students with a full proof way to retain information during the test.
+  placements:
+    - { medal: USABO Bronze Medal, year: 2025 }
+  featured: false
+
+- name: Eric Liu
+  quote: >
+    Signing up for Baology was one of the biggest steps in my journey in biology. The various lectures and practice sessions hosted by this class not only supplied me with a lot of information, but it also gave me motivation and a structure to study and work along with. All the teachers, Kevin especially, make the class enjoyable to attend while still being informative and helpful.
+  placements:
+    - { medal: IBO Silver Medal, year: 2025 }
+    - { medal: USABO Gold Medal, year: 2025 }
+    - { medal: USABO Finalist, year: 2026 }
+  featured: true
+
+- name: Selena Yang
+  quote: >
+    Without Baology, I would not have even known how much I didn't know-- I was exposed to so many fascinating topics with cool applications that you can't find in textbooks. Kevin, Joseph, and the rest of the TAs are always so dedicated to explaining everything thoroughly, even if it takes six hours, and genuinely helping their students succeed not only at the USABO but also with general life advice. I'm forever grateful to all of the TAs and students for creating a welcoming community and inspiring me to work harder and learn more. 
+  placements:
+    - { medal: USABO Silver Medal, year: 2025 }
+    - { medal: USABO Bronze Medal, year: 2024 }
+  featured: true
+
+- name: Kaiden Wu
+  quote: >
+    Baology was critical in developing my fundamental understanding of biology, while at the same time providing me with practice and guidance on applying my knowledge. In addition, it has uniquely fostered an inviting yet also close community where the students motivate and bolster each others growth.
+  placements:
+    - { medal: IBO Gold Medal, year: 2023 }
+    - { medal: USABO Gold Medal, year: 2023 }
+  featured: true
+
+- name: Aarav Jindal
+  quote: >
+    Baology was the reason I was able to make camp. The classes were really engaging and extremely informative, teaching me alot of what i needed to know for the olympiad. And the community and instructors were very helpful whenever I had an issue or was stuck somewhere and needed advice.
+  placements:
+    - { medal: USABO Bronze Medal, year: 2025 }
+  featured: true
+
+- name: Daniel Liu
+  quote: >
+    I liked how Kevin actually enjoyed teaching people biology, rather than doing [it] as a job. The reviews and techniques (especially Joseph's acronyms actually) helped me memorize a lot of info. Plus, classes are insanely cheap compared to everywhere else.
+  placements:
+    - { medal: USABO Finalist, year: 2023 }
+  featured: true
+
+- name: Ian Chang
+  quote: >
+    I quickly realized how much effort Kevin and the TAs put into the class and cultivating relationships with individual students. They repeatedly went above and beyond, often staying late after lessons and office hours to answer any extra questions and being present in the discord server if we needed other help, be it biology or not. 
+    With the help of Kevin, the TAs, and my fellow classmates, Baology facilitated a great environment that allowed me to discover my love for biology and turn my life around.
+  placements:
+    - { medal: USABO Finalist, year: 2023 }
+  featured: false
+
+- name: Helen Liu
+  quote: >
+    The strong, multi-generational community of students that make up the Baology community gave (and continues to give) me some of the strongest support and motivation that I have ever known.
+    Also, Kevin’s Wisdom Talks are invaluable. His life advice is priceless for struggling high school students concerned (understandably) about college. Kevin’s Funny Stories are priceless as well!
+  placements:
+    - { medal: USABO Semifinalist, year: [2021, 2022, 2023] }
+  featured: false
+
+- name: Theenash Sengupta
+  quote: >
+    Enrolling in Baology was one of the best decisions I could have made for my USABO career. The class was well worth the investment, with lectures multiple times a week that often go overtime because the teachers take special care to answer as many questions from students as possible, even providing incentives ("Baobucks") to engage with the material. The weekly homework was also a great way for me to build problem-solving skills, with tasks that translated almost directly to what was relevant to the Semifinal exam this year. Because of the thriving Discord community supported by the instructors, I also made a lot of friends through the class, many of whom I will be attending camp with this year.
+  placements:
+    - { medal: USABO Semifinalist, year: [2024, 2025] }
+  featured: false

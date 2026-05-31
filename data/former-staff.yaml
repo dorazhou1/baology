@@ -1,0 +1,158 @@
+# Former Baology staff — recovered from git history (bios are verbatim as they
+# last appeared on the site). NOT currently rendered anywhere; this is the
+# source of record so the bios aren't lost, and could later power a "Former
+# Staff" section. The gallery shows only a short caption per person; the full
+# bio lives here.
+#
+# Photos: decoupled copies live in images/gallery/staff/ (referenced below);
+# originals remain in images/team/.
+#
+# Schema:
+#   - name:   full name (required)
+#     role:   title as shown on the old site (required)
+#     years:  years active as a Baology instructor — display string (required)
+#     photo:  root-anchored path under images/gallery/staff/ (required)
+#     bio:    full bio text, `>` folded scalar (required)
+#
+# NOTE: years below are confirmed by Baology. Yufei Chen had no bio or portrait
+# published on the old site (she taught the "Skill Building" topic, 2024–2025) —
+# her bio and photo are still needed.
+
+- name: Roy Han
+  role: Instructor
+  years: "2020–2023"
+  photo: /images/gallery/staff/roy-han.jpg
+  bio: >
+    Roy is a current sophomore at Harvard College for the coming year. He
+    received a merit award at the IBO 2019 and qualified for the USABO
+    Semifinals twice. He also co-founded the Biology Olympiad Club at his high
+    school. Roy has teaching experience in various subject areas and is excited
+    to help build the confidence and knowledge of students who are dedicated to
+    learning more about biology.
+
+- name: Albert Tam
+  role: Instructor
+  years: "2022–2023"
+  photo: /images/gallery/staff/albert-tam.jpg
+  bio: >
+    Albert is a freshman at MIT planning to major in computer science and
+    molecular biology. He was a top 20 National Finalist for USABO and earned a
+    bronze medal as a top 12 contestant at Finals. In his previous year, he
+    qualified as a Top 50 semifinalist. He has also earned Top 5 medals at
+    leading Science Olympiad invitationals in events such as Cell Biology and
+    Chemistry Lab. Albert is excited to use his years of teaching and tutoring
+    experience to present biology in a clear, engaging, and efficient manner.
+
+- name: Caleb Zhao
+  role: Instructor
+  years: "2023–2024"
+  photo: /images/gallery/staff/caleb-zhao.jpg
+  bio: >
+    Caleb Zhao is a freshman at MIT planning on studying biochemistry. He is a
+    2021 USABO Finalist and Bronze medalist. He also competed in the US National
+    Chemistry Olympiad and was selected as a Finalist in 2022. During his time
+    at Montgomery Blair High School, he was a key member of the Science Olympiad
+    team, winning the Cell Biology and Chemistry Lab events at the State level.
+    As a Blair Science Bowl captain, he led his team to the top 4 at the 2022
+    Nationals, while also coaching his middle school Science Bowl team following
+    the departure of the former coach. He is excited to share his knowledge and
+    experience in navigating the world of USABO.
+
+- name: Kaiden Wu
+  role: Instructor
+  years: "2023–2024"
+  photo: /images/gallery/staff/kaiden-wu.jpg
+  bio: >
+    Kaiden Wu is a first year student at the University of Chicago studying
+    biology. A graduate of the Thomas Jefferson High School for Science and
+    Technology, he was also a 2023 USABO finalist and gold medalist, one of only
+    two US gold medalists at the 2023 IBO competition. Kaiden has had a long
+    history of mentorship both as a member of the Baology community and in his
+    own. He is a founding member of the American Regional Biology Competition
+    and volunteers as a Science Explainer at the National Air and Space museum.
+    In his free time, Kaiden has been a member of the TJ crew team for the past
+    3 years and is father to a baobab tree which is growing big and healthy.
+
+- name: Jun Yang
+  role: Chemistry (USNCO) Instructor
+  years: "2021–2022"
+  photo: /images/gallery/staff/jun-yang.jpg
+  bio: >
+    Jun is currently a PhD candidate at Harvard Chemistry and Chemical Biology.
+    Previously, she graduated with dual Bachelor of Science degrees in Chemistry
+    and Chemical Engineering from MIT. Through her several years of research
+    experience in inorganic chemistry, she has accrued five publications in
+    reputable journals.
+
+    In high school, she was a two-time Chemistry Olympiad Top 20 Finalist.
+    Additionally, as team captain, she led Troy High School's Science Bowl team
+    to Nationals for the first time in over a decade. She also competed as part
+    of Troy High School's Science Olympiad team, where she won medals in
+    Chemistry Lab, Protein Modeling, and Dynamic Planet at Nationals and other
+    nationally-competitive tournaments. Later, Jun would become an Events
+    Director at the MIT Science Olympiad Invitational and an event supervisor at
+    tournaments throughout the nation. In her spare time, Jun teaches students
+    chemistry-related topics such as AP Chemistry, organic chemistry, and
+    Chemistry Olympiad.
+
+- name: Lawrence Long
+  role: Instructor
+  years: "2023–2026"
+  photo: /images/gallery/staff/lawrence-long.jpg
+  bio: >
+    Lawrence is a senior at MIT studying Biophysics. He is thoroughly
+    experienced in biology competitions, having qualified as a Top 50
+    Semifinalist in 2020, a Top 20 National Finalist in 2021, and a Top 4 Team
+    member in 2022. During his time as a high schooler at BASIS Independent
+    Silicon Valley (BISV), he was a core member and contributor of the BISV
+    Science Bowl team, leading the team to top four in one of the most
+    competitive National Science Bowl regions. He is excited to share his years
+    of testing experience with students and help them succeed in their goals.
+
+- name: Greycen Ren
+  role: Instructor
+  years: "2023–2026"
+  photo: /images/gallery/staff/greycen-ren.jpg
+  bio: >
+    Greycen is a junior at MIT studying Computational Biology. He has competed
+    in biology in all four years of high school, while qualifying as a Finalist
+    in 2021 and 2022. Greycen has also been heavily involved in Science
+    Olympiad, both as a competitor for his high school and as a test writer. He
+    is very excited to share his love of frogs and biology to many new students.
+
+- name: Jasper Lee
+  role: Instructor
+  years: "2023–2024"
+  photo: /images/gallery/staff/jasper-lee.jpg
+  bio: >
+    Jasper is a current PhD student in Immunology at Harvard Medical School. He
+    graduated from Princeton University in 2021 with a degree in Molecular
+    Biology. In high school, he brought biology competitions to his school and
+    qualified as a National Finalist in 2016. He also co-led his school's
+    Science Olympiad and Science Bowl teams, winning several invitational and
+    state-level Science Olympiad across events including Anatomy & Physiology,
+    Cell Biology, Disease Detectives, and Protein Modeling, and coached a middle
+    school Science Bowl team to nationals. He is excited to utilize his
+    experience in teaching, coaching, and mentorship to ensure that biological
+    concepts are communicated as clearly as possible.
+
+- name: Ian Chang
+  role: Instructor
+  years: "2024–2026"
+  photo: /images/gallery/staff/ian-chang.jpg
+  bio: >
+    Ian is a junior at Cornell studying Statistics. He was formerly at Carleton
+    College pursuing dual majors in Biology and Statistics. With a deep-rooted
+    passion for biological sciences, Ian qualified as a finalist in 2023. As an
+    alumnus of Baology, he is excited to contribute to the community that played
+    a pivotal role in his academic development, bringing his unique insights and
+    experiences to the prep course.
+
+- name: Yufei Chen
+  role: Instructor
+  years: "2024–2025"
+  photo: /images/gallery/staff/yufei-chen.jpg
+  bio: >
+    (No bio was ever published for Yufei on the site — she taught the "Skill
+    Building" topic in 2024–2025. Photo now in place; a written bio is still
+    needed.)

@@ -1397,7 +1397,7 @@ svg {
   position: relative;
   display: block;
   width: 100%;
-  height: 200px;
+  height: 280px;
   border-radius: 16px;
   overflow: hidden;
   text-decoration: none;
@@ -1693,6 +1693,35 @@ svg {
   opacity: 0.85;
 }
 
+/* Gallery lightbox — brand-aligned overrides for GLightbox.
+   Loaded after plugins/glightbox/glightbox.min.css so these win on equal specificity.
+   Shadow needs !important because the plugin's unscoped .gslide-media reset uses it. */
+.glightbox-clean .gslide-media {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(22, 45, 89, 0.45) !important;
+}
+
+.glightbox-clean .gslide-title {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  color: #162D59;
+  font-size: 1.4rem;
+}
+
+.glightbox-clean .gslide-desc {
+  font-family: "Inter", sans-serif;
+  color: rgba(22, 45, 89, 0.75);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.glightbox-clean .gclose:hover,
+.glightbox-clean .gnext:hover,
+.glightbox-clean .gprev:hover {
+  background-color: rgba(244, 178, 108, 0.85);
+}
+
 /* Testimonials page — CSS-columns masonry. Each card's height fits its
    content; columns scale 3 → 2 → 1 with viewport. No hardcoded heights,
    no JS, gaps are consistent on both axes. */
@@ -1749,15 +1778,140 @@ svg {
   margin-bottom: 0.25rem;
 }
 
-.testimonial-placement {
-  color: #E24C35;
-  font-weight: 600;
-  font-size: 1rem;
+/* Placement badge container — wraps multiple medal pills per testimonial */
+.testimonial-placements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 0.25rem;
 }
+
+.testimonial-content .testimonial-placements {
+  justify-content: center; /* landing carousel slides are centered */
+}
+
+/* Color-coded medal pill — one per { medal, year } in the YAML */
+.placement-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.placement-badge--gold        { background: #C9A227; }
+.placement-badge--silver      { background: #8A8A8A; }
+.placement-badge--bronze      { background: #B5651D; }
+.placement-badge--finalist    { background: #254D9A; }
+.placement-badge--semifinalist{ background: #6E7782; }
+.placement-badge--default     { background: #6E7782; }
 
 /* On dark backgrounds (landing carousel), flip the name to white. */
 .bg-dark .testimonial-name {
   color: #fff;
+}
+
+/* Gallery page — CSS-columns masonry (reuses the testimonials pattern) */
+/* Gallery layout — flex container of N column divs (one per visible column).
+   JS distributes tiles round-robin into the right column. We don't use CSS
+   `columns` because it auto-balances by HEIGHT, which silently shifts tiles
+   across columns when image aspect ratios vary, breaking the "newest across
+   the top row" invariant we want. */
+.gallery-grid {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.gallery-col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.gallery-tile--page {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 250ms ease, border-radius 250ms ease;
+}
+
+.gallery-tile--page img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.gallery-tile--page:hover {
+  transform: scale(1.03);
+  border-radius: 20px;
+}
+
+.gallery-tile--page.is-hidden {
+  display: none;
+}
+
+/* Year filter row — container for filter pills */
+.gallery-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Reusable filter pill — pill-shaped toggle button.
+   Used by the gallery year filter; intended for future filter UIs as well. */
+.filter-pill {
+  background: transparent;
+  border: 2px solid #254D9A;
+  color: #254D9A;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-family: 'Ropa Sans', sans-serif;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 250ms ease-out, color 250ms ease-out, transform 250ms ease-out;
+}
+
+.filter-pill:hover {
+  transform: scale(1.05);
+}
+
+.filter-pill:hover,
+.filter-pill.is-active {
+  background: #254D9A;
+  color: #fff;
+}
+
+/* Gallery grid crossfade — JS toggles .is-swapping during filter changes so
+   the old tiles fade out before the new ones are inserted. */
+.gallery-grid {
+  transition: opacity 250ms ease-out;
+}
+.gallery-grid.is-swapping {
+  opacity: 0;
+}
+
+.gallery-removal-notice {
+  margin-top: 3rem;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.gallery-removal-notice a {
+  color: #E24C35;
 }
 
 

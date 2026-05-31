@@ -1,0 +1,30 @@
+#!/bin/sh
+# Regenerate the data-driven HTML + sitemap before every commit so the
+# committed (and therefore deployed) files can never go stale relative to
+# data/gallery.csv, data/testimonials.yaml, or blogs/blogs.json.
+#
+# This repo deploys straight from the `main` branch (no CI build step), so the
+# rendered output MUST be committed — see README.md.
+#
+# One-time setup per clone (tell git to use this hooks directory):
+#   git config core.hooksPath .githooks
+#
+# To bypass once (e.g. an emergency commit without Node installed):
+#   git commit --no-verify
+
+if ! command -v npm >/dev/null 2>&1; then
+  echo "pre-commit: npm/Node not found — skipping build." >&2
+  echo "            Install Node and re-run, or the generated files may go stale." >&2
+  exit 0
+fi
+
+echo "pre-commit: regenerating gallery / testimonials / explore / blog-main / sitemap…" >&2
+if ! npm run build >/dev/null; then
+  echo "pre-commit: 'npm run build' failed — commit aborted. Fix the build and retry." >&2
+  exit 1
+fi
+
+# Stage the generated outputs so the fresh render is part of this commit.
+git add explore.html explore/gallery.html explore/testimonials.html blog-main.html sitemap.xml
+
+exit 0

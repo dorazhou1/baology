@@ -1,27 +1,292 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
-
-<url>
-  <loc>https://baology.org/</loc>
-  <lastmod>2022-08-30T12:51:59+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-<url>
-  <loc>https://baology.org/about.html</loc>
-  <lastmod>2022-08-30T12:51:59+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://baology.org/about/syllabus.html</loc>
-  <lastmod>2022-08-30T12:51:59+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://baology.org/</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/about.html</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/about/faq.html</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/about/syllabus.html</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/signup.html</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/explore.html</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/explore/testimonials.html</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/blog-main.html</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/blogs/blaog-1.html</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/blogs/blog-1.html</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/blogs/blog-2.html</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/blogs/jasons-usabo-experience-freshman1.html</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/blogs/jasons-usabo-experience-intro.html</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/blogs/jasons-usabo-experience-video.html</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/blogs/recommended-textbooks.html</loc>
+  </url>
+  <url>
+    <loc>https://baology.org/explore/gallery.html</loc>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2022/2022-Capitol-IBO-visit.jpg</image:loc>
+      <image:title>Washington D.C.</image:title>
+      <image:caption>Team USA visits the US Capitol ahead of the International Biology Olympiad.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2022/2022-Kevin-kpop.JPEG</image:loc>
+      <image:title>Madison, Wisconsin</image:title>
+      <image:caption>Kevin poses with famous opisthokont Jennie from BLACKPINK</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2022/2022-ian-conference.jpeg</image:loc>
+      <image:title>Evolution Conference, Madison, Wisconsin</image:title>
+      <image:caption>Ian presenting a poster at the 2022 Evolution conference.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2022/2022-madison-meetup-with-students.JPG</image:loc>
+      <image:title>Baology Meetup, Madison, Wisconsin</image:title>
+      <image:caption>Jason and Ian meet up with Kevin in Madison</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2022/2022-team-usa-jacky-rosen.jpg</image:loc>
+      <image:title>Washington, D.C.</image:title>
+      <image:caption>Team USA meets up with Senator Jacky Rosen at the Capitol ahead of the International Biology Olympiad</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2023/2023-finals-dinner.png</image:loc>
+      <image:title>USABO Finals, Marymount University</image:title>
+      <image:caption>Dinner at the USABO Finals camp featuring Baology students and Dr. Kevin Bao</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2023/2023-finals-eating-pizza.jpg</image:loc>
+      <image:title>USABO Finals, Marymount University</image:title>
+      <image:caption>Baology students eating pizza at USABO Finals (yum!)</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2023/2023-finals-yufei-and-daniel.png</image:loc>
+      <image:title>USABO Finals, Marymount University</image:title>
+      <image:caption>Yufei and Daniel examine a spider at USABO Finals</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2023/2023-flame-sterilization.jpg</image:loc>
+      <image:title>USABO Finals, Marymount University</image:title>
+      <image:caption>A Baology student demonstrates flame sterilization using a Bunsen burner</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2023/2023-greycen-and-joseph-at-finals.png</image:loc>
+      <image:title>USABO Finals, Marymount University</image:title>
+      <image:caption>Instructors setting up a practical exam at Finals</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2023/2023-ian-looking-at-caterpillar.jpg</image:loc>
+      <image:title>USABO Finals, Marymount University</image:title>
+      <image:caption>Two opisthokonts (Ian and a caterpillar)</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2023/2023-ibo-team-singapore-kevin-bao.JPG</image:loc>
+      <image:title>IBO, Al Ain, United Arab Emirates</image:title>
+      <image:caption>Dr. Kevin Bao poses with Team Singapore at the 2023 International Biology Olympiad held at UAE</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2023/2023-ibo-team.png</image:loc>
+      <image:title>USABO Finals, Marymount University</image:title>
+      <image:caption>Baology-affiliated Gold medalists at USABO Finals, who will go on to represent USA in the International Biology Olympiad</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2023/2023-janet-owl.PNG</image:loc>
+      <image:title>Japan</image:title>
+      <image:caption>Two opisthokonts (Janet and a very large owl)</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2023/2023-kaiden-at-finals.png</image:loc>
+      <image:title>USABO Finals, Marymount University</image:title>
+      <image:caption>Kaiden reads a notebook on butterflies</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2023/2023-pinecone.jpg</image:loc>
+      <image:title>USABO Finals, Marymount University</image:title>
+      <image:caption>A Baology student draws a pinecone at USABO Finals</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2024/2024-camp-examining-leaf.jpg</image:loc>
+      <image:title>USABO Finals, Marymount University</image:title>
+      <image:caption>Baology students at USABO Finals examine a green caterpillar (hidden) on a leaf</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2024/2024-dmv-camper-meetup.jpeg</image:loc>
+      <image:title>Baology Meetup, Washington metropolitian area</image:title>
+      <image:caption>Baology alumni and staff have dinner with Dr. Kevin Bao</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2024/2024-ibo-team-photo-flag.png</image:loc>
+      <image:title>USABO Finals, Marymount University</image:title>
+      <image:caption>Baology-affiliated students win Gold at the USABO Finals camp.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2024/2024-ibo-team-photo-public.jpeg</image:loc>
+      <image:title>IBO, Astana, Kazakhstan</image:title>
+      <image:caption>Baology-affiliated students all win Gold medals at the International Biology Olympiad!</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2025/2025-IBO-blue.jpg</image:loc>
+      <image:title>USABO Finals, Harvard University</image:title>
+      <image:caption>Baology-affiliated students win Gold at USABO Finals</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2025/2025-IBO-flag.jpg</image:loc>
+      <image:title>IBO, Quezon City, Philippines</image:title>
+      <image:caption>Baology-affiliated students win Gold and Silver at the International Biology Olympiad</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2025/2025-baology-students-meetup-second.jpg</image:loc>
+      <image:title>Alumni Meetup</image:title>
+      <image:caption>Baology alumni meetup</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2025/2025-baology-students-meetup.jpg</image:loc>
+      <image:title>Alumni Meetup</image:title>
+      <image:caption>Baology alumni meetup</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2025/2025-camp-photo-covered.png</image:loc>
+      <image:title>USABO Finals, Harvard University</image:title>
+      <image:caption>Baology students get ready for laboratory experiments at the USABO Finals camp.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2025/2025-campers-medaling-column.jpg</image:loc>
+      <image:title>USABO Finals, Harvard University</image:title>
+      <image:caption>Baology students win medals at USABO Finals</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2025/2025-dissection-practical.jpg</image:loc>
+      <image:title>USABO Finals, Harvard University</image:title>
+      <image:caption>Dissection practicals at USABO Finals</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2025/2025-finals-suzuko-centered.png</image:loc>
+      <image:title>USABO Finals, Harvard University</image:title>
+      <image:caption>Baology students at USABO Finals watch Suzuko&#39;s computer demonstration</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2025/2025-joseph-usrse-conference.jpg</image:loc>
+      <image:title>USRSE Conference, Philadelphia, Pennsylvania</image:title>
+      <image:caption>Joseph presents a poster at the 2025 US Research Software Engineering conference</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2025/2025-madison-meetup.jpeg</image:loc>
+      <image:title>Madison, Wisconsin</image:title>
+      <image:caption>Arjun, Joseph, and Kevin meet up for dinner in Madison</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2025/2025-observing-at-camp.jpeg</image:loc>
+      <image:title>USABO Finals, Harvard University</image:title>
+      <image:caption>Students observing the natural environment of a biology competition</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2025/2025-socal-meetup.jpeg</image:loc>
+      <image:title>National Science Bowl Tournament, Southern California</image:title>
+      <image:caption>Baology-affiliated students meet up at a NSB tournament in SoCal</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2025/2025-stickynote-drawing-of-joseph.png</image:loc>
+      <image:title>Baology Course</image:title>
+      <image:caption>A drawing of Joseph made during lecture</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2025/2025-xmas-party.jpg</image:loc>
+      <image:title>Christmas meetup</image:title>
+      <image:caption>Baology alumni meeting up at a Christmas house party</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2026/2026-scioly-expo-selfie.jpeg</image:loc>
+      <image:title>National Science Olympiad Expo, University of Southern California</image:title>
+      <image:caption>Baology alumni and TAs tabling at the 2026 SciOly Expo</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2026/2026-scioly-expo-table-photo-1.jpeg</image:loc>
+      <image:title>National Science Olympiad Expo, University of Southern California</image:title>
+      <image:caption>Baology alumni and TAs tabling at the 2026 SciOly Expo</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2026/2026-scioly-expo-table-photo-2.jpeg</image:loc>
+      <image:title>National Science Olympiad Expo, University of Southern California</image:title>
+      <image:caption>Baology TAs tabling at the 2026 SciOly Expo</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/2026/2026-scioly-expo-table-photo-3.jpeg</image:loc>
+      <image:title>National Science Olympiad Expo, University of Southern California</image:title>
+      <image:caption>Baology TAs tabling at the 2026 SciOly Expo</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/staff/albert-tam.jpg</image:loc>
+      <image:title>Albert Tam</image:title>
+      <image:caption>Instructor 2022-2023, MIT; USABO Top 20 Finalist and Bronze medalist</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/staff/caleb-zhao.jpg</image:loc>
+      <image:title>Caleb Zhao</image:title>
+      <image:caption>Instructor 2023-2024, MIT; USABO 2021 Finalist and Bronze medalist</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/staff/greycen-ren.jpg</image:loc>
+      <image:title>Greycen Ren</image:title>
+      <image:caption>Instructor 2023-2026, MIT Computational Biology; USABO Finalist 2021 and 2022, USABO 2022 Gold medalist, IBO 2022 Silver medal</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/staff/ian-chang.jpg</image:loc>
+      <image:title>Ian Chang</image:title>
+      <image:caption>Instructor 2024-2026, Cornell Statistics; USABO 2023 Finalist</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/staff/jasper-lee.jpg</image:loc>
+      <image:title>Jasper Lee</image:title>
+      <image:caption>Instructor 2023-2024, Harvard Med PhD; USABO 2016 Finalist</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/staff/jun-yang.jpg</image:loc>
+      <image:title>Jun Yang</image:title>
+      <image:caption>USNCO chemistry instructor 2021-2022, Harvard PhD; 2x USNCO Top 20 Finalist</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/staff/kaiden-wu.jpg</image:loc>
+      <image:title>Kaiden Wu</image:title>
+      <image:caption>Instructor 2023-2024, UChicago; USABO 2023 Finalist and Gold medalist, IBO 2023 Gold medal</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/staff/lawrence-long.jpg</image:loc>
+      <image:title>Lawrence Long</image:title>
+      <image:caption>Instructor 2023-2026, MIT Biophysics; USABO Finalist 2021 and 2022, USABO 2022 Gold medalist</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/staff/roy-han.jpg</image:loc>
+      <image:title>Roy Han</image:title>
+      <image:caption>Instructor 2020-2023, Harvard; IBO 2019 merit award</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://baology.org/images/gallery/staff/yufei-chen.jpg</image:loc>
+      <image:title>Yufei Chen</image:title>
+      <image:caption>Instructor 2024-2025, MIT student; USABO Finalist 2023 and Gold medalist, IBO #1 Worldwide</image:caption>
+    </image:image>
+  </url>
 </urlset>
