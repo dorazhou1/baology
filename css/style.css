@@ -10,6 +10,52 @@
   font-weight: normal;
 }
 
+/* ============================================================
+   DESIGN TOKENS — single source of truth for color, radius,
+   shadow, motion, and the readable type scale. Change a value
+   here and every card / text role updates together. Do NOT
+   hard-code these values in component rules; reference the var.
+   ============================================================ */
+:root {
+  /* brand color (one orange — consolidates #E24C35 + #E85928) */
+  --color-orange:  #E24C35;  /* = .text-secondary; titles, accents */
+  --color-navy:    #162D59;  /* = .text-primary; subtitles/body on light */
+  --color-navy-dk: #102141;  /* = .text-primary-dark */
+  --color-ink:     #4c4c4c;  /* body copy */
+  --color-muted:   #777;     /* meta / subtext on light */
+  --color-cream:   #fef8ec;  /* THE card background */
+  --color-yellow:  #FFD686;  /* accent only: badges, highlights, .selected */
+
+  /* radius — paired: surface cards vs image tiles */
+  --radius-card: 22px;
+  --radius-card-lg: 36px;  /* raised showcase cards: Register + instructors */
+  --radius-tile: 14px;
+  --radius-pill: 999px;
+
+  /* one shadow; flat (none) is the default */
+  --shadow-raised: 0 12px 28px rgba(22, 45, 89, 0.18), 0 4px 10px rgba(22, 45, 89, 0.10);
+
+  /* motion */
+  --card-lift: -6px;
+  --tile-zoom: 1.05;
+  --ease: 0.25s ease;
+
+  /* font families + weights */
+  --font-sans:  "Inter", sans-serif;
+  --font-serif: "New York", "Playfair Display", serif;
+  --fw-bold: 700;
+
+  /* TYPE SCALE — 5 readable steps (+ 2 art exceptions) */
+  --fs-display: 80px;     /* hero h1 — ART (keeps existing vw media queries) */
+  --fs-section: 40px;     /* h2 / h3 section headers — ART */
+  --fs-title:   1.375rem; /* 22px — card titles, h4, sub-headers */
+  --fs-body:    1.125rem; /* 18px — paragraph / subtitle / body copy */
+  --fs-meta:    0.875rem; /* 14px — captions, dates, meta */
+  --fs-fine:    0.75rem;  /* 12px — disclaimers / micro-labels ONLY */
+  --lh-tight: 1.2;
+  --lh-body: 1.6;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -25,18 +71,18 @@ body {
 p,
 .paragraph {
   font-weight: 400;
-  color: #4c4c4c;
-  font-size: 18px;
+  color: var(--color-ink);
+  font-size: var(--fs-body);
   font-family: "Inter", sans-serif;
 }
 
 p-lg,
 .paragraph-lg {
-  font-size: 22px;
+  font-size: var(--fs-title);
 }
 
 a {
-  color: #E24C35;
+  color: var(--color-orange);
 }
 
 h1,
@@ -52,7 +98,7 @@ h6 {
 
 h1,
 .h1 {
-  font-size: 80px;
+  font-size: var(--fs-display);
 }
 
 @media (max-width: 991px) {
@@ -78,22 +124,22 @@ h2,
 
 h3,
 .h3 {
-  font-size: 40px;
+  font-size: var(--fs-section);
 }
 
 h4,
 .h4 {
-  font-size: 22px;
+  font-size: var(--fs-title);
 }
 
 h5,
 .h5 {
-  font-size: 18px;
+  font-size: var(--fs-body);
 }
 
 h6,
 .h6 {
-  font-size: 14px;
+  font-size: var(--fs-meta);
 }
 
 /* Button style */
@@ -185,7 +231,7 @@ body {
 
 
 ul li::marker {
-  color: #E24C35;
+  color: var(--color-orange);
 }
 
 table ul {
@@ -226,7 +272,7 @@ a:hover {
 }
 
 a.link:hover {
-  color: #E24C35;
+  color: var(--color-orange);
   text-decoration: underline;
 }
 
@@ -288,7 +334,7 @@ a.link:hover {
 }
 
 .text-secondary {
-  color: #E24C35 !important;
+  color: var(--color-orange) !important;
 }
 
 .text-color {
@@ -308,15 +354,107 @@ a.link:hover {
 }
 
 .text-sm {
-  font-size: 15px;
+  font-size: var(--fs-meta);
 }
 
 .text-md {
-  font-size: 18px;
+  font-size: var(--fs-body);
 }
 
 .text-lg {
-  font-size: 26px;
+  font-size: var(--fs-title);
+}
+
+/* ============================================================
+   TEXT ROLE CLASSES — the "set styles" for card/UI copy.
+   Pair a size token with family + weight + color so text never
+   gets hand-sized per component. Use these instead of raw px.
+     .u-title    serif orange   — card titles, names
+     .u-subtitle bold navy sans — subtitles / emphasis
+     .u-body     dark sans      — body copy
+     .u-meta     muted small    — captions, dates, secondary
+     .u-fine     muted tiny     — disclaimers ONLY
+   Add .u-on-dark on a container to flip text for dark backgrounds.
+   ============================================================ */
+.u-title {
+  font-family: var(--font-serif);
+  color: var(--color-orange);
+  font-size: var(--fs-title);
+  line-height: var(--lh-tight);
+}
+
+.u-subtitle {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-bold);
+  color: var(--color-navy);
+  font-size: var(--fs-body);
+  line-height: var(--lh-tight);
+}
+
+.u-body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  color: var(--color-ink);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.u-meta {
+  font-family: var(--font-sans);
+  font-size: var(--fs-meta);
+  color: var(--color-muted);
+  line-height: var(--lh-tight);
+}
+
+.u-fine {
+  font-family: var(--font-sans);
+  font-size: var(--fs-fine);
+  color: var(--color-muted);
+}
+
+.u-on-dark .u-title,
+.u-on-dark .u-subtitle {
+  color: #fff;
+}
+
+.u-on-dark .u-body {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.u-on-dark .u-meta,
+.u-on-dark .u-fine {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================================
+   CARD PRESETS — three set styles built on the tokens.
+     .card           surface card: cream, big radius, FLAT,
+                     float-up on hover (defined at the .card rule)
+     .is-raised      adds the ONE soft shadow (showcase cards only)
+     .tile           image tile: small radius, inner-image zoom,
+                     no shadow, no radius change on hover
+   ============================================================ */
+.card.is-raised,
+.is-raised {
+  box-shadow: var(--shadow-raised);
+}
+
+.tile {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius-tile);
+  overflow: hidden;
+  position: relative;
+}
+
+.tile img {
+  width: 100%;
+  display: block;
+  transition: transform var(--ease);
+}
+
+.tile:hover img {
+  transform: scale(var(--tile-zoom));
 }
 
 .pb-0 {
@@ -603,15 +741,9 @@ li.nav-item {
   background-color: transparent;
 }
 
-/* Standardized blog-card drop shadow (used on Explore landing + blog-main) */
-.blog-card-shadow {
-  box-shadow: 0 12px 28px rgba(22, 45, 89, 0.18), 0 4px 10px rgba(22, 45, 89, 0.1);
-  transition: box-shadow 0.3s ease, top 0.3s ease;
-}
-
-.blog-card-shadow:hover {
-  box-shadow: 0 18px 36px rgba(22, 45, 89, 0.25), 0 6px 14px rgba(22, 45, 89, 0.14);
-}
+/* (Removed .blog-card-shadow — blog & testimonial cards are now FLAT with a
+   float-up hover. The one approved soft shadow lives in --shadow-raised /
+   .is-raised, used only on the Register and instructor showcase cards.) */
 
 @keyframes rotateX {
   0% {
@@ -723,12 +855,18 @@ li.nav-item {
   background-color: #EE8457;
 }
 
+/* Instructor card — raised showcase card (yellow + larger radius + standard shadow + float-up) */
 .instructor-card {
-  background-color: #FFD686;
-  border-radius: 20px;
+  background-color: var(--color-yellow);
+  border-radius: var(--radius-card-lg);
   padding-bottom: 20px;
   margin: 0 20px 30px;
-  box-shadow: 0px 18px 39.1px 6.9px rgba(0, 0, 0, 0.14) !important;
+  box-shadow: var(--shadow-raised) !important;
+  transition: transform var(--ease);
+}
+
+.instructor-card:hover {
+  transform: translateY(var(--card-lift));
 }
 
 .instructor-img {
@@ -825,7 +963,7 @@ li.nav-item {
 
 /* testimonial */
 .fa-quote-left {
-  color: #E24C35;
+  color: var(--color-orange);
 }
 
 /* slick slider */
@@ -1006,7 +1144,7 @@ button.slick-next:focus:not(:hover) {
   flex: 0 0 auto;
   width: 44px;
   height: 44px;
-  background-color: #E24C35;
+  background-color: var(--color-orange);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 22px 22px;
@@ -1022,7 +1160,7 @@ button.slick-next:focus:not(:hover) {
 }
 
 .gallery-arrow:focus:not(:hover) {
-  background-color: #E24C35;
+  background-color: var(--color-orange);
   outline: none;
 }
 
@@ -1082,13 +1220,13 @@ ol.steps li:before {
   width: 36px;
   height: 36px;
   border-radius: 500px;
-  background: #E24C35;
+  background: var(--color-orange);
 }
 
 /*collapse*/
 .collapsible {
   background-color: #FFF8EC;
-  color: #E24C35;
+  color: var(--color-orange);
   font-weight: 600;
   border: none;
   border-bottom: 2px solid #eee;
@@ -1097,7 +1235,7 @@ ol.steps li:before {
   width: 100%;
   text-align: left;
   outline: none;
-  font-size: 18px;
+  font-size: var(--fs-body);
   position: relative;
   transition: background-color 0.2s ease;
 }
@@ -1275,17 +1413,18 @@ svg {
   margin-top: 1rem;
 }
 
+/* Surface card preset — cream, big radius, FLAT, float-up on hover */
 .card {
   border: none;
-  background-color: #fef8ec;
-  border-radius: 22px;
+  background-color: var(--color-cream);
+  border-radius: var(--radius-card);
+  box-shadow: none;
   height: 400px;
   min-height: fit-content;
   display: flex;
   justify-content: flex-end;
-  top: 0;
   overflow: hidden;
-  transition: top 0.3s ease, box-shadow 0.3s ease;
+  transition: transform var(--ease);
 }
 
 .card-body {
@@ -1293,7 +1432,7 @@ svg {
 }
 
 .card:hover {
-  top: -5px;
+  transform: translateY(var(--card-lift));
 }
 
 .card-img-blog {
@@ -1303,31 +1442,42 @@ svg {
 }
 
 .card-label {
-  background-color: white;
+  background-color: var(--color-cream);
   padding: 20px;
-  border-radius: 0 0 20px 20px;
+  border-radius: 0 0 var(--radius-card) var(--radius-card);
 }
 
+/* blog card title — bold brand-orange sans (standardized tokens) */
 .card-label>.header {
   margin-bottom: .3rem;
-  color: #E85928;
-  font: 1000 20px Inter;
+  color: var(--color-orange);
+  font-family: var(--font-sans);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-title);
+  line-height: var(--lh-tight);
 }
 
+/* subtitle role — bold navy sans */
 .card-label>.subtitle {
-  font-size: 1 rem;
-  color: #162D59;
+  font-family: var(--font-sans);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-body);
+  color: var(--color-navy);
   margin-bottom: .15rem;
 }
 
+/* small subtext (excerpt + date) — standardized sans-serif muted-grey meta role */
 .card-label>.body {
-  font-size: .8rem;
-  color: #777;
+  font-family: var(--font-sans);
+  font-size: var(--fs-meta);
+  color: var(--color-muted);
+  line-height: var(--lh-body);
 }
 
 .card-label>.date {
-  font-size: .8rem;
-  color: #E85928;
+  font-family: var(--font-sans);
+  font-size: var(--fs-meta);
+  color: var(--color-muted);
 }
 
 .taglist {
@@ -1343,7 +1493,7 @@ svg {
   margin-right: 5px;
   margin-bottom: 5px;
   border-radius: 5px;
-  color: #E85928;
+  color: var(--color-orange);
   list-style-type: none;
 }
 
@@ -1398,7 +1548,7 @@ svg {
   display: block;
   width: 100%;
   height: 280px;
-  border-radius: 16px;
+  border-radius: var(--radius-tile);
   overflow: hidden;
   text-decoration: none;
   color: inherit;
@@ -1409,11 +1559,11 @@ svg {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 250ms ease;
+  transition: transform var(--ease);
 }
 
 .gallery-tile:hover img {
-  transform: scale(1.05);
+  transform: scale(var(--tile-zoom));
 }
 
 .gallery-tile-caption {
@@ -1434,12 +1584,12 @@ svg {
 
 .gallery-tile-caption .loc {
   font-weight: 600;
-  font-size: 0.85rem;
-  line-height: 1.2;
+  font-size: var(--fs-meta);
+  line-height: var(--lh-tight);
 }
 
 .gallery-tile-caption .desc {
-  font-size: 0.75rem;
+  font-size: var(--fs-fine);
   opacity: 0.85;
   margin-top: 2px;
 }
@@ -1465,67 +1615,65 @@ svg {
 }
 
 .schedule-cell {
-  border-radius: 12px;
+  border-radius: var(--radius-tile);
   padding: 20px;
-  background-color: #FFF5E6;
+  background-color: var(--color-cream);
   transition: background-color 0.2s ease;
 }
 
 .schedule-cell.shared {
-  border: 2px solid #E24C35;
+  border: 2px solid var(--color-orange);
 }
 
 .schedule-cell.highlighted {
-  background-color: #FFD686;
+  background-color: var(--color-yellow);
 }
 
 .schedule-day {
-  font-size: 14px;
-  color: #E24C35;
+  font-size: var(--fs-meta);
+  color: var(--color-orange);
   margin-bottom: 4px;
 }
 
 .schedule-class {
   font-family: "New York", "Playfair Display", serif;
-  font-size: 24px;
-  color: #E24C35;
-  line-height: 1.2;
+  font-size: var(--fs-title);
+  color: var(--color-orange);
+  line-height: var(--lh-tight);
   margin-bottom: 12px;
 }
 
 .schedule-details {
-  font-size: 14px;
-  color: #E24C35;
-  line-height: 1.6;
+  font-size: var(--fs-meta);
+  color: var(--color-orange);
+  line-height: var(--lh-body);
 }
 
 /* Pricing Cards - Signup Page */
 .pricing-card {
-  background-color: #FFF5E6;
-  border-radius: 12px;
+  background-color: var(--color-cream);
+  border-radius: var(--radius-card);
   padding: 30px 24px;
   height: 100%;
   position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform var(--ease);
   display: flex;
   flex-direction: column;
 }
 
 .pricing-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0px 16px 36px rgba(0, 0, 0, 0.12);
+  transform: translateY(var(--card-lift));
 }
 
 .pricing-card.selected {
-  background-color: #FFD686;
-  transform: translateY(-6px);
-  box-shadow: 0px 16px 36px rgba(0, 0, 0, 0.12);
+  background-color: var(--color-yellow);
+  transform: translateY(var(--card-lift));
 }
 
 .pricing-card .tier-name {
   font-family: "New York", "Playfair Display", serif;
-  font-size: 28px;
-  color: #E24C35;
+  font-size: var(--fs-title);
+  color: var(--color-orange);
   margin-bottom: 8px;
 }
 
@@ -1539,8 +1687,8 @@ svg {
 }
 
 .pricing-card .tier-desc {
-  font-size: 14px;
-  color: #E24C35;
+  font-size: var(--fs-meta);
+  color: var(--color-orange);
   margin-bottom: 16px;
 }
 
@@ -1548,13 +1696,13 @@ svg {
   font-family: "New York", "Playfair Display", serif;
   font-size: 32px;
   font-weight: 700;
-  color: #E24C35;
+  color: var(--color-orange);
   margin-bottom: 12px;
 }
 
 .pricing-card .includes-label {
-  font-size: 14px;
-  color: #E24C35;
+  font-size: var(--fs-meta);
+  color: var(--color-orange);
   margin-bottom: 8px;
 }
 
@@ -1567,8 +1715,8 @@ svg {
 
 .pricing-card ul li {
   font-family: "New York", "Playfair Display", serif;
-  font-size: 18px;
-  color: #E24C35;
+  font-size: var(--fs-body);
+  color: var(--color-orange);
   margin-bottom: 4px;
 }
 
@@ -1578,17 +1726,17 @@ svg {
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
-  background-color: #FFD686;
-  color: #E24C35;
-  font-size: 12px;
+  background-color: var(--color-yellow);
+  color: var(--color-orange);
+  font-size: var(--fs-fine);
   font-weight: 600;
   padding: 4px 12px;
   border-radius: 4px;
 }
 
 .schedule-note {
-  font-size: 14px;
-  color: #E24C35;
+  font-size: var(--fs-meta);
+  color: var(--color-orange);
   margin-bottom: 16px;
 }
 
@@ -1602,13 +1750,13 @@ svg {
   }
 
   .schedule-class {
-    font-size: 18px;
+    font-size: var(--fs-body);
   }
 }
 
-/* Hero signup card */
+/* Hero signup / Register card — raised showcase: cream (inherits .card), larger radius, soft shadow (index.html: .is-raised) */
 .signup-card {
-  border-radius: 50px;
+  border-radius: var(--radius-card-lg);
   border: none;
   margin-top: 50px;
   height: auto;
@@ -1685,7 +1833,7 @@ svg {
 
 .countdown-timer .cd-block small {
   font-family: "Inter", sans-serif;
-  font-size: 11px;
+  font-size: var(--fs-fine);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -1696,24 +1844,32 @@ svg {
 /* Gallery lightbox — brand-aligned overrides for GLightbox.
    Loaded after plugins/glightbox/glightbox.min.css so these win on equal specificity.
    Shadow needs !important because the plugin's unscoped .gslide-media reset uses it. */
+/* Media + caption read as ONE rounded card: image rounds the top corners,
+   the caption panel (cream, not white) rounds the bottom — they meet flush. */
 .glightbox-clean .gslide-media {
-  border-radius: 16px;
+  border-radius: var(--radius-tile) var(--radius-tile) 0 0;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(22, 45, 89, 0.45) !important;
+}
+
+.glightbox-clean .gslide-description {
+  background: var(--color-cream);
+  border-radius: 0 0 var(--radius-tile) var(--radius-tile);
+  padding: 16px 20px;
 }
 
 .glightbox-clean .gslide-title {
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  color: #162D59;
-  font-size: 1.4rem;
+  color: var(--color-navy);
+  font-size: var(--fs-title);
 }
 
 .glightbox-clean .gslide-desc {
   font-family: "Inter", sans-serif;
   color: rgba(22, 45, 89, 0.75);
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 .glightbox-clean .gclose:hover,
@@ -1750,13 +1906,19 @@ svg {
 }
 
 .testimonial-card {
-  background: #fef8ec;
-  border-radius: 22px;
+  background: var(--color-cream);
+  border-radius: var(--radius-card);
   padding: 28px 24px 24px;
+  box-shadow: var(--shadow-raised);
+  transition: transform var(--ease);
+}
+
+.testimonial-card:hover {
+  transform: translateY(var(--card-lift));
 }
 
 .testimonial-card .icon {
-  color: #E24C35;
+  color: var(--color-orange);
   font-size: 1.6rem;
 }
 
@@ -1771,10 +1933,10 @@ svg {
    18px paragraph baseline: name is larger than body copy, placement
    matches body so it reads as a caption. */
 .testimonial-name {
-  color: #162D59;
+  color: var(--color-navy);
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: 1.4rem;
+  font-size: var(--fs-title);
   margin-bottom: 0.25rem;
 }
 
@@ -1795,8 +1957,8 @@ svg {
   display: inline-flex;
   align-items: center;
   padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 0.8rem;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-fine);
   font-weight: 600;
   font-family: 'Inter', sans-serif;
   color: #fff;
@@ -1839,10 +2001,9 @@ svg {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 12px;
+  border-radius: var(--radius-tile);
   overflow: hidden;
   position: relative;
-  transition: transform 250ms ease, border-radius 250ms ease;
 }
 
 .gallery-tile--page img {
@@ -1851,10 +2012,8 @@ svg {
   display: block;
 }
 
-.gallery-tile--page:hover {
-  transform: scale(1.03);
-  border-radius: 20px;
-}
+/* Hover = inner-image zoom only, inherited from `.gallery-tile:hover img`
+   (page tiles carry both classes). No whole-tile scale, no radius change. */
 
 .gallery-tile--page.is-hidden {
   display: none;
@@ -1906,12 +2065,12 @@ svg {
 
 .gallery-removal-notice {
   margin-top: 3rem;
-  font-size: 0.9rem;
-  color: #777;
+  font-size: var(--fs-meta);
+  color: var(--color-muted);
 }
 
 .gallery-removal-notice a {
-  color: #E24C35;
+  color: var(--color-orange);
 }
 
 

@@ -262,7 +262,7 @@ function sortTestimonialsForGrid(data) {
 // so later cards never sit hidden for long. Mirrors js/testimonials.js.
 function renderTestimonialCard(t, i) {
   const delay = Math.min((i || 0) * 0.08, 0.6).toFixed(2);
-  return `        <article class="testimonial-card blog-card-shadow wow fadeInUp" data-wow-delay="${delay}s">
+  return `        <article class="testimonial-card wow fadeInUp" data-wow-delay="${delay}s">
           <i class="fa-solid fa-quote-left icon mb-3"></i>
           <p class="quote">${escapeHtml((t.quote || "").trim())}</p>
           <h5 class="testimonial-name">${escapeHtml(t.name)}</h5>
@@ -294,7 +294,7 @@ function renderBlogCard(blog, opts) {
   const pageClass = opts && opts.pageNum ? ` ${opts.pageNum}` : "";
   const tagsHtml = (blog.tags || "").split(" ").filter(Boolean)
     .map(t => `<li>${escapeHtml(t)}</li>`).join("");
-  return `        <a class="card wow fadeInLeft blog-card-shadow${pageClass}" href="${escapeAttr(blog.link)}">
+  return `        <a class="card is-raised wow fadeInLeft${pageClass}" href="${escapeAttr(blog.link)}">
           <img class="card-img-blog" src="${escapeAttr(blog.imglink)}" alt="">
           <div class="card-label">
             <div class="header">${escapeHtml(blog.name)}</div>
