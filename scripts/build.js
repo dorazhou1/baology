@@ -314,26 +314,38 @@ function renderBlogCard(blog, opts) {
 // churn the file on every commit and wouldn't reflect real edits anyway.)
 const SITE = "https://baology.org";
 
+function getLastMod(filePath) {
+  try {
+    return fs.statSync(filePath).mtime.toISOString().slice(0, 10);
+  } catch {
+    return null;
+  }
+}
+
 function buildSitemap(photos, blogs) {
   // Hand-maintained list of indexable top-level pages (excludes 404, the
   // header.html fragment, and unpublished sample blog files).
   const pages = [
-    "/",
-    "/about.html",
-    "/about/faq.html",
-    "/about/syllabus.html",
-    "/signup.html",
-    "/explore.html",
-    "/explore/testimonials.html",
-    "/blog-main.html",
+    { url: "/", file: "index.html" },
+    { url: "/about.html", file: "about.html" },
+    { url: "/about/faq.html", file: "about/faq.html" },
+    { url: "/about/syllabus.html", file: "about/syllabus.html" },
+    { url: "/signup.html", file: "signup.html" },
+    { url: "/explore.html", file: "explore.html" },
+    { url: "/explore/testimonials.html", file: "explore/testimonials.html" },
+    { url: "/blog-main.html", file: "blog-main.html" },
   ];
   // Published blog posts — only those linked from blogs.json. De-duplicated
   // and sorted so the order is stable across builds.
-  const blogPages = [...new Set(blogs.map(b => "/" + String(b.link).replace(/^\/+/, "")))].sort();
+  const blogPages = [...new Set(blogs.map(b => "/" + String(b.link).replace(/^\/+/, "")))]
+    .sort()
+    .map((url) => ({ url, file: url.slice(1) }));
 
-  const urls = [...pages, ...blogPages].map(
-    p => `  <url>\n    <loc>${escapeHtml(SITE + p)}</loc>\n  </url>`
-  );
+  const urls = [...pages, ...blogPages].map(({ url, file }) => {
+    const lastmod = getLastMod(path.join(ROOT, file));
+    const lastmodTag = lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : "";
+    return `  <url>\n    <loc>${escapeHtml(SITE + url)}</loc>${lastmodTag}\n  </url>`;
+  });
 
   // The gallery page carries an <image:image> entry per photo. Sorted by src
   // so adding/editing a caption doesn't reorder the whole block.
@@ -351,7 +363,9 @@ function buildSitemap(photos, blogs) {
       ].filter(Boolean).join("\n");
     })
     .join("\n");
-  urls.push(`  <url>\n    <loc>${SITE}/explore/gallery.html</loc>\n${imageEntries}\n  </url>`);
+  const galleryLastmod = getLastMod(path.join(ROOT, "explore/gallery.html"));
+  const galleryLastmodTag = galleryLastmod ? `\n    <lastmod>${galleryLastmod}</lastmod>` : "";
+  urls.push(`  <url>\n    <loc>${SITE}/explore/gallery.html</loc>${galleryLastmodTag}\n${imageEntries}\n  </url>`);
 
   return [
     `<?xml version="1.0" encoding="UTF-8"?>`,

@@ -3,51 +3,67 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://baology.org/</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/about.html</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/about/faq.html</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/about/syllabus.html</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/signup.html</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/explore.html</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/explore/testimonials.html</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/blog-main.html</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/blogs/blaog-1.html</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/blogs/blog-1.html</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/blogs/blog-2.html</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/blogs/jasons-usabo-experience-freshman1.html</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/blogs/jasons-usabo-experience-intro.html</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/blogs/jasons-usabo-experience-video.html</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/blogs/recommended-textbooks.html</loc>
+    <lastmod>2026-06-16</lastmod>
   </url>
   <url>
     <loc>https://baology.org/explore/gallery.html</loc>
+    <lastmod>2026-06-16</lastmod>
     <image:image>
       <image:loc>https://baology.org/images/gallery/2022/2022-Capitol-IBO-visit.jpg</image:loc>
       <image:title>Washington D.C.</image:title>

@@ -8,9 +8,18 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description"
-        content="The premier USABO course taught by Biolympiad finalists and Harvard-educated instructors.">
+        content="Learn about Baology Prep’s mission, instructors, and approach to USABO and biology olympiad training.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="author" content="Baology Prep">
+    <link rel="canonical" href="https://baology.org/about.html">
+    <meta property="og:title" content="About | Baology Prep">
+    <meta property="og:site_name" content="Baology Prep">
+    <meta property="og:url" content="https://baology.org/about.html">
+    <meta property="og:description"
+        content="Meet the Baology Prep instructors and see the mission behind our USABO-focused biology training program.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://baology.org/images/demo-preview.png">
+    <meta property="og:image:alt" content="Baology Prep instructors and student community">
     <link rel="shortcut icon" href="images/favicon.ico" />
 
     <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
@@ -21,6 +30,28 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link href="css/style.css" rel="stylesheet">
+    <meta name="google-site-verification" content="bU7HWMJGjCA3XwfkKLwIi6N_rOAkMtPDo7IznqjFfe4" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FHD7V5736Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FHD7V5736Y');
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            "name": "About Baology Prep",
+            "url": "https://baology.org/about.html",
+            "description": "Mission, instructors, and teaching approach for Baology Prep.",
+            "isPartOf": {
+                "@type": "WebSite",
+                "name": "Baology Prep",
+                "url": "https://baology.org/"
+            }
+        }
+    </script>
 
 </head>
 
@@ -28,7 +59,49 @@
 
 
     <!--Navigation bar-->
-    <div id="header"></div>
+    <header class="navigation fixed-top wow fadeInRight" data-wow-delay=".4s" data-wow-duration="1.3s">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+                aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="burger" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+
+            <div class="collapse navbar-collapse text-center" id="navigation">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://baology.org/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://baology.org/about.html">About</a>
+                        <ul class="dropdown-menu">
+                            <li class="d-lg-none"><a class="dropdown-item" href="https://baology.org/about.html">About
+                                    home</a></li>
+                            <li><a class="dropdown-item" href="https://baology.org/about/syllabus.html">Syllabus</a></li>
+                            <li><a class="dropdown-item" href="https://baology.org/about/faq.html">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://baology.org/explore.html">Explore</a>
+                        <ul class="dropdown-menu">
+                            <li class="d-lg-none"><a class="dropdown-item"
+                                    href="https://baology.org/explore.html">Explore home</a></li>
+                            <li><a class="dropdown-item" href="https://baology.org/explore/testimonials.html">Testimonials</a>
+                            </li>
+                            <li><a class="dropdown-item" href="https://baology.org/explore/gallery.html">Gallery</a></li>
+                            <li><a class="dropdown-item" href="https://baology.org/blog-main.html">Blog</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://baology.org/signup.html">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
     <!-- hero area -->
     <section class="hero-area bg-primary" style="padding-bottom: 20vh;">
@@ -208,11 +281,6 @@
     <!-- Main Script -->
     <script src="js/script.js"></script>
 
-    <script>
-        $(function () {
-            $("#header").load("header.html");
-        });
-    </script>
 </body>
 
 </html>
