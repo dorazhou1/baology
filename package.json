@@ -5,6 +5,7 @@
   "description": "Baology Prep static site",
   "scripts": {
     "build": "node scripts/build.js",
+    "check:generated": "node scripts/check-generated.js",
     "prepare": "git config core.hooksPath .githooks || true"
   },
   "devDependencies": {

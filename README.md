@@ -23,6 +23,7 @@ has to be committed.**
 ```sh
 npm install        # once, to get the build's dev dependencies
 npm run build      # re-render the HTML + sitemap from data/
+npm run check:generated  # re-render + fail if committed generated files drifted
 git add -A && git commit && git push   # to main → live in ~1 min
 ```
 
@@ -33,9 +34,10 @@ running it with no data changes produces no diff.
 ### Automate it
 
 A git pre-commit hook in `.githooks/` runs the build and stages the regenerated
-HTML + sitemap on every commit, so they can never go stale. **`npm install`
-enables it automatically** (via the `prepare` script) — no extra step. To enable
-it by hand if needed:
+HTML + sitemap on every commit, so they can never go stale. A pre-push hook runs
+`npm run check:generated` and blocks pushes if generated files are stale.
+**`npm install` enables hooks automatically** (via the `prepare` script) — no
+extra step. To enable by hand if needed:
 
 ```sh
 git config core.hooksPath .githooks

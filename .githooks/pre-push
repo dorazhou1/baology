@@ -1,0 +1,15 @@
+#!/bin/sh
+# Ensure generated HTML/sitemap are committed before pushing.
+if ! command -v npm >/dev/null 2>&1; then
+  echo "pre-push: npm/Node not found — skipping generated-file check." >&2
+  exit 0
+fi
+
+echo "pre-push: checking generated HTML/sitemap are up to date…" >&2
+if ! npm run check:generated >/dev/null; then
+  echo "pre-push: generated files are stale (or build failed)." >&2
+  echo "          Run: npm run build && git add -A && git commit" >&2
+  exit 1
+fi
+
+exit 0
