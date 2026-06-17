@@ -323,6 +323,7 @@ function buildSitemap(photos, blogs) {
     "/about/faq.html",
     "/about/syllabus.html",
     "/signup.html",
+    "/demo",
     "/explore.html",
     "/explore/testimonials.html",
     "/blog-main.html",
