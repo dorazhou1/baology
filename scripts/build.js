@@ -331,7 +331,7 @@ function buildSitemap(photos, blogs) {
     { url: "/about/faq.html", file: "about/faq.html" },
     { url: "/about/syllabus.html", file: "about/syllabus.html" },
     { url: "/signup.html", file: "signup.html" },
-    { url: "/demo", file: "demo/index.html" },
+    { url: "/demo/", file: "demo/index.html" },
     { url: "/explore.html", file: "explore.html" },
     { url: "/explore/testimonials.html", file: "explore/testimonials.html" },
     { url: "/blog-main.html", file: "blog-main.html" },
