@@ -390,8 +390,41 @@ function injectBetweenMarkers(html, name, content) {
   return html.replace(re, `${open}\n${content}\n        ${close}`);
 }
 
+// --- Static nav sync (header.html is the single source) -----------------
+// Every page carries its nav as static, crawlable HTML; this keeps them all in
+// sync with header.html on each build. Replaces either an inlined
+// <header class="navigation…">…</header> block or a <div id="header"></div>
+// placeholder, so a new page only needs one of those where the nav belongs.
+function syncNav() {
+  const nav = fs.readFileSync(path.join(ROOT, "header.html"), "utf8").trim();
+  const navRe = /<header class="navigation[\s\S]*?<\/header>/;
+  const placeholderRe = /<div id="header">\s*<\/div>/;
+  const skipDirs = new Set([".git", "node_modules", "deprecated", "plugins"]);
+  const skipFiles = new Set(["header.html", "footer.html"]);
+  let count = 0;
+  (function walk(dir) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.name.startsWith(".")) continue;
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        if (!skipDirs.has(entry.name)) walk(full);
+        continue;
+      }
+      if (!entry.name.endsWith(".html")) continue;
+      if (skipFiles.has(path.relative(ROOT, full))) continue;
+      const html = fs.readFileSync(full, "utf8");
+      let out = html;
+      if (navRe.test(out)) out = out.replace(navRe, nav);
+      else if (placeholderRe.test(out)) out = out.replace(placeholderRe, nav);
+      if (out !== html) { fs.writeFileSync(full, out); count++; }
+    }
+  })(ROOT);
+  console.log(`Synced static nav into ${count} page(s) from header.html`);
+}
+
 // --- Build ---------------------------------------------------------------
 function build() {
+  syncNav();
   const galleryCsv = fs.readFileSync(path.join(ROOT, "data/gallery.csv"), "utf8");
   const photos = parseCSV(galleryCsv)
     .sort((a, b) => dateSortKey(b.date) - dateSortKey(a.date));
