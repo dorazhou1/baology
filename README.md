@@ -1,8 +1,33 @@
 # baology
 
+**Live:** <https://baology.org> · **Local preview:** <http://localhost:8000/> (see [Preview locally](#preview-locally))
+
 Static site for Baology Prep, served by **GitHub Pages straight from the `main`
 branch** (Settings → Pages → "Deploy from a branch", `main` / root). There is no
 CI build step — whatever is committed to `main` is what goes live.
+
+## Preview locally
+
+The shared header/footer are injected with `fetch()` and the demo page embeds
+YouTube — neither works from a `file://` page — so preview through a local web
+server, **started from the repo root**:
+
+```sh
+python3 -m http.server 8000     # serve; then open http://localhost:8000/
+```
+
+Stop it with **`Ctrl+C`** in that terminal. If you backgrounded it (or a stale
+server is still holding the port), kill it by port instead:
+
+```sh
+lsof -ti:8000 | xargs kill      # kill whatever is serving on port 8000
+```
+
+Any static server works (`npx serve`, `php -S localhost:8000`, the VS Code "Live
+Server" extension, etc.). Serving from the root is what makes the site-relative
+links, the injected nav, and the video embeds resolve exactly as they do on
+baology.org. Edit a file, save, refresh the browser — **no build needed for plain
+HTML / CSS / JS changes** (layout, styling, copy, the demo page).
 
 ## Editing content
 
@@ -13,6 +38,10 @@ Gallery and testimonials are data-driven:
 - **Blog posts** — edit `blogs/blogs.json`.
 
 ## Build before you commit (important)
+
+**You only need the build when you change `data/*` or `blogs/blogs.json`** — those
+are the data-driven parts. Editing HTML/CSS/JS directly needs no build (see
+"Preview locally" above).
 
 A small Node script pre-renders that data into the HTML so search engines and AI
 crawlers — which don't run JavaScript — can index the gallery, testimonials, and

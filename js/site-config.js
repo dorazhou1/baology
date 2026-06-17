@@ -34,6 +34,22 @@ var SITE_CONFIG = {
   // Official advertisement (Google Drive)
   officialAdUrl: "https://drive.google.com/file/d/1n_AfquzAWqFwgy2MmYMihsx1TEDwfunh/view?usp=sharing",
 
+  // Demo / free Week-1 preview (used by /demo)
+  demoMoodleUrl:        "https://baology.moodlecloud.com/course/view.php?id=11",
+  // Week-1 videos (unlisted YouTube playlist). The /demo page plays one at a time and
+  // builds a thumbnail strip from this list — the /embed/videoseries?list= form throws
+  // "Error 153" for unlisted playlists. Update this list when the Week-1 videos change.
+  demoPlaylistId: "PL20gi4tWxPdsKzv0kaNxOPEGSWX35MI8r",
+  demoVideos: [
+    { id: "ioJWFgKeKis", title: "Main Lecture" },
+    { id: "xqXsfLzbUMI", title: "New Concepts" },
+    { id: "LC_EDq0JP78", title: "Skill Building" },
+    { id: "dAfsQ1iTw1o", title: "Lecture Primer" },
+    { id: "TqalqCmT0x8", title: "Problem Solving" },
+    { id: "CIFLPS6bGsM", title: "Case Study" },
+    { id: "GmnPKZfmPiQ", title: "Homework Review" }
+  ],
+
   // Season 7 first main lecture: May 2, 2026 at 4:00 PM Pacific (PDT, UTC-7 in May)
   courseStartIso: "2026-05-02T16:00:00-07:00",
 
