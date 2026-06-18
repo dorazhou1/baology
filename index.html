@@ -8,16 +8,18 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description"
-    content="Baology olympiad preparatory Course with Kevin Bao. The premier USABO course taught by Biolympiad finalists and Harvard-educated instructors. Enroll today.">
+    content="Baology Prep is a USABO-focused biology course led by Biolympiad finalists and Harvard-educated instructors.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="author" content="Baology Prep">
-  <meta property="og:title" content=Baology Olympiad Preparatory Course with Kevin Bao>
-  <meta property="og:site_name" content=Baology>
-  <meta property="og:url" content=https://baology.org />
-  <meta property="og:description" content=Baology olympiad preparatory Course with Kevin Bao. The premier USABO course
-    taught by Biolympiad finalists and Harvard-educated instructors. Enroll today.>
-  <meta property="og:type" content="">
-  <meta property="og:image" content=https://baology.org/images/favicon.png>
+  <link rel="canonical" href="https://baology.org/">
+  <meta property="og:title" content="Baology Olympiad Preparatory Course with Kevin Bao">
+  <meta property="og:site_name" content="Baology Prep">
+  <meta property="og:url" content="https://baology.org/">
+  <meta property="og:description"
+    content="Baology Prep is a USABO-focused biology course led by Biolympiad finalists and Harvard-educated instructors.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://baology.org/images/demo-preview.png">
+  <meta property="og:image:alt" content="Baology Prep course preview">
   <link rel="shortcut icon" href="images/favicon.ico" />
 
   <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
@@ -39,13 +41,87 @@
 
     gtag('config', 'G-FHD7V5736Y');
   </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "Baology Prep",
+          "url": "https://baology.org/",
+          "logo": "https://baology.org/images/favicon.png"
+        },
+        {
+          "@type": "WebSite",
+          "name": "Baology Prep",
+          "url": "https://baology.org/"
+        },
+        {
+          "@type": "Course",
+          "name": "Baology Olympiad Preparatory Course",
+          "provider": {
+            "@type": "Organization",
+            "name": "Baology Prep",
+            "url": "https://baology.org/"
+          },
+          "url": "https://baology.org/"
+        }
+      ]
+    }
+  </script>
 </head>
 
 <body>
 
 
   <!--Navigation bar-->
-  <div id="header"></div>
+  <header class="navigation fixed-top wow fadeInRight"  data-wow-delay=".4s" data-wow-duration="1.3s">
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+      aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="burger" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+    <div class="collapse navbar-collapse text-center" id="navigation">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about.html">About</a>
+          <ul class="dropdown-menu">
+            <li class="d-lg-none"><a class="dropdown-item" href="/about.html">About home</a></li>
+            <li><a class="dropdown-item" href="/about/syllabus.html">Syllabus</a></li>
+            <li><a class="dropdown-item" href="/about/faq.html">FAQ</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/explore.html">Explore</a>
+          <ul class="dropdown-menu">
+            <li class="d-lg-none"><a class="dropdown-item" href="/explore.html">Explore home</a></li>
+            <li><a class="dropdown-item" href="/explore/testimonials.html">Testimonials</a></li>
+            <li><a class="dropdown-item" href="/explore/gallery.html">Gallery</a></li>
+            <li><a class="dropdown-item" href="/blog-main.html">Blog</a></li>
+            <li><a class="dropdown-item" href="/demo/">Demo</a></li>
+          </ul>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="/usabointro.html">Intro/AP</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/usabointro/signup.html">Intro/AP Sign Up</a></li>
+          </ul>
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="/signup.html">Sign Up</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
 
   <!-- hero area -->
   <section class="hero-area bg-primary">
@@ -285,12 +361,6 @@
   <script src="js/script.js"></script>
   <script src="js/site-config.js"></script>
   <script src="js/countdown-popup.js"></script>
-
-  <script>
-    $(function () {
-      $("#header").load("header.html");
-    });
-  </script>
 
   <!-- Course countdown popup -->
   <div class="modal fade" id="courseCountdownModal" tabindex="-1" role="dialog" aria-labelledby="courseCountdownLabel"

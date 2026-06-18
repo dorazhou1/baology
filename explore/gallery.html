@@ -9,17 +9,87 @@
     content="Photos from Baology students and competition seasons.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="author" content="Baology Prep">
+  <link rel="canonical" href="https://baology.org/explore/gallery.html">
+  <meta property="og:title" content="Gallery | Baology Prep">
+  <meta property="og:site_name" content="Baology Prep">
+  <meta property="og:url" content="https://baology.org/explore/gallery.html">
+  <meta property="og:description"
+    content="Photos from Baology students, alumni, and competition seasons.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://baology.org/images/demo-preview.png">
+  <meta property="og:image:alt" content="Baology Prep gallery highlights">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gallery | Baology Prep">
+  <meta name="twitter:description"
+    content="Photos from Baology students, alumni, and competition seasons.">
+  <meta name="twitter:image" content="https://baology.org/images/demo-preview.png">
   <link rel="shortcut icon" href="../images/favicon.ico" />
   <link rel="stylesheet" href="../plugins/bootstrap/bootstrap.min.css">
   <link rel="stylesheet" href="../plugins/slick/slick.css">
   <link rel="stylesheet" href="../plugins/glightbox/glightbox.min.css">
   <link rel="stylesheet" href="../plugins/wow/animate.css">
   <link href="../css/style.css" rel="stylesheet">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Gallery | Baology Prep",
+      "url": "https://baology.org/explore/gallery.html",
+      "description": "Photo gallery from Baology classes, competitions, and alumni meetups."
+    }
+  </script>
 </head>
 
 <body>
   <!--Navigation bar-->
-  <div id="header"></div>
+  <header class="navigation fixed-top wow fadeInRight"  data-wow-delay=".4s" data-wow-duration="1.3s">
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+      aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="burger" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+    <div class="collapse navbar-collapse text-center" id="navigation">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about.html">About</a>
+          <ul class="dropdown-menu">
+            <li class="d-lg-none"><a class="dropdown-item" href="/about.html">About home</a></li>
+            <li><a class="dropdown-item" href="/about/syllabus.html">Syllabus</a></li>
+            <li><a class="dropdown-item" href="/about/faq.html">FAQ</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/explore.html">Explore</a>
+          <ul class="dropdown-menu">
+            <li class="d-lg-none"><a class="dropdown-item" href="/explore.html">Explore home</a></li>
+            <li><a class="dropdown-item" href="/explore/testimonials.html">Testimonials</a></li>
+            <li><a class="dropdown-item" href="/explore/gallery.html">Gallery</a></li>
+            <li><a class="dropdown-item" href="/blog-main.html">Blog</a></li>
+            <li><a class="dropdown-item" href="/demo/">Demo</a></li>
+          </ul>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="/usabointro.html">Intro/AP</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/usabointro/signup.html">Intro/AP Sign Up</a></li>
+          </ul>
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="/signup.html">Sign Up</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
 
   <!-- hero area -->
   <section class="hero-area bg-primary" style="padding-bottom: 20vh;">
@@ -653,11 +723,6 @@
   <script src="../js/script.js"></script>
   <script src="../js/site-config.js"></script>
   <script src="../js/gallery.js"></script>
-  <script>
-    $(function () {
-      $("#header").load("../header.html");
-    });
-  </script>
 </body>
 
 </html>

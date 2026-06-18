@@ -13,6 +13,7 @@
 
   <!-- Social Sharing Meta Tags -->
   <meta name="description" content="Harvard undergraduate and 3-time USABO finalist Jason Wang discusses his experience in high school biology competitions, research, and more in this exclusive webinar.">
+  <link rel="canonical" href="https://baology.org/blogs/jasons-usabo-experience-video.html">
   
   <!-- Open Graph Meta Tags -->
   <meta property="og:title" content="Jason Wang on High School Bio Competitions | Baology Prep">
@@ -27,6 +28,21 @@
   <meta name="twitter:title" content="Jason Wang on High School Bio Competitions | Baology Prep">
   <meta name="twitter:description" content="Harvard undergraduate and 3-time USABO finalist Jason Wang discusses his experience in high school biology competitions, research, and more in this exclusive webinar.">
   <meta name="twitter:image" content="https://baology.org/blogs/images/jason-usabo-experience-video/2025-09-22%20jason%20thumbnail.png">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Jason Wang on High School Bio Competitions",
+      "url": "https://baology.org/blogs/jasons-usabo-experience-video.html",
+      "description": "Harvard undergraduate and 3-time USABO finalist Jason Wang discusses his experience in high school biology competitions, research, and more in this exclusive webinar.",
+      "image": "https://baology.org/blogs/images/jason-usabo-experience-video/2025-09-22%20jason%20thumbnail.png",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Baology Prep",
+        "url": "https://baology.org/"
+      }
+    }
+  </script>
 
   <link rel="stylesheet" href="../plugins/bootstrap/bootstrap.min.css">
   <link href="../css/style.css" rel="stylesheet">
@@ -39,7 +55,54 @@
 
 
   <!--Navigation bar-->
-  <div id="header"></div>
+  <header class="navigation fixed-top wow fadeInRight"  data-wow-delay=".4s" data-wow-duration="1.3s">
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+      aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="burger" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+    <div class="collapse navbar-collapse text-center" id="navigation">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about.html">About</a>
+          <ul class="dropdown-menu">
+            <li class="d-lg-none"><a class="dropdown-item" href="/about.html">About home</a></li>
+            <li><a class="dropdown-item" href="/about/syllabus.html">Syllabus</a></li>
+            <li><a class="dropdown-item" href="/about/faq.html">FAQ</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/explore.html">Explore</a>
+          <ul class="dropdown-menu">
+            <li class="d-lg-none"><a class="dropdown-item" href="/explore.html">Explore home</a></li>
+            <li><a class="dropdown-item" href="/explore/testimonials.html">Testimonials</a></li>
+            <li><a class="dropdown-item" href="/explore/gallery.html">Gallery</a></li>
+            <li><a class="dropdown-item" href="/blog-main.html">Blog</a></li>
+            <li><a class="dropdown-item" href="/demo/">Demo</a></li>
+          </ul>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="/usabointro.html">Intro/AP</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/usabointro/signup.html">Intro/AP Sign Up</a></li>
+          </ul>
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="/signup.html">Sign Up</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
 
   <div style="height: 50px"></div>
   <!-- team -->
@@ -169,12 +232,6 @@
   <script src="../plugins/slick/slick.min.js"></script>
   <!-- Main Script -->
   <script src="../js/script.js"></script>
-
-  <script>
-    $(function () {
-      $("#header").load("../header.html");
-    });
-  </script>
 </body>
 
 </html>

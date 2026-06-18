@@ -6,20 +6,23 @@
   <title>Demo | Baology Prep</title>
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="Try the premier USABO prep course. Watch a full week of Season 7 lectures and office hours from Harvard graduate Dr. Kevin Bao and his Ivy-league staff. 54 USABO national finalists. 13 Team USA IBO competitors.">
+  <meta name="description"
+    content="Try the premier USABO prep course. Watch a full week of Season 7 lectures and office hours from Harvard graduate Dr. Kevin Bao and his Ivy-league staff. 54 USABO national finalists. 13 Team USA IBO competitors.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="author" content="Baology Prep">
 
   <meta property="og:site_name" content="Baology">
   <meta property="og:title" content="Baology Demo Course - Free Week 1 Preview">
-  <meta property="og:description" content="Try the premier USABO prep course. Watch a full week of Season 7 lectures and office hours from Harvard graduate Dr. Kevin Bao and his Ivy-league staff. 54 USABO national finalists. 13 Team USA IBO competitors.">
+  <meta property="og:description"
+    content="Try the premier USABO prep course. Watch a full week of Season 7 lectures and office hours from Harvard graduate Dr. Kevin Bao and his Ivy-league staff. 54 USABO national finalists. 13 Team USA IBO competitors.">
   <meta property="og:image" content="https://baology.org/images/demo-preview.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:url" content="https://baology.org/demo">
+  <meta property="og:url" content="https://baology.org/demo/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
 
+  <link rel="canonical" href="https://baology.org/demo/">
   <link rel="shortcut icon" href="../images/favicon.ico" />
 
   <link rel="stylesheet" href="../plugins/bootstrap/bootstrap.min.css">
@@ -36,7 +39,53 @@
 
 
   <!--Navigation bar-->
-  <div id="header"></div>
+  <header class="navigation fixed-top wow fadeInRight"  data-wow-delay=".4s" data-wow-duration="1.3s">
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+      aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="burger" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+    <div class="collapse navbar-collapse text-center" id="navigation">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about.html">About</a>
+          <ul class="dropdown-menu">
+            <li class="d-lg-none"><a class="dropdown-item" href="/about.html">About home</a></li>
+            <li><a class="dropdown-item" href="/about/syllabus.html">Syllabus</a></li>
+            <li><a class="dropdown-item" href="/about/faq.html">FAQ</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/explore.html">Explore</a>
+          <ul class="dropdown-menu">
+            <li class="d-lg-none"><a class="dropdown-item" href="/explore.html">Explore home</a></li>
+            <li><a class="dropdown-item" href="/explore/testimonials.html">Testimonials</a></li>
+            <li><a class="dropdown-item" href="/explore/gallery.html">Gallery</a></li>
+            <li><a class="dropdown-item" href="/blog-main.html">Blog</a></li>
+            <li><a class="dropdown-item" href="/demo/">Demo</a></li>
+          </ul>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="/usabointro.html">Intro/AP</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/usabointro/signup.html">Intro/AP Sign Up</a></li>
+          </ul>
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="/signup.html">Sign Up</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
 
   <!-- hero area -->
   <section class="hero-area bg-primary" style="padding-bottom: 20vh;">
@@ -70,12 +119,16 @@
         <div class="col-lg-8">
           <h2 class="text-secondary text-center wow fadeInDown mb-3">About the Demo</h2>
           <p class="text-primary-dark text-center wow fadeInUp">
-            This is the <b>complete first week of Season 7</b>. The rest of Week 1, including the problem sets and readings, lives in our <a class="link" data-site-href="demoMoodleUrl" target="_blank" rel="noopener">online classroom</a>, and you can enroll in Season 7 whenever you're ready.
+            Below are <b>free video recordings from our Season 7 course</b>. If you're interested, please visit our
+            Sign Up page, or check out our <a class="link" data-site-href="demoMoodleUrl"
+              target="_blank" rel="noopener">online classroom</a>!
           </p>
           <ul class="course-overview-list text-primary-dark wow fadeInUp">
-            <li>The Main Lecture plus six office-hour sessions</li>
+            <li>Main Lecture plus six office-hour sessions</li>
             <li>Taught by Dr. Kevin Bao and a staff of past IBO competitors and campers</li>
             <li><a class="link" href="../about/syllabus.html">See the full syllabus</a></li>
+            <li><a class="link" data-site-href="infoSessionRecordingUrl" target="_blank" rel="noopener">Watch our info
+                session</a></li>
           </ul>
         </div>
       </div>
@@ -132,12 +185,6 @@
 
   <!-- Demo player + thumbnail strip (shared) -->
   <script src="../js/demo-player.js"></script>
-
-  <script>
-    $(function () {
-      $("#header").load("../header.html");
-    });
-  </script>
 
 </body>
 
