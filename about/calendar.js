@@ -78,6 +78,16 @@ function generateTableFromCSV(csvData, tableId) {
 }
 
 async function loadSyllabusFromCSV(csvPath, tableId) {
+    // Pre-rendered rows (from scripts/build.js) already exist in the DOM — skip the
+    // fetch entirely. This is not about avoiding duplicate rows (generateTableFromCSV
+    // clears the tbody first, so that never happened); it is so a JS-less crawler and
+    // a real visitor can never be shown different facts. If someone edits a CSV
+    // without rebuilding, the page keeps showing the baked rows and check:generated
+    // fails on the stale output, instead of the two silently disagreeing.
+    // Same idiom as js/testimonials.js and js/explore.js.
+    const preRendered = document.querySelector('#' + tableId + ' tbody');
+    if (preRendered && preRendered.children.length > 0) return;
+
     try {
         const response = await fetch(csvPath);
         if (!response.ok) {

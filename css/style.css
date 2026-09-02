@@ -17,14 +17,79 @@
    hard-code these values in component rules; reference the var.
    ============================================================ */
 :root {
-  /* brand color (one orange — consolidates #E24C35 + #E85928) */
-  --color-orange:  #E24C35;  /* = .text-secondary; titles, accents */
-  --color-navy:    #162D59;  /* = .text-primary; subtitles/body on light */
-  --color-navy-dk: #102141;  /* = .text-primary-dark */
-  --color-ink:     #4c4c4c;  /* body copy */
-  --color-muted:   #777;     /* meta / subtext on light */
-  --color-cream:   #fef8ec;  /* THE card background */
-  --color-yellow:  #FFD686;  /* accent only: badges, highlights, .selected */
+  /* ── BRAND COLOUR ──────────────────────────────────────────────
+     Every brand colour is written down ONCE, as channels. The `*-rgb`
+     triplet IS the source of truth; `--color-*` is DERIVED from it, so the
+     solid and the tinted form can never drift apart.
+       solid:  color: var(--color-navy);
+       alpha:  background: rgba(var(--navy-rgb), 0.45);
+     Change a brand colour by editing ONE triplet. Never write a hex or a
+     numeric rgba() anywhere else — `npm run check:colors` fails if you do.
+
+     NOT color-mix(): a token holding it is invalid-at-computed-value-time on
+     Chrome <111 / iOS <16.2 (~3.8% of traffic), which computes the property
+     to `unset` — the scrim would go fully transparent, and neither a twin
+     declaration nor a var() fallback can catch that.
+
+     Pure white and black are deliberately NOT tokens: they are paper and
+     shadow, not brand, and a token that can only ever hold one value is not
+     a token. */
+  --orange-rgb:     226, 76, 53;
+  --orange-dk-rgb:  199, 61, 41;
+  --navy-rgb:        22, 45, 89;
+  --navy-dk-rgb:     16, 33, 65;
+  --peach-rgb:      244, 178, 108;
+  --yellow-rgb:     255, 214, 134;
+  --cream-rgb:      254, 248, 236;
+  --ink-rgb:         76, 76, 76;
+  --muted-rgb:      119, 119, 119;
+  --line-rgb:       238, 238, 238;
+
+  --color-orange:    rgb(var(--orange-rgb));     /* = .text-secondary; titles, links, accents */
+  --color-orange-dk: rgb(var(--orange-dk-rgb));  /* orange's hover/active partner (mirrors navy-dk) */
+  --color-navy:      rgb(var(--navy-rgb));       /* = .text-primary; headings, body on light, solid CTA */
+  --color-navy-dk:   rgb(var(--navy-dk-rgb));    /* = .text-primary-dark; navy's hover/active partner */
+  --color-peach:     rgb(var(--peach-rgb));      /* = .bg-primary; the hero band */
+  --color-yellow:    rgb(var(--yellow-rgb));     /* nav bar, badges, highlights, hover fills, .selected */
+  --color-cream:     rgb(var(--cream-rgb));      /* THE card background; warm surfaces, table stripes */
+  --color-ink:       rgb(var(--ink-rgb));        /* body copy */
+  --color-muted:     rgb(var(--muted-rgb));      /* meta / subtext / disabled on light */
+  --color-line:      rgb(var(--line-rgb));       /* hairlines, subtle gray hover, scrollbar track */
+
+  /* ── SURFACE & UTILITY ────────────────────────────────────────
+     Colours that already ship but were never named. Each is
+     perceptually distinct from every brand token (CIE76 dE > 4 from
+     its nearest neighbour), so these are NAMES for existing colours,
+     not new colours. Four literals were retired into the tokens
+     above instead, because they were perceptually invisible against
+     one: #FFF8EC->cream (dE 0.37), #F1F1F1->line (1.05),
+     #EAEAEA->line (1.40), #888->gray (0.77). */
+  --slate-rgb:        108, 117, 125;             /* tinted in blogs/blog.css, so it needs a triplet */
+  --color-slate:      rgb(var(--slate-rgb));     /* muted UI state: "coming soon" bubbles */
+  --color-slate-dk:   #495057;                   /* blog bubble body text */
+  --color-ink-dk:     #212529;                   /* blog bubble text on hover */
+  --color-gray:       #888888;                   /* scrollbar thumb */
+  --color-gray-dk:    #555555;                   /* scrollbar thumb, hover */
+  --color-gray-lt:    #999999;                   /* = .text-light */
+  --color-amber:      #F77F00;                   /* interactive accent: search field, accordion glyph, focus ring */
+  --color-yellow-lt:  #FFE4AD;                   /* hover/active fill on yellow surfaces: tags, pagination, accordion */
+  --color-cream-dk:   #FFF1D6;                   /* warm field/stripe: table zebra, search input */
+  --color-ice:        #C8D5EF;                   /* pale blue icon on dark */
+  --color-mist:       #EFF3FB;                   /* accordion body background */
+  --color-salmon:     #EE8457;                   /* .team section background */
+
+  /* ── MEDAL COLOUR ──────────────────────────────────────────────
+     Content semantics, not brand: the hue IS the meaning (a silver medal is
+     silver). Chosen from data/testimonials.yaml via js/testimonials.js
+     medalVariant(). Never tinted, never reused outside .placement-badge — so
+     plain hex, no triplet. Semifinalist deliberately reuses --color-muted. */
+  --medal-gold:     #C9A227;
+  --medal-silver:   #8A8A8A;
+  --medal-bronze:   #B5651D;
+  --medal-none:     #6E7782;  /* semifinalist + no-medal badges */
+  --medal-finalist: #254D9A;  /* the ONE blue that is not --color-navy: it must stay
+                                 legible on the navy testimonials carousel, where navy
+                                 renders 1.00:1. Not a button colour — do not reuse. */
 
   /* radius — paired: surface cards vs image tiles */
   --radius-card: 22px;
@@ -32,8 +97,9 @@
   --radius-tile: 14px;
   --radius-pill: 999px;
 
-  /* one shadow; flat (none) is the default */
-  --shadow-raised: 0 8px 20px rgba(22, 45, 89, 0.16);
+  /* shadows; flat (none) is the default */
+  --shadow-raised: 0 8px 20px rgba(var(--navy-rgb), 0.16);
+  --shadow-soft:   0px 18px 39.1px 6.9px rgba(209, 218, 225, 0.34);  /* = .shadow; a cooler, wider lift */
 
   /* scrim — the dim behind an open overlay. Navy-tinted, never pure black.
      Only the last number is the dim level; leave the (22, 45, 89) alone.
@@ -41,8 +107,8 @@
      so what the token says is what renders. Both are rgba COLORS: never
      store a bare number here, `opacity: rgba(...)` silently computes to 1
      and blacks the page out. */
-  --scrim-lightbox: rgba(22, 45, 89, 0.85);  /* photo viewer — was #000 / rgba(0,0,0,.92) */
-  --scrim-modal:    rgba(22, 45, 89, 0.45);  /* countdown popup — was #000 @ opacity .5 */
+  --scrim-lightbox: rgba(var(--navy-rgb), 0.85);  /* photo viewer — was #000 / rgba(0,0,0,.92) */
+  --scrim-modal:    rgba(var(--navy-rgb), 0.45);  /* countdown popup — was #000 @ opacity .5 */
 
   /* motion */
   --card-lift: -6px;
@@ -74,7 +140,7 @@ body {
   font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   font-size: 16px;
-  color: #4c4c4c;
+  color: var(--color-ink);
 }
 
 p,
@@ -194,52 +260,72 @@ h6,
 }
 
 .btn-primary {
-  background: #254D9A;
+  background: var(--color-navy);
   color: #fff;
 }
 
 .btn-primary:active {
-  background: #1D3B72 !important;
+  background: var(--color-navy-dk) !important;
 }
 
 .btn-primary:hover {
-  background: #1D3B72;
+  background: var(--color-navy-dk);
 }
 
 .btn-primary.focus,
 .btn-primary.active {
-  background: #1D3B72 !important;
+  background: var(--color-navy-dk) !important;
   box-shadow: none !important;
+}
+
+/* The site uses .btn-secondary in three places (hero DEMO, WATCH INFO SESSION,
+   ENTER THE CLASSROOM) but never defined it, so it fell through to Bootstrap's
+   #6c757d gray — a colour that appears nowhere else in this palette. Brand navy
+   is the darker partner to .btn-primary's var(--color-navy), and --color-navy-dk is navy's
+   own declared darker shade — the same base/darker pairing .btn-primary uses. */
+.btn-secondary {
+  background: transparent;
+  color: var(--color-navy);
+  box-shadow: inset 0 0 0 2px var(--color-navy);
+}
+
+.btn-secondary:hover,
+.btn-secondary:active,
+.btn-secondary.focus,
+.btn-secondary.active {
+  background: var(--color-navy);
+  color: #fff;
+  box-shadow: inset 0 0 0 2px var(--color-navy) !important;
 }
 
 .btn-white {
   background: #fff;
-  color: #254D9A;
+  color: var(--color-navy);
 }
 
 .btn-white:active {
-  background: #eee !important;
+  background: var(--color-line) !important;
 }
 
 .btn-white:hover {
-  background: #eee;
+  background: var(--color-line);
 }
 
 .btn-white.focus,
 .btn-primary.active {
-  background: #eee !important;
+  background: var(--color-line) !important;
   box-shadow: none !important;
 }
 
 .btn-transparent {
   background: transparent;
-  color: #162D59;
+  color: var(--color-navy);
   font-weight: bold;
 }
 
 .btn-transparent:active,
 .btn-transparent:hover {
-  color: #162D59;
+  color: var(--color-navy);
 }
 
 body {
@@ -282,11 +368,11 @@ select:focus {
 }
 
 a.text-dark:hover {
-  color: #162D59 !important;
+  color: var(--color-navy) !important;
 }
 
 a:hover {
-  color: #162D59;
+  color: var(--color-navy);
 }
 
 a.link:hover {
@@ -323,32 +409,32 @@ a.link:hover {
 }
 
 .bg-primary {
-  background: #F4B26C !important;
+  background: var(--color-peach) !important;
 }
 
 .bg-secondary {
-  background: #254D9A !important;
+  background: var(--color-navy) !important;
 }
 
 .bg-dark {
-  background-color: #162D59 !important;
+  background-color: var(--color-navy) !important;
 }
 
 .bg-gray {
-  background: #eaeaea !important;
+  background: var(--color-line) !important;
 }
 
 .bg-yellow {
-  background: #FFD686 !important;
+  background: var(--color-yellow) !important;
 }
 
 
 .text-primary {
-  color: #162D59 !important;
+  color: var(--color-navy) !important;
 }
 
 .text-primary-dark {
-  color: #102141 !important;
+  color: var(--color-navy-dk) !important;
 }
 
 .text-secondary {
@@ -356,7 +442,7 @@ a.link:hover {
 }
 
 .text-color {
-  color: #F77F00;
+  color: var(--color-amber);
 }
 
 .text-dark {
@@ -364,7 +450,7 @@ a.link:hover {
 }
 
 .text-light {
-  color: #999999 !important;
+  color: var(--color-gray-lt) !important;
 }
 
 .text-white {
@@ -544,7 +630,7 @@ a.link:hover {
 }
 
 .shadow {
-  box-shadow: 0px 18px 39.1px 6.9px rgba(209, 218, 225, 0.34) !important;
+  box-shadow: var(--shadow-soft) !important;
 }
 
 span.wow {
@@ -564,20 +650,20 @@ span.wow {
 }
 
 .icon-light {
-  color: #c8d5ef;
+  color: var(--color-ice);
 }
 
 /* /icon */
 .navigation {
   padding: 10px 10px;
-  background-color: #FFD686;
+  background-color: var(--color-yellow);
   transition: 0.3s ease;
   color: rgba(0, 0, 0, 0.3);
   box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.05);
 }
 
 .navigation.nav-bg {
-  background-color: #FFD686;
+  background-color: var(--color-yellow);
   box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.05);
   padding: 0px 10px;
 }
@@ -645,12 +731,12 @@ span.wow {
   font-size: 20px;
   text-transform: uppercase;
   padding: 10px 20px;
-  color: #162D59;
+  color: var(--color-navy);
 }
 
 .navbar-dark .navbar-nav .active>.nav-link {
   /* font-weight: bold; */
-  color: #162D59;
+  color: var(--color-navy);
 }
 
 .navbar-dark .navbar-nav .active>.nav-link:hover {
@@ -658,7 +744,7 @@ span.wow {
 }
 
 .navbar-dark .navbar-nav .nav-link {
-  color: #162D59;
+  color: var(--color-navy);
 }
 
 /* Animated burger -> X toggler */
@@ -685,7 +771,7 @@ span.wow {
   left: 0;
   width: 100%;
   height: 3px;
-  background-color: #162D59;
+  background-color: var(--color-navy);
   border-radius: 2px;
   transition: top 0.3s ease, transform 0.3s ease, opacity 0.2s ease;
 }
@@ -723,7 +809,7 @@ li.nav-item {
 
 .navbar .nav-item .dropdown-menu {
   display: none;
-  background-color: #FFD686;
+  background-color: var(--color-yellow);
   border-width: 0;
   border-radius: 0;
   min-width: 100px;
@@ -748,7 +834,7 @@ li.nav-item {
 }
 
 .dropdown-item {
-  color: #162D59;
+  color: var(--color-navy);
 }
 
 .dropdown-item:hover {
@@ -824,7 +910,7 @@ li.nav-item {
 .lead {
   margin: 10vh 0 0;
   padding: 20px 50px;
-  background-color: #FFD686;
+  background-color: var(--color-yellow);
   width: 90%;
   border-radius: 0 50px 0 0;
 }
@@ -870,7 +956,7 @@ li.nav-item {
 }
 
 .team {
-  background-color: #EE8457;
+  background-color: var(--color-salmon);
 }
 
 /* Instructor card — raised showcase card (yellow + larger radius + standard shadow + float-up) */
@@ -1174,7 +1260,7 @@ button.slick-next:focus:not(:hover) {
 }
 
 .gallery-arrow:hover {
-  background-color: #C73D29;
+  background-color: var(--color-orange-dk);
 }
 
 .gallery-arrow:focus:not(:hover) {
@@ -1200,8 +1286,8 @@ button.slick-next:focus:not(:hover) {
 blockquote {
   display: inline-block;
   padding: 20px 25px;
-  background: #eaeaea;
-  border-left: 3px solid #162D59;
+  background: var(--color-line);
+  border-left: 3px solid var(--color-navy);
   font-style: italic;
   font-size: 22px;
   line-height: 1.7;
@@ -1230,7 +1316,7 @@ ol.steps li:before {
   content: counter(item) " ";
   font-family: "New York", "Playfair Display", serif;
   text-align: center;
-  color: #FFD686;
+  color: var(--color-yellow);
   position: absolute;
   left: 20px;
   z-index: -1;
@@ -1243,11 +1329,11 @@ ol.steps li:before {
 
 /*collapse*/
 .collapsible {
-  background-color: #FFF8EC;
+  background-color: var(--color-cream);
   color: var(--color-orange);
   font-weight: 600;
   border: none;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid var(--color-line);
   cursor: pointer;
   padding: 15px 50px 15px 15px;
   width: 100%;
@@ -1259,16 +1345,16 @@ ol.steps li:before {
 }
 
 .collapsible:hover {
-  background-color: #FFE4AD;
+  background-color: var(--color-yellow-lt);
 }
 
 .collapsible.active {
-  background-color: #FFE4AD;
+  background-color: var(--color-yellow-lt);
 }
 
 .collapsible:after {
   content: '\002B';
-  color: #F77F00;
+  color: var(--color-amber);
   font-weight: bold;
   font-size: 1.4em;
   line-height: 1;
@@ -1287,7 +1373,7 @@ ol.steps li:before {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
-  background-color: #EFF3FB;
+  background-color: var(--color-mist);
 }
 
 .content>.table-responsive {
@@ -1308,7 +1394,7 @@ p.description {
   /* display: block !important; */
   overflow-x: auto !important;
   width: 100% !important;
-  color: #162D59;
+  color: var(--color-navy);
 }
 
 .table-responsive {
@@ -1321,21 +1407,21 @@ p.description {
 }
 
 .table-responsive::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--color-line);
   border-radius: 4px;
 }
 
 .table-responsive::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--color-gray);
   border-radius: 4px;
 }
 
 .table-responsive::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--color-gray-dk);
 }
 
 thead {
-  background-color: #FFD686;
+  background-color: var(--color-yellow);
 }
 
 td,
@@ -1346,7 +1432,7 @@ th {
 }
 
 tr:nth-child(even) {
-  background-color: #FFF1D6;
+  background-color: var(--color-cream-dk);
 }
 
 /* calendar */
@@ -1355,7 +1441,7 @@ tr:nth-child(even) {
   width: 100%;
   max-width: 100%;
   height: 500px;
-  border: 2px solid #FFD686;
+  border: 2px solid var(--color-yellow);
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: 20px 0;
@@ -1380,23 +1466,23 @@ input#query {
   padding: 13px 15px;
   border-radius: 500px;
   border: 0px;
-  background-color: #FFF1D6;
+  background-color: var(--color-cream-dk);
   width: 70%;
   margin: 10px;
 }
 
 input#query:focus {
-  outline-color: #F77F00;
+  outline-color: var(--color-amber);
 }
 
 input#query::placeholder {
-  color: #F77F00;
+  color: var(--color-amber);
   opacity: 0.7;
 }
 
 .search {
   height: 100%;
-  background-color: #F77F00;
+  background-color: var(--color-amber);
   color: white;
   font: 16px Inter;
   padding: 10px 15px;
@@ -1569,7 +1655,7 @@ svg {
 
 .taglist>li {
   padding: 5px;
-  background-color: #FFE4AD;
+  background-color: var(--color-yellow-lt);
   margin-right: 5px;
   margin-bottom: 5px;
   border-radius: 5px;
@@ -1595,7 +1681,7 @@ svg {
   margin: 10px;
   padding-top: 10px;
   text-align: center;
-  color: #162D59;
+  color: var(--color-navy);
   border-radius: 50px;
   width: 36px;
   height: 36px;
@@ -1606,7 +1692,7 @@ svg {
 }
 
 .page-nums>li.active-num {
-  background-color: #FFE4AD;
+  background-color: var(--color-yellow-lt);
 }
 
 /* Explore landing — gallery preview (Slick carousel: autoplay + arrows + drag) */
@@ -1889,7 +1975,7 @@ svg {
 .countdown-modal {
   border-radius: 32px;
   border: none;
-  box-shadow: 0 20px 60px rgba(22, 45, 89, 0.25),
+  box-shadow: 0 20px 60px rgba(var(--navy-rgb), 0.25),
               0 0 0 1px var(--color-navy);
   overflow: hidden;
 }
@@ -1919,8 +2005,8 @@ svg {
 }
 
 .countdown-timer .cd-block {
-  background: #F4B26C;
-  color: #162D59;
+  background: var(--color-peach);
+  color: var(--color-navy);
   border-radius: 16px;
   padding: 12px 16px;
   min-width: 72px;
@@ -1951,7 +2037,7 @@ svg {
 .glightbox-clean .gslide-media {
   border-radius: var(--radius-tile) var(--radius-tile) 0 0;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(22, 45, 89, 0.45) !important;
+  box-shadow: 0 20px 60px rgba(var(--navy-rgb), 0.45) !important;
 }
 
 .glightbox-clean .gslide-description {
@@ -1969,7 +2055,7 @@ svg {
 
 .glightbox-clean .gslide-desc {
   font-family: "Inter", sans-serif;
-  color: rgba(22, 45, 89, 0.75);
+  color: rgba(var(--navy-rgb), 0.75);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
 }
@@ -1977,7 +2063,7 @@ svg {
 .glightbox-clean .gclose:hover,
 .glightbox-clean .gnext:hover,
 .glightbox-clean .gprev:hover {
-  background-color: rgba(244, 178, 108, 0.85);
+  background-color: rgba(var(--peach-rgb), 0.85);
 }
 
 /* The orange hover chip is only 2.2:1 against GLightbox's white glyph — under
@@ -2006,7 +2092,7 @@ svg {
    which multiplies with both cleanly. */
 .goverlay,
 .glightbox-mobile .goverlay {
-  background: var(--scrim-lightbox, rgba(22, 45, 89, 0.85));
+  background: var(--scrim-lightbox, rgba(var(--navy-rgb), 0.85));
 }
 
 /* Bootstrap paints an OPAQUE #000 and dims via .modal-backdrop.show{opacity:.5},
@@ -2020,7 +2106,7 @@ svg {
    so .fade still transitions 0 -> 1 and _showBackdrop still gets a real
    transitionend to sequence the dialog's entrance off. */
 .modal-backdrop {
-  background-color: var(--scrim-modal, rgba(22, 45, 89, 0.45));
+  background-color: var(--scrim-modal, rgba(var(--navy-rgb), 0.45));
 }
 
 .modal-backdrop.show {
@@ -2067,7 +2153,7 @@ svg {
 }
 
 .testimonial-card .quote {
-  color: #162D59;
+  color: var(--color-navy);
   line-height: 1.6;
   margin-bottom: 1.25rem;
 }
@@ -2109,12 +2195,12 @@ svg {
   white-space: nowrap;
 }
 
-.placement-badge--gold        { background: #C9A227; }
-.placement-badge--silver      { background: #8A8A8A; }
-.placement-badge--bronze      { background: #B5651D; }
-.placement-badge--finalist    { background: #254D9A; }
-.placement-badge--semifinalist{ background: #6E7782; }
-.placement-badge--default     { background: #6E7782; }
+.placement-badge--gold        { background: var(--medal-gold); }
+.placement-badge--silver      { background: var(--medal-silver); }
+.placement-badge--bronze      { background: var(--medal-bronze); }
+.placement-badge--finalist    { background: var(--medal-finalist); }
+.placement-badge--semifinalist{ background: var(--medal-none); }
+.placement-badge--default     { background: var(--medal-none); }
 
 /* On dark backgrounds (landing carousel), flip the name to white. */
 .bg-dark .testimonial-name {
@@ -2176,8 +2262,8 @@ svg {
    Used by the gallery year filter; intended for future filter UIs as well. */
 .filter-pill {
   background: transparent;
-  border: 2px solid #254D9A;
-  color: #254D9A;
+  border: 2px solid var(--color-navy);
+  color: var(--color-navy);
   padding: 10px 22px;
   border-radius: 999px;
   font-family: 'Ropa Sans', sans-serif;
@@ -2194,7 +2280,7 @@ svg {
 
 .filter-pill:hover,
 .filter-pill.is-active {
-  background: #254D9A;
+  background: var(--color-navy);
   color: #fff;
 }
 

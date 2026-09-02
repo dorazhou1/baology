@@ -69,8 +69,8 @@ function distributeBalanced(photos, K) {
 
 // --- CSV parser ---------------------------------------------------------
 // Minimal RFC-4180 parser: handles quoted fields, embedded commas, CRLF,
-// and "" escapes. Returns array of objects keyed by the header row.
-function parseCSV(text) {
+// and "" escapes. Returns array-of-arrays including the header row.
+function parseCSVGrid(text) {
   const rows = [];
   let row = [];
   let field = "";
@@ -92,10 +92,15 @@ function parseCSV(text) {
     }
   }
   if (field !== "" || row.length) { row.push(field); rows.push(row); }
-  const header = rows.shift();
-  return rows
-    .filter(r => r.some(v => v !== ""))
-    .map(r => Object.fromEntries(header.map((h, i) => [h, r[i] != null ? r[i] : ""])));
+  return rows.filter(r => r.some(v => v !== ""));
+}
+
+// Header row + data rows, keyed by column name. The syllabus renderer wants raw
+// positional cells instead, so it calls parseCSVGrid directly.
+function parseCSV(text) {
+  const rows = parseCSVGrid(text);
+  const header = rows.shift() || [];
+  return rows.map(r => Object.fromEntries(header.map((h, i) => [h, r[i] != null ? r[i] : ""])));
 }
 
 // --- HTML escapers ------------------------------------------------------
@@ -306,6 +311,149 @@ function renderBlogCard(blog, opts) {
         </a>`;
 }
 
+// --- Syllabus helpers ---------------------------------------------------
+// The five syllabus tables on about/syllabus.html are pure data — no filtering,
+// no lightbox, nothing a visitor interacts with — so unlike the gallery they are
+// baked once here and never re-rendered client-side. Before this, all ~100 rows
+// existed only after about/calendar.js fetched the CSVs, so the served HTML
+// carried five empty <tbody>s: invisible to every crawler that doesn't run JS,
+// which is all of them except Googlebot and Applebot.
+//
+// about/syllabus-*.csv stays the single source of truth. The <thead> stays
+// hand-written in the HTML — its labels are display copy and deliberately don't
+// always match the CSV header text — so only <tbody> is generated.
+
+// CSV dates are M/D/YY, always this century. Returns an ISO date so the baked
+// cell can carry a machine-readable <time>; returns null for anything that isn't
+// a clean M/D/YY, in which case the cell falls back to plain text rather than
+// emitting a wrong datetime.
+function syllabusIsoDate(value) {
+  const m = String(value == null ? "" : value).trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{2})$/);
+  if (!m) return null;
+  const month = Number(m[1]), day = Number(m[2]), year = 2000 + Number(m[3]);
+  const dt = new Date(Date.UTC(year, month - 1, day));
+  if (dt.getUTCMonth() !== month - 1 || dt.getUTCDate() !== day) return null;
+  return dt.toISOString().slice(0, 10);
+}
+
+// One <tr>, mirroring what about/calendar.js builds at runtime: the Week cell is
+// a row header, the rest are data cells. Short rows are padded to the <thead>'s
+// column count so the table can never render ragged. One row per line keeps the
+// git diff to a single changed line per changed week.
+function renderSyllabusRow(cells, colCount, dateIdx) {
+  const out = [];
+  for (let i = 0; i < colCount; i++) {
+    const raw = cells[i] != null ? String(cells[i]).trim() : "";
+    if (i === 0) { out.push(`<th scope="row">${escapeHtml(raw)}</th>`); continue; }
+    const iso = i === dateIdx ? syllabusIsoDate(raw) : null;
+    out.push(iso
+      ? `<td><time datetime="${escapeAttr(iso)}">${escapeHtml(raw)}</time></td>`
+      : `<td>${escapeHtml(raw)}</td>`);
+  }
+  return `                                <tr>${out.join("")}</tr>`;
+}
+
+// Count the <th scope="col"> cells in one table's <thead>, so a CSV that grows or
+// loses a column fails the build instead of silently rendering a broken grid.
+function syllabusHeadCols(html, tableId) {
+  const re = new RegExp(`<table[^>]*id="${tableId}"[\\s\\S]*?<\\/thead>`);
+  const m = html.match(re);
+  if (!m) throw new Error(`No <table id="${tableId}"> with a <thead> in about/syllabus.html`);
+  return (m[0].match(/<th\b/g) || []).length;
+}
+
+// Discover semesters from the CSVs themselves: syllabus-s7s2.csv drives marker
+// and table id `syllabus-s7s2`. Adding a semester is then "add the CSV, add the
+// table markup"; forgetting the second half throws rather than silently
+// shipping an empty table for the semester currently on sale.
+function syllabusSources() {
+  return fs.readdirSync(path.join(ROOT, "about"))
+    .map(f => f.match(/^syllabus-(s(\d+)s(\d+))\.csv$/i))
+    .filter(Boolean)
+    // Newest first, numerically — a string sort would put s10s1 before s5s2.
+    .sort((a, b) => Number(b[2]) - Number(a[2]) || Number(b[3]) - Number(a[3]))
+    .map(m => ({ file: m[0], id: m[1] }));
+}
+
+// --- Syllabus JSON-LD ---------------------------------------------------
+// Generated from the same CSVs as the tables, so the structured data and the
+// visible page can never disagree.
+//
+// Be clear about what this is for: it buys no Google rich result — course-info
+// structured data was retired in Sept 2025, and the surviving course-list
+// carousel wants three separately-URL'd courses. It is here for answer engines,
+// as a compact unambiguous statement of what the course is, when each semester
+// ran, and what the current one covers.
+const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+// "s7s2" -> "Season 7 Semester 2". The ids are the only place these numbers
+// live, so the label is derived rather than duplicated in a lookup table.
+function syllabusLabel(id) {
+  const m = String(id).match(/^s(\d+)s(\d+)$/i);
+  return m ? `Season ${m[1]} Semester ${m[2]}` : id;
+}
+
+function buildSyllabusJsonLd(semesters) {
+  const instances = semesters.map(sem => {
+    const start = sem.dates[0], end = sem.dates[sem.dates.length - 1];
+    const years = start.slice(0, 4) === end.slice(0, 4)
+      ? start.slice(0, 4)
+      : `${start.slice(0, 4)}–${end.slice(0, 4)}`;
+    return {
+      "@type": "CourseInstance",
+      name: `${syllabusLabel(sem.id)} (${years})`,
+      courseMode: "Online",
+      courseSchedule: {
+        "@type": "Schedule",
+        startDate: start,
+        endDate: end,
+        repeatFrequency: "P1W",
+        // Every lecture falls on the same weekday; derive it from the first date
+        // rather than hardcoding, so a future schedule change can't lie here.
+        byDay: `https://schema.org/${WEEKDAYS[new Date(start + "T00:00:00Z").getUTCDay()]}`,
+      },
+    };
+  });
+
+  // Newest semester first — the sections describe the course as taught now.
+  const current = semesters[0];
+  const sections = current.rows.map(r => {
+    // Everything after the topic column becomes the description, labelled with
+    // its own <thead> wording so the JSON reads the way the table does.
+    const detail = current.header
+      .map((h, i) => (i <= current.dateIdx || i === current.topicIdx
+        ? null
+        : `${String(h).trim()}: ${String(r[i] || "").trim()}`))
+      .filter(t => t && !/:\s*$/.test(t))
+      .join(" · ");
+    const section = {
+      "@type": "Syllabus",
+      position: Number(r[0]) || undefined,
+      name: String(r[current.topicIdx] || "").trim(),
+    };
+    if (detail) section.description = detail;
+    return section;
+  }).filter(sec => sec.name);
+
+  const doc = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "@id": `${SITE}/about/syllabus.html#course`,
+    name: "Baology Prep USABO Course",
+    url: `${SITE}/about/syllabus.html`,
+    description:
+      "A year-round, two-semester online biology course preparing high school students " +
+      "for the USA Biology Olympiad (USABO), taught by past USABO finalists and IBO " +
+      "medalists. Each semester runs 20 weekly lectures mapped to Campbell Biology chapters.",
+    provider: { "@type": "Organization", name: "Baology Prep", url: `${SITE}/` },
+    hasCourseInstance: instances,
+    syllabusSections: sections,
+  };
+  return `    <script type="application/ld+json">\n` +
+    JSON.stringify(doc, null, 2).split("\n").map(l => "    " + l).join("\n") +
+    `\n    </script>`;
+}
+
 // --- Sitemap ------------------------------------------------------------
 // Regenerate sitemap.xml (+ image sitemap) so search/AI crawlers can discover
 // every page and every gallery image. Output is fully deterministic — NO
@@ -506,6 +654,7 @@ function checkScrims() {
 
 function build() {
   checkScrims();
+  require("./color-guard.js").checkColors();
   syncNav();
   const galleryCsv = fs.readFileSync(path.join(ROOT, "data/gallery.csv"), "utf8");
   const photos = parseCSV(galleryCsv)
@@ -573,6 +722,59 @@ function build() {
   blogMainHtml = injectBetweenMarkers(blogMainHtml, "blog-cards", blogCards);
   fs.writeFileSync(blogMainPath, blogMainHtml);
   console.log(`Wrote blog-main.html — ${blogs.length} blog cards`);
+
+  // --- about/syllabus.html --------------------------------------------
+  const syllabusPath = path.join(ROOT, "about/syllabus.html");
+  let syllabusHtml = fs.readFileSync(syllabusPath, "utf8");
+  const semesters = syllabusSources();
+  if (!semesters.length) throw new Error("No about/syllabus-sNsM.csv files found");
+
+  let syllabusRowCount = 0;
+  const semesterData = [];
+  for (const sem of semesters) {
+    const marker = `syllabus-${sem.id}`;
+    const grid = parseCSVGrid(fs.readFileSync(path.join(ROOT, "about", sem.file), "utf8"));
+    const header = grid.shift() || [];
+    const colCount = syllabusHeadCols(syllabusHtml, marker);
+    if (header.length !== colCount) {
+      throw new Error(
+        `about/${sem.file} has ${header.length} columns but <table id="${marker}"> ` +
+        `declares ${colCount} <th>. Update the <thead> and the CSV together.`
+      );
+    }
+    // Which column holds the date, so only that cell gets a <time datetime>.
+    const dateIdx = header.findIndex(h => /date/i.test(h));
+    const rows = grid.map(r => renderSyllabusRow(r, colCount, dateIdx)).join("\n");
+    syllabusHtml = injectBetweenMarkers(syllabusHtml, marker, rows);
+    syllabusRowCount += grid.length;
+
+    const dates = grid.map(r => syllabusIsoDate(r[dateIdx])).filter(Boolean).sort();
+    if (dates.length !== grid.length) {
+      throw new Error(`about/${sem.file} has ${grid.length - dates.length} row(s) whose Date is not M/D/YY`);
+    }
+    semesterData.push({
+      id: sem.id, header, rows: grid, dates, dateIdx,
+      topicIdx: header.findIndex(h => /lecture topic/i.test(h)),
+    });
+  }
+
+  syllabusHtml = injectBetweenMarkers(syllabusHtml, "syllabus-jsonld", buildSyllabusJsonLd(semesterData));
+
+  // A table with no marker pair would silently ship an empty <tbody> — exactly the
+  // bug this whole section exists to fix, and check:generated would not catch it
+  // because the output would still be deterministic. Fail loudly instead.
+  const declaredTables = [...syllabusHtml.matchAll(/<table[^>]*id="(syllabus-[a-z0-9]+)"/gi)].map(m => m[1]);
+  const bakedTables = new Set(semesters.map(sem => `syllabus-${sem.id}`));
+  const unbaked = declaredTables.filter(id => !bakedTables.has(id));
+  if (unbaked.length) {
+    throw new Error(
+      `about/syllabus.html declares table(s) with no baked rows: ${unbaked.join(", ")}. ` +
+      `Each needs a matching about/syllabus-<id>.csv and a <!-- BUILD:<id> --> marker pair.`
+    );
+  }
+
+  fs.writeFileSync(syllabusPath, syllabusHtml);
+  console.log(`Wrote about/syllabus.html — ${semesters.length} syllabus table(s), ${syllabusRowCount} rows, JSON-LD for ${semesterData[0].rows.length} current-semester sections`);
 
   // --- sitemap.xml ----------------------------------------------------
   const sitemapPath = path.join(ROOT, "sitemap.xml");

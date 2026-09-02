@@ -35,9 +35,13 @@ var SITE_CONFIG = {
     "full": "Full Package  (8+ hours/week, $2000)"
   },
 
-  // Official advertisement (Google Drive) — target of the homepage hero's "MORE INFO"
-  // button. Verified asset: "Main Class Season 7 Semester 2 2026.pdf". Rotate this
-  // whenever the semester rolls; the previous value was the Season 7 Semester 1 flyer.
+  // Official advertisement (Google Drive) — printable/forwardable flyer, linked from the
+  // Course Overview list on /signup.html. Verified asset: "Main Class Season 7 Semester 2
+  // 2026.pdf". Rotate this whenever the semester rolls; the previous value was the
+  // Season 7 Semester 1 flyer. Do NOT put this back in the homepage hero: it is an
+  // INBOUND asset whose own CTA is a QR code pointing at baology.org/signup, it is a
+  // 5.7 MB image-only PDF that Google serves as noindex/nofollow, and it contains no
+  // link back to this site.
   officialAdUrl: "https://drive.google.com/file/d/1ImIsGj9RNFW5UnognMpXsPqJGhGfpbWg/view?usp=sharing",
 
   // Demo / free Week-1 preview (used by /demo)
