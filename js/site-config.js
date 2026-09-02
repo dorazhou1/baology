@@ -35,8 +35,10 @@ var SITE_CONFIG = {
     "full": "Full Package  (8+ hours/week, $2000)"
   },
 
-  // Official advertisement (Google Drive)
-  officialAdUrl: "https://drive.google.com/file/d/1n_AfquzAWqFwgy2MmYMihsx1TEDwfunh/view?usp=sharing",
+  // Official advertisement (Google Drive) — target of the homepage hero's "MORE INFO"
+  // button. Verified asset: "Main Class Season 7 Semester 2 2026.pdf". Rotate this
+  // whenever the semester rolls; the previous value was the Season 7 Semester 1 flyer.
+  officialAdUrl: "https://drive.google.com/file/d/1ImIsGj9RNFW5UnognMpXsPqJGhGfpbWg/view?usp=sharing",
 
   // Demo / free Week-1 preview (used by /demo)
   demoMoodleUrl:        "https://baology.moodlecloud.com/course/view.php?id=11",
