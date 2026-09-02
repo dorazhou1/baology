@@ -35,6 +35,15 @@
   /* one shadow; flat (none) is the default */
   --shadow-raised: 0 8px 20px rgba(22, 45, 89, 0.16);
 
+  /* scrim — the dim behind an open overlay. Navy-tinted, never pure black.
+     Only the last number is the dim level; leave the (22, 45, 89) alone.
+     The alpha IS the whole dim — every surface below carries opacity: 1 —
+     so what the token says is what renders. Both are rgba COLORS: never
+     store a bare number here, `opacity: rgba(...)` silently computes to 1
+     and blacks the page out. */
+  --scrim-lightbox: rgba(22, 45, 89, 0.85);  /* photo viewer — was #000 / rgba(0,0,0,.92) */
+  --scrim-modal:    rgba(22, 45, 89, 0.45);  /* countdown popup — was #000 @ opacity .5 */
+
   /* motion */
   --card-lift: -6px;
   --tile-zoom: 1.05;
@@ -1871,11 +1880,17 @@ svg {
   white-space: nowrap;
 }
 
-/* Countdown popup */
+/* Countdown popup. The card is white on a white page with border:none and a
+   downward-offset shadow, so its top edge had NO boundary of its own — the
+   backdrop was the only thing separating it from the page. Lightening the
+   scrim dissolves that, so the card carries its own 1px navy ring (13.5:1
+   against the card interior, 5.2:1 against the scrim). This is what frees
+   --scrim-modal to be tuned without the popup losing its edge. */
 .countdown-modal {
   border-radius: 32px;
   border: none;
-  box-shadow: 0 20px 60px rgba(22, 45, 89, 0.25);
+  box-shadow: 0 20px 60px rgba(22, 45, 89, 0.25),
+              0 0 0 1px var(--color-navy);
   overflow: hidden;
 }
 
@@ -1963,6 +1978,53 @@ svg {
 .glightbox-clean .gnext:hover,
 .glightbox-clean .gprev:hover {
   background-color: rgba(244, 178, 108, 0.85);
+}
+
+/* The orange hover chip is only 2.2:1 against GLightbox's white glyph — under
+   the 3:1 non-text floor even before the overlay was lightened. Navy on orange
+   is 6.0:1. Specificity (0,3,1) beats the plugin's `.gclose path { fill:#fff }`. */
+.glightbox-clean .gclose:hover path,
+.glightbox-clean .gnext:hover path,
+.glightbox-clean .gprev:hover path {
+  fill: var(--color-navy);
+}
+
+/* ---------- Overlay scrims -------------------------------------------
+   Both plugins hardcode their own dim and both load BEFORE this file, so
+   these win on source order — no !important anywhere. Do not simplify the
+   selectors and do not move these into a media query; see each note. */
+
+/* GLightbox paints .goverlay FOUR times: the base rule, `.glightbox-mobile
+   .goverlay` (0,2,0 — the JS adds that class to <body> on every touch device
+   and at any viewport <= 768px), and two @media rules (min-width:769px and
+   max-height:420px). Media queries add no specificity, so the bare selector
+   covers those two; the second selector is the ONLY thing that reaches
+   phones — drop it and the token silently does nothing on mobile.
+   NEVER express this dim as `opacity`: .gfadeIn/.gfadeOut animate this
+   element's opacity on open/close, and drag-to-dismiss writes an inline
+   opacity onto it that no stylesheet rule can beat. The dim lives in alpha,
+   which multiplies with both cleanly. */
+.goverlay,
+.glightbox-mobile .goverlay {
+  background: var(--scrim-lightbox, rgba(22, 45, 89, 0.85));
+}
+
+/* Bootstrap paints an OPAQUE #000 and dims via .modal-backdrop.show{opacity:.5},
+   which would MULTIPLY the token's alpha (0.45 x .5 = 0.22 — a pale grey wash,
+   and the token would lie about its own value). Pinning the shown opacity to 1
+   makes --scrim-modal's alpha the only dim and puts this surface on the same
+   rgba mechanism as the lightbox.
+   background-color sits on the SINGLE-class rule because .show is removed for
+   the whole 150ms fade-out — scoping it to .show would flash Bootstrap's black
+   on every dismiss. .modal-backdrop.fade{opacity:0} is deliberately untouched,
+   so .fade still transitions 0 -> 1 and _showBackdrop still gets a real
+   transitionend to sequence the dialog's entrance off. */
+.modal-backdrop {
+  background-color: var(--scrim-modal, rgba(22, 45, 89, 0.45));
+}
+
+.modal-backdrop.show {
+  opacity: 1;
 }
 
 /* Testimonials page — CSS-columns masonry. Each card's height fits its

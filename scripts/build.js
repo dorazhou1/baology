@@ -423,7 +423,89 @@ function syncNav() {
 }
 
 // --- Build ---------------------------------------------------------------
+// Overlay dims (--scrim-lightbox / --scrim-modal) override vendor CSS by load
+// order alone. A plugin upgrade can reintroduce a hardcoded dim or move it to a
+// new, more specific selector, and nothing would notice until someone opened the
+// lightbox on a phone. Fail the build instead.
+//
+// The fingerprint hashes the SET of vendor rules that paint a dim, not each rule
+// individually — that is what catches a brand-new selector being added, which
+// per-selector pinning would miss.
+const SCRIM_VENDOR_FINGERPRINT = "e5732dbdb087";
+
+function checkScrims() {
+  const crypto = require("crypto");
+  const vendorFiles = [
+    "plugins/glightbox/glightbox.min.css",
+    "plugins/bootstrap/bootstrap.min.css",
+  ];
+  // Matches innermost rules only, so @media-nested rules are captured too.
+  // Note: a regex that consumes its leading delimiter skips every other rule in
+  // a minified file. This form does not.
+  const RULE = /([^{}]+)\{([^{}]*)\}/g;
+  const found = [];
+  for (const rel of vendorFiles) {
+    const css = fs.readFileSync(path.join(ROOT, rel), "utf8");
+    let m;
+    RULE.lastIndex = 0;
+    while ((m = RULE.exec(css)) !== null) {
+      const sel = m[1].trim(), body = m[2].trim();
+      if (!/goverlay|modal-backdrop/.test(sel)) continue;
+      if (!/(^|;)\s*(background|background-color|opacity)\s*:/.test(";" + body)) continue;
+      found.push(`${rel}|${sel}{${body}}`);
+    }
+  }
+  const fp = crypto.createHash("sha256")
+    .update(found.sort().join("\n")).digest("hex").slice(0, 12);
+
+  const errors = [];
+  if (fp !== SCRIM_VENDOR_FINGERPRINT) {
+    errors.push(
+      `vendor scrim rules changed (pinned ${SCRIM_VENDOR_FINGERPRINT}, found ${fp}).\n` +
+      `  ${found.length} vendor rule(s) currently paint a dim:\n` +
+      found.map((f) => "    " + f).join("\n")
+    );
+  }
+
+  const site = fs.readFileSync(path.join(ROOT, "css/style.css"), "utf8");
+  const required = [
+    [".goverlay", "--scrim-lightbox"],
+    [".glightbox-mobile .goverlay", "--scrim-lightbox"],
+    [".modal-backdrop", "--scrim-modal"],
+    [".modal-backdrop.show", null],
+  ];
+  for (const [sel, token] of required) {
+    const esc = sel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    if (!new RegExp(`(^|,|\\})\\s*${esc}\\s*(,|\\{)`, "m").test(site)) {
+      errors.push(`css/style.css has no override for \`${sel}\``);
+    }
+    if (token && !site.includes(`var(${token}`)) {
+      errors.push(`css/style.css never references var(${token})`);
+    }
+  }
+  for (const t of ["--scrim-lightbox", "--scrim-modal"]) {
+    if (!new RegExp(`^\\s*${t}\\s*:`, "m").test(site)) {
+      errors.push(`token ${t} is not defined in :root`);
+    }
+  }
+  if (!/\.modal-backdrop\.show\s*\{[^}]*opacity\s*:\s*1\b/.test(site)) {
+    errors.push("`.modal-backdrop.show { opacity: 1 }` is missing — Bootstrap's .5 would multiply --scrim-modal's alpha");
+  }
+
+  if (errors.length) {
+    throw new Error(
+      "scrim guard failed:\n  - " + errors.join("\n  - ") +
+      "\n\nThe overlay dims are tokenized in css/style.css (:root --scrim-*).\n" +
+      "Re-audit the vendor rules listed above, point the --scrim-* overrides at\n" +
+      "them (matching or beating their specificity), then update\n" +
+      "SCRIM_VENDOR_FINGERPRINT in scripts/build.js."
+    );
+  }
+  console.log(`Scrim guard OK — vendor fingerprint ${fp}, ${found.length} vendor dim rule(s) overridden`);
+}
+
 function build() {
+  checkScrims();
   syncNav();
   const galleryCsv = fs.readFileSync(path.join(ROOT, "data/gallery.csv"), "utf8");
   const photos = parseCSV(galleryCsv)
