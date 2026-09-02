@@ -22,8 +22,12 @@ var SITE_CONFIG = {
   contactEmail:     "kevinbaobiology@yahoo.com",
 
   // Google Form
-  formUrl:         "https://docs.google.com/forms/d/e/1FAIpQLScUolfD-mBgd_5usmLfpuUr6dcK5imKUAn2PmlaguLoEa8yqA/viewform",
-  formEmbedUrl:    "https://docs.google.com/forms/d/e/1FAIpQLScUolfD-mBgd_5usmLfpuUr6dcK5imKUAn2PmlaguLoEa8yqA/viewform?embedded=true",
+  formUrl:         "https://docs.google.com/forms/d/e/1FAIpQLSf8LeepZpT5VISiMeDuSRNR_GzDZc_9kD7PyrO-0RCjbOE0ng/viewform",
+  formEmbedUrl:    "https://docs.google.com/forms/d/e/1FAIpQLSf8LeepZpT5VISiMeDuSRNR_GzDZc_9kD7PyrO-0RCjbOE0ng/viewform?embedded=true",
+  // Verified against the live "S7S2 Baology Registration" form: entry.701743111 is
+  // still the "Course Selection" question and the three option strings below still
+  // match it byte-for-byte (note the DOUBLE space after "Level 1"/"Level 2"/"Package").
+  // Re-run the discovery commands above whenever formUrl changes.
   formEntryCourse: "entry.701743111",
   tierValues: {
     "1":    "Level 1  (6+ hours/week, $1500)",
