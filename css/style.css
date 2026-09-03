@@ -112,9 +112,9 @@
   --space-80:  80px;
 
   /* radius — paired: surface cards vs image tiles */
-  --radius-card: 22px;
-  --radius-card-lg: 36px;  /* raised showcase cards: Register + instructors */
-  --radius-tile: 14px;
+  --radius-card: 17px;
+  --radius-card-lg: 36px;  /* raised showcase cards: Register + instructors, results table */
+  --radius-tile: 9px;
   --radius-pill: 999px;
 
   /* shadows; flat (none) is the default */
@@ -205,11 +205,15 @@ h1,
   font-size: var(--fs-display);
 }
 
+/* Viewport-scaled below the lg breakpoint, but CLAMPED. Unclamped, 12vw passes the
+   80px desktop size at a 667px viewport and keeps growing (119px at 991px) — the
+   heading got LARGER as the screen got smaller, until it outgrew its container and
+   overflowed instead of centring. Ceiling is the desktop size; floor keeps it legible. */
 @media (max-width: 991px) {
 
   h1,
   .h1 {
-    font-size: 12vw;
+    font-size: clamp(2rem, 12vw, var(--fs-display));
   }
 }
 
@@ -222,7 +226,17 @@ h2,
 
   h2,
   .h2 {
-    font-size: 11vw;
+    font-size: clamp(1.75rem, 11vw, 60px);
+  }
+}
+
+/* h3 needs the same treatment: at 320-340px a fixed --fs-section name overflows
+   its centred card and sits visibly off-centre. */
+@media (max-width: 575px) {
+
+  h3,
+  .h3 {
+    font-size: clamp(1.5rem, 9vw, var(--fs-section));
   }
 }
 
@@ -252,7 +266,7 @@ h6,
   font-family: 'Ropa Sans', sans-serif;
   text-transform: capitalize;
   padding: var(--space-16) 44px;
-  border-radius: 50px;
+  border-radius: var(--radius-pill);
   font-weight: 700;
   border: 0;
   position: relative;
@@ -271,11 +285,11 @@ h6,
 
 .btn-sm {
   font-size: 15px;
-  padding: 10px 30px;
+  padding: var(--space-8) var(--space-32);
 }
 
 .btn-xs {
-  padding: 5px 10px;
+  padding: var(--space-4) var(--space-8);
   font-size: 15px;
 }
 
@@ -539,7 +553,7 @@ a.link:hover {
 }
 
 .mb-10 {
-  margin-bottom: 10px !important;
+  margin-bottom: var(--space-8) !important;
 }
 
 .mb-20 {
@@ -547,7 +561,7 @@ a.link:hover {
 }
 
 .mb-30 {
-  margin-bottom: 30px !important;
+  margin-bottom: var(--space-32) !important;
 }
 
 .mb-40 {
@@ -555,7 +569,7 @@ a.link:hover {
 }
 
 .mb-50 {
-  margin-bottom: 50px !important;
+  margin-bottom: var(--space-48) !important;
 }
 
 .mb-60 {
@@ -624,7 +638,7 @@ span.wow {
 
 /* /icon */
 .navigation {
-  padding: 10px 10px;
+  padding: var(--space-8) var(--space-8);
   background-color: var(--color-yellow);
   transition: 0.3s ease;
   color: rgba(0, 0, 0, 0.3);
@@ -634,12 +648,12 @@ span.wow {
 .navigation.nav-bg {
   background-color: var(--color-yellow);
   box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.05);
-  padding: 0px 10px;
+  padding: 0px var(--space-8);
 }
 
 @media (max-width: 991px) {
   .navigation.nav-bg {
-    padding: 15px var(--space-20);
+    padding: var(--space-16) var(--space-20);
   }
 
   .navigation {
@@ -699,7 +713,7 @@ span.wow {
   font-family: 'Ropa Sans', "Inter", serif;
   font-size: 20px;
   text-transform: uppercase;
-  padding: 10px var(--space-20);
+  padding: var(--space-8) var(--space-20);
   color: var(--color-navy);
 }
 
@@ -782,7 +796,7 @@ li.nav-item {
   border-width: 0;
   border-radius: 0;
   min-width: 100px;
-  padding: 5px 10px;
+  padding: var(--space-4) var(--space-8);
   left: 50%;
   text-align: center;
   font-family: 'Ropa Sans', "Inter", serif;
@@ -849,7 +863,7 @@ li.nav-item {
 }
 
 .navbar .nav-item .dropdown-item {
-  padding: 10px;
+  padding: var(--space-8);
 }
 
 .dropdown-menu li>a:hover,
@@ -861,6 +875,10 @@ li.nav-item {
 .hero-area {
   padding: 200px 0 0;
   position: relative;
+  /* Contain #l5, which is deliberately hung right:-150px. Previously this was
+     scoped to max-width:767px, so from 768px up the leaf escaped its section and
+     only body{overflow-x:hidden} hid it — masking 150px of page overflow. */
+  overflow: hidden;
 }
 
 @media (max-width: 767px) {
@@ -878,7 +896,7 @@ li.nav-item {
 
 .lead {
   margin: 10vh 0 0;
-  padding: var(--space-20) 50px;
+  padding: var(--space-20) var(--space-48);
   background-color: var(--color-yellow);
   width: 90%;
   border-radius: 0 50px 0 0;
@@ -932,8 +950,9 @@ li.nav-item {
 .instructor-card {
   background-color: var(--color-yellow);
   border-radius: var(--radius-card-lg);
-  padding-bottom: var(--space-20);
-  margin: 0 var(--space-20) 30px;
+  /* Side padding so long names ("Sunipun Biswas") never touch the rounded edge. */
+  padding: 0 var(--space-16) var(--space-20);
+  margin: 0 0 var(--space-32);   /* side gutters come from the grid column */
   box-shadow: var(--shadow-raised) !important;
   transition: transform var(--ease);
 }
@@ -955,10 +974,39 @@ li.nav-item {
 }
 
 /* About page */
+/* Three blocks: photo and headline side by side, bio full width beneath.
+   Previously the photo and the text were inline-block at 30%/60%, so the
+   TEACHES panel was squeezed into a narrow column beside the portrait and
+   overflowed at medium widths. Grid gives the headline the full remaining
+   width and lets the bio span both columns. */
 .instructor-card.about {
   width: 100%;
-  vertical-align: middle;
-  padding: var(--space-40) 0;
+  padding: var(--space-40);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: var(--space-24);
+  row-gap: var(--space-24);
+}
+
+.instructor-card.about .img-wrapper-left { grid-column: 1; grid-row: 1; }
+.instructor-card.about .about-head { grid-column: 2; grid-row: 1; }
+.instructor-card.about .about-text { grid-column: 1 / -1; grid-row: 2; }
+
+.about-head h3 { margin-top: 0; }
+
+@media (max-width: 767.98px) {
+  .instructor-card.about {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    padding: var(--space-24);
+  }
+
+  .instructor-card.about .about-head,
+  .instructor-card.about .about-text { grid-column: 1; }
+  .instructor-card.about .about-head { grid-row: 2; }
+  .instructor-card.about .about-text { grid-row: 3; }
 }
 
 .img-wrapper-left {
@@ -966,6 +1014,20 @@ li.nav-item {
   display: inline-block;
   vertical-align: middle;
   padding: 0px 0px 0 var(--space-40);
+}
+
+/* Inside a grid card the wrapper sizes to its image instead of a percentage.
+   The portrait is clamped: there is no size-token family in this repo, so the
+   floor/ceiling are stated here deliberately rather than reused from elsewhere. */
+.instructor-card.about .img-wrapper-left {
+  width: clamp(96px, 18vw, 176px);
+  display: block;
+  padding: 0;
+}
+
+.instructor-card.about .instructor-img {
+  width: 100%;
+  margin: 0;
 }
 
 .img-wrapper-left.usabointro {
@@ -977,6 +1039,13 @@ li.nav-item {
   width: 60%;
   display: inline-block;
   vertical-align: middle;
+}
+
+.instructor-card.about .about-text,
+.instructor-card.about .about-head {
+  width: auto;
+  display: block;
+  padding: 0;
 }
 
 .about-text.usabointro {
@@ -998,7 +1067,7 @@ li.nav-item {
 @media (max-width: 1000px) {
   .instructor-card.about {
     padding: var(--space-40);
-    margin: 30px 0;
+    margin: var(--space-32) 0;
   }
 
   .img-wrapper-left {
@@ -1044,7 +1113,7 @@ li.nav-item {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-4);
   padding-left: 0;
   list-style: none;
   margin: 0;
@@ -1254,7 +1323,7 @@ button.slick-next:focus:not(:hover) {
 
 blockquote {
   display: inline-block;
-  padding: var(--space-20) 25px;
+  padding: var(--space-20) var(--space-24);
   background: var(--color-line);
   border-left: 3px solid var(--color-navy);
   font-style: italic;
@@ -1266,7 +1335,7 @@ ul.course-overview-list li {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   list-style-type: disc;
-  margin-bottom: 10px;
+  margin-bottom: var(--space-8);
 }
 
 ol.steps {
@@ -1274,10 +1343,13 @@ ol.steps {
 }
 
 ol.steps li {
+  /* The Zelle address is one unbreakable token; without this it is clipped
+     by body{overflow-x:hidden} below ~388px and the characters are unrecoverable. */
+  overflow-wrap: anywhere;
   margin-bottom: 35px;
   line-height: 36px;
   font-size: 22px;
-  padding-left: 15px;
+  padding-left: var(--space-16);
   counter-increment: item;
 }
 
@@ -1292,7 +1364,7 @@ ol.steps li:before {
   display: inline-block;
   width: 36px;
   height: 36px;
-  border-radius: 500px;
+  border-radius: var(--radius-pill);
   background: var(--color-orange);
 }
 
@@ -1304,7 +1376,7 @@ ol.steps li:before {
   border: none;
   border-bottom: 2px solid var(--color-line);
   cursor: pointer;
-  padding: 15px 50px 15px 15px;
+  padding: var(--space-16) var(--space-48) var(--space-16) var(--space-16);
   width: 100%;
   text-align: left;
   outline: none;
@@ -1338,7 +1410,7 @@ ol.steps li:before {
 }
 
 .content {
-  padding: 0 18px;
+  padding: 0 var(--space-16);
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
@@ -1350,7 +1422,7 @@ ol.steps li:before {
 }
 
 p.description {
-  padding-top: 10px;
+  padding-top: var(--space-8);
   text-align: left;
 }
 
@@ -1432,12 +1504,12 @@ tr:nth-child(even) {
 input#query {
   font: 16px Inter;
   height: 100%;
-  padding: 13px 15px;
-  border-radius: 500px;
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-pill);
   border: 0px;
   background-color: var(--color-cream-dk);
   width: 70%;
-  margin: 10px;
+  margin: var(--space-8);
 }
 
 input#query:focus {
@@ -1454,8 +1526,8 @@ input#query::placeholder {
   background-color: var(--color-amber);
   color: white;
   font: 16px Inter;
-  padding: 10px 15px;
-  margin: 10px;
+  padding: var(--space-8) var(--space-16);
+  margin: var(--space-8);
 }
 
 form#search {
@@ -1547,7 +1619,7 @@ svg {
   display: flex;
   gap: var(--space-12);
   overflow-x: auto;
-  padding: var(--space-16) var(--space-2) 6px;
+  padding: var(--space-16) var(--space-2) var(--space-4);
   scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
 }
@@ -1571,7 +1643,7 @@ svg {
 }
 .demo-thumb-label {
   display: block;
-  padding: var(--space-8) 10px;
+  padding: var(--space-8) var(--space-8);
   font-size: var(--fs-meta);
   font-weight: var(--fw-bold);
   line-height: 1.3;
@@ -1617,16 +1689,16 @@ svg {
 
 .taglist {
   display: flex;
-  margin: 15px 0;
+  margin: var(--space-16) 0;
   padding: 0;
   flex-wrap: wrap;
 }
 
 .taglist>li {
-  padding: 5px;
+  padding: var(--space-4);
   background-color: var(--color-yellow-lt);
-  margin-right: 5px;
-  margin-bottom: 5px;
+  margin-right: var(--space-4);
+  margin-bottom: var(--space-4);
   border-radius: 5px;
   color: var(--color-orange);
   list-style-type: none;
@@ -1641,17 +1713,17 @@ svg {
   display: flex;
   font: 800 15px New York;
   font-family: "New York", "Playfair Display", serif;
-  margin-top: 50px;
+  margin-top: var(--space-48);
   list-style: none;
   padding: 0;
 }
 
 .page-nums>li {
-  margin: 10px;
-  padding-top: 10px;
+  margin: var(--space-8);
+  padding-top: var(--space-8);
   text-align: center;
   color: var(--color-navy);
-  border-radius: 50px;
+  border-radius: var(--radius-pill);
   width: 36px;
   height: 36px;
 }
@@ -1706,7 +1778,7 @@ svg {
   left: 0;
   bottom: 0;
   right: 0;
-  padding: 10px var(--space-12);
+  padding: var(--space-8) var(--space-12);
   background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
   color: #fff;
   opacity: 0;
@@ -1789,7 +1861,7 @@ svg {
   background-color: var(--color-cream);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-raised);
-  padding: 30px var(--space-24);
+  padding: var(--space-32) var(--space-24);
   height: 100%;
   position: relative;
   transition: transform var(--ease);
@@ -1800,7 +1872,7 @@ svg {
 /* Register button: subtle outline — white with navy text + border, fills on hover */
 .pricing-card .btn {
   font-size: var(--fs-body);
-  padding: var(--space-12) 30px;
+  padding: var(--space-12) var(--space-32);
   background: #fff;
   color: var(--color-navy);
   border: 2px solid var(--color-navy);
@@ -1906,12 +1978,19 @@ svg {
 }
 
 /* Hero signup / Register card — raised showcase: cream (inherits .card), larger radius, soft shadow (index.html: .is-raised) */
+/* One clamp governs the width. Below the lg breakpoint the card leaves its
+   col-lg-5 and goes full-bleed, which stretches it across the whole viewport on
+   tablets; the clamp caps it and mx-auto keeps it centred. Above lg the column
+   is already narrower than the ceiling, so this has no effect there. */
 .signup-card {
   border-radius: var(--radius-card-lg);
   border: none;
-  margin-top: 50px;
+  margin-top: var(--space-48);
   height: auto;
   min-height: 400px;
+  width: clamp(280px, 100%, 440px);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .signup-card .card-body {
@@ -1976,7 +2055,7 @@ svg {
 .countdown-timer .cd-block {
   background: var(--color-peach);
   color: var(--color-navy);
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   padding: var(--space-12) var(--space-16);
   min-width: 72px;
   display: flex;
@@ -1994,7 +2073,7 @@ svg {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-top: 6px;
+  margin-top: var(--space-4);
   opacity: 0.85;
 }
 
@@ -2082,33 +2161,80 @@ svg {
   opacity: 1;
 }
 
-/* Tier class list. Each item names the class, when it meets and who teaches it,
-   then defines it — Level 1 and Level 2 cost the same and differ only by which
-   classes they include, so the definitions are what make the choice decidable. */
-.pricing-card ul li { display: block; text-align: left; }
+/* Tier class list stays a compact bulleted list — the disc markers come from
+   `.pricing-card ul { list-style: disc }`, so the li must remain a list-item.
+   Each class links to the instructor who teaches it, where the day, time and
+   description are stated once instead of repeated in all three tiers. */
+.pricing-card ul li a {
+  color: var(--color-navy);
+  text-decoration: underline;
+  text-decoration-color: rgba(var(--navy-rgb), 0.35);
+  text-underline-offset: 3px;
+}
 
-.tier-class-name {
+.pricing-card ul li a:hover { color: var(--color-orange); }
+
+/* The index staff cards fade in together rather than staggering. Scoped to this
+   one grid on purpose — every other section keeps its authored data-wow-delay.
+   !important because WOW.js writes the delay as an inline style. */
+.instructor-card.wow {
+  animation-duration: 0.8s !important;
+  animation-delay: 0s !important;
+}
+
+/* What an instructor teaches. A tinted block under their name, before the bio,
+   so the class description reads as a separate subject rather than as more
+   biography. The "Teaches" label carries the meaning; the tint carries the
+   grouping. */
+.teaches {
+  background: var(--color-cream);
+  border-radius: var(--radius-card);
+  padding: var(--space-16);
+  margin: 0;                      /* the card grid's row-gap provides the spacing */
+  font-size: var(--fs-body);
+  line-height: var(--lh-tight);
+}
+
+.teaches-label {
   display: block;
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-size: var(--fs-fine);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.05em;   /* matches the site's one existing tracking value */
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: var(--space-4);
+}
+
+.teaches-name {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-bold);
   color: var(--color-navy);
 }
 
-.tier-class-when {
-  display: block;
-  font-size: var(--fs-fine);
+.teaches-name::after {
+  content: " · ";
+  font-weight: 400;
   color: var(--color-muted);
-  line-height: var(--lh-body);
 }
 
-.tier-class-when a { color: var(--color-muted); text-decoration: underline; }
-.tier-class-when a:hover { color: var(--color-orange); }
+.teaches-when { color: var(--color-muted); }
 
-.tier-class-desc {
+.teaches-desc {
   display: block;
-  font-size: var(--fs-fine);
+  overflow-wrap: anywhere;
   color: var(--color-ink);
-  line-height: var(--lh-body);
-  margin-top: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+/* Under each name on the index staff grid. */
+.instructor-class {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-tight);
+  color: var(--color-ink);
+  margin-top: calc(-1 * var(--space-8));
 }
 
 /* ---------- Results chart ---------------------------------------------
@@ -2125,22 +2251,24 @@ svg {
   font-family: var(--font-sans);
 }
 
+/* Matches the body copy above it: the site's paragraphs render at --lh-tight,
+   not --lh-body, so the caption used to sit looser than the prose it sits under. */
 .results-table caption {
   caption-side: top;
   text-align: left;
   color: var(--color-ink);
   font-size: var(--fs-body);
-  line-height: var(--lh-body);
-  padding: 0 0 22px;
+  line-height: var(--lh-tight);
+  padding: 0 0 var(--space-20);
 }
 
 .results-table th,
-.results-table td { border: 0; padding: 10px 14px; vertical-align: middle; }
+.results-table td { border: 0; padding: var(--space-8) var(--space-12); vertical-align: middle; }
 
 .results-table thead th {
-  color: var(--color-muted);
-  font-size: var(--fs-meta);
-  font-weight: 600;
+  color: var(--color-navy);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-bold);
   text-align: left;
   padding-bottom: var(--space-4);
 }
@@ -2151,8 +2279,8 @@ svg {
 .results-table tbody tr,
 .results-table tbody tr:nth-child(even) { background: var(--color-cream) !important; }
 .results-table tbody tr td:last-child,
-.results-table tbody tr th { border-radius: var(--radius-card) 0 0 var(--radius-card); }
-.results-table tbody tr td:last-child { border-radius: 0 var(--radius-card) var(--radius-card) 0; }
+.results-table tbody tr th { border-radius: var(--radius-card-lg) 0 0 var(--radius-card-lg); }
+.results-table tbody tr td:last-child { border-radius: 0 var(--radius-card-lg) var(--radius-card-lg) 0; }
 
 .results-table tbody th {
   color: var(--color-navy);
@@ -2164,7 +2292,7 @@ svg {
 /* Bar + printed value. Values are always shown: --medal-gold sits near 2.3:1 on the
    surfaces this renders on, which the palette validator flags as requiring visible
    labels rather than colour alone. */
-.rc-cell { display: flex; align-items: center; gap: 14px; }
+.rc-cell { display: flex; align-items: center; gap: var(--space-12); }
 
 .rc-track {
   flex: 1 1 auto;
@@ -2213,9 +2341,9 @@ svg {
 /* Total row — the headline. Bigger than everything above it on purpose. */
 .results-table tfoot .rc-total { background: var(--color-navy); }
 .results-table tfoot th,
-.results-table tfoot td { padding: 18px 14px; }
-.results-table tfoot th:first-child { border-radius: var(--radius-card) 0 0 var(--radius-card); }
-.results-table tfoot td:last-child { border-radius: 0 var(--radius-card) var(--radius-card) 0; }
+.results-table tfoot td { padding: var(--space-16) var(--space-12); }
+.results-table tfoot th:first-child { border-radius: var(--radius-card-lg) 0 0 var(--radius-card-lg); }
+.results-table tfoot td:last-child { border-radius: 0 var(--radius-card-lg) var(--radius-card-lg) 0; }
 
 .results-table tfoot th {
   color: #fff;
@@ -2226,6 +2354,7 @@ svg {
 
 .results-table tfoot .rc-of {
   display: block;
+  font-size: var(--fs-body);
   color: rgba(255, 255, 255, 0.65);
   margin: var(--space-2) 0 0;
 }
@@ -2239,6 +2368,7 @@ svg {
   line-height: 1;
 }
 
+/* Same size as the /20 and /4 denominators in the table above. */
 .rc-share {
   display: block;
   color: var(--color-yellow);
@@ -2247,17 +2377,19 @@ svg {
   margin-top: var(--space-4);
 }
 
+/* Sits below the table: it explains the bars, so it reads after them. */
 .rc-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 22px;
-  margin-bottom: 22px;
-  font-size: var(--fs-meta);
+  gap: var(--space-24);
+  margin-top: var(--space-20);
+  font-size: var(--fs-body);
   color: var(--color-ink);
 }
 
 .rc-key { display: inline-flex; align-items: center; gap: var(--space-8); }
-.rc-swatch { width: 14px; height: 14px; border-radius: 4px; flex: 0 0 auto; }
+/* Pill, like the bar caps they stand for — not an arbitrary 4px. */
+.rc-swatch { width: 14px; height: 14px; border-radius: var(--radius-pill); flex: 0 0 auto; }
 .rc-swatch--finalist { background: var(--medal-finalist); }
 .rc-swatch--ibo { background: var(--medal-gold); }
 
@@ -2333,7 +2465,7 @@ svg {
 .testimonial-placements {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: var(--space-4);
   margin-top: 0.25rem;
 }
 
@@ -2345,7 +2477,7 @@ svg {
 .placement-badge {
   display: inline-flex;
   align-items: center;
-  padding: 3px 10px;
+  padding: var(--space-2) var(--space-8);
   border-radius: var(--radius-pill);
   font-size: var(--fs-fine);
   font-weight: 600;
@@ -2423,8 +2555,8 @@ svg {
   background: transparent;
   border: 2px solid var(--color-navy);
   color: var(--color-navy);
-  padding: 10px 22px;
-  border-radius: 999px;
+  padding: var(--space-8) var(--space-20);
+  border-radius: var(--radius-pill);
   font-family: 'Ropa Sans', sans-serif;
   text-transform: uppercase;
   font-size: 0.95rem;

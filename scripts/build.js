@@ -485,13 +485,14 @@ function classTime(startEt) {
 // "meta" reads as a byline/timestamp — it silently deleted the day, time and
 // instructor from the extracted text while name and description survived.
 function renderClassItem(c) {
-  return [
-    `              <li>`,
-    `                <span class="tier-class-name">${escapeHtml(c.name)}</span>`,
-    `                <span class="tier-class-when">${escapeHtml(c.day)}s, ${escapeHtml(classTime(c.startEt))} · <a href="about.html#${escapeAttr(c.anchor)}">${escapeHtml(c.instructor)}</a></span>`,
-    `                <span class="tier-class-desc">${escapeHtml(String(c.description).trim())}</span>`,
-    `              </li>`,
-  ].join("\n");
+  return `              <li><a href="about.html#${escapeAttr(c.anchor)}">${escapeHtml(c.name)}</a></li>`;
+}
+
+// Just the class name, for the index staff cards under each instructor's name.
+function renderTeachesShort(classes, personAnchor) {
+  const mine = classes.filter(c => c.anchor === personAnchor);
+  if (!mine.length) return "";
+  return `            <span class="instructor-class">${escapeHtml(mine.map(c => c.name).join(" · "))}</span>`;
 }
 
 // Tier membership comes from each class's `levels`, so the cards and the class
@@ -499,6 +500,23 @@ function renderClassItem(c) {
 function renderTier(classes, tier) {
   const inTier = tier === "full" ? classes : classes.filter(c => (c.levels || []).includes(tier));
   return sortClassesByWeek(inTier).map(renderClassItem).join("\n");
+}
+
+// One instructor's teaching line for their about.html card. The signup tiers link
+// here, so this is where the day/time/description actually live — stated once.
+function renderTeaches(classes, personAnchor) {
+  const mine = classes.filter(c => c.anchor === personAnchor);
+  if (!mine.length) return "";
+  // The "Teaches" label is load-bearing: without a verb, the class description
+  // reads as a continuation of the instructor's biography.
+  return mine.map(c =>
+    `                    <p class="teaches">` +
+    `<span class="teaches-label">Teaches</span>` +
+    `<span class="teaches-name">${escapeHtml(c.name)}</span>` +
+    `<span class="teaches-when">${escapeHtml(c.day)}s, ${escapeHtml(classTime(c.startEt))}</span>` +
+    `<span class="teaches-desc">${escapeHtml(String(c.description).trim())}</span>` +
+    `</p>`
+  ).join("\n");
 }
 
 // --- Results chart ------------------------------------------------------
@@ -551,11 +569,13 @@ function renderResultsChart(rows) {
     `USABO names ${FIELD_FINALISTS} National Finalists each year and Team USA takes ${FIELD_IBO} of them. ` +
     `Across ${rows.length} seasons Baology students took ${t.finalists} of the ${capF} finalist places ` +
     `(${shareF}%) and ${t.ibo} of the ${capI} Team USA places (${shareI}%).`;
-  return [
+  const legend = [
     `        <div class="rc-legend">`,
     `          <span class="rc-key"><span class="rc-swatch rc-swatch--finalist"></span>USABO National Finalists</span>`,
     `          <span class="rc-key"><span class="rc-swatch rc-swatch--ibo"></span>Team USA at the IBO (selected from the finalists)</span>`,
     `        </div>`,
+  ].join("\n");
+  return [
     `        <table class="results-table">`,
     `          <caption>${escapeHtml(caption)}</caption>`,
     `          <thead>`,
@@ -570,6 +590,7 @@ function renderResultsChart(rows) {
       `<td><span class="rc-big">${t.ibo}</span><span class="rc-share">${shareI}% of all ${capI}</span></td></tr>`,
     `          </tfoot>`,
     `        </table>`,
+    legend,
   ].join("\n");
 }
 
@@ -957,7 +978,24 @@ function build() {
     signupHtml = injectBetweenMarkers(signupHtml, `tier-${tier}`, renderTier(classes, tier));
   }
   fs.writeFileSync(signupPath, signupHtml);
-  console.log(`Wrote signup.html — ${classes.length} class types across 3 tiers`);
+
+  // about.html: the class each instructor teaches, with when it meets.
+  const aboutPath = path.join(ROOT, "about.html");
+  let aboutHtml = fs.readFileSync(aboutPath, "utf8");
+  const anchors = [...aboutHtml.matchAll(/<!--\s*BUILD:teaches-([a-z]+)\s*-->/g)].map(m => m[1]);
+  for (const a of anchors) {
+    aboutHtml = injectBetweenMarkers(aboutHtml, `teaches-${a}`, renderTeaches(classes, a));
+  }
+  fs.writeFileSync(aboutPath, aboutHtml);
+
+  // index.html staff cards: the class each instructor teaches, under their name.
+  const idxPath = path.join(ROOT, "index.html");
+  let idxHtml = fs.readFileSync(idxPath, "utf8");
+  for (const a of [...idxHtml.matchAll(/<!--\s*BUILD:teaches-index-([a-z]+)\s*-->/g)].map(m => m[1])) {
+    idxHtml = injectBetweenMarkers(idxHtml, `teaches-index-${a}`, renderTeachesShort(classes, a));
+  }
+  fs.writeFileSync(idxPath, idxHtml);
+  console.log(`Wrote signup.html + about.html — ${classes.length} class types across 3 tiers, ${anchors.length} instructor cards`);
 
   // --- index.html results chart ---------------------------------------
   const resultsCsv = path.join(ROOT, "data/results.csv");
