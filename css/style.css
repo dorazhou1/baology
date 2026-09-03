@@ -130,6 +130,12 @@
   --scrim-lightbox: rgba(var(--navy-rgb), 0.85);  /* photo viewer — was #000 / rgba(0,0,0,.92) */
   --scrim-modal:    rgba(var(--navy-rgb), 0.45);  /* countdown popup — was #000 @ opacity .5 */
 
+  /* Live height of the Bootstrap `fixed-top` header, republished on every resize
+     by js/script.js from the header's own box. Declared here so it has a defined
+     value during the first paint and so the token list stays complete; the inline
+     style JS sets on <html> overrides this rule on the same element. */
+  --header-h: 0px;
+
   /* motion */
   --card-lift: -6px;
   --tile-zoom: 1.05;
@@ -153,6 +159,14 @@
 
 html {
   scroll-behavior: smooth;
+  /* Every in-page anchor (the index instructor cards link to about.html#name)
+     otherwise lands with the target's top edge at y=0 — underneath .navigation,
+     which is Bootstrap `fixed-top`. --header-h is published by js/script.js from
+     the header's own measured height, so this tracks the 72px desktop bar and the
+     97px collapsed one without either number appearing here. The fallback is only
+     0px until the script runs, so the pre-script paint is simply un-offset;
+     --space-24 is the breathing room below the bar. */
+  scroll-padding-top: calc(var(--header-h) + var(--space-24));
 }
 
 body {
@@ -963,6 +977,18 @@ li.nav-item {
 
 .instructor-card:hover {
   transform: translateY(var(--card-lift));
+}
+
+/* The index staff grid is capped at the fraction Bootstrap's own .col-10 uses,
+   rather than the full 1140px container: at desktop widths three 254px portraits
+   were the largest thing on the page. Only from lg up — below that the container
+   is already narrow and capping would just crowd the cards. */
+@media (min-width: 992px) {
+  .instructor-row {
+    max-width: 83.333333%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .instructor-img {
@@ -2293,9 +2319,9 @@ svg {
   white-space: nowrap;
 }
 
-/* Bar + printed value. Values are always shown: --medal-gold sits near 2.3:1 on the
-   surfaces this renders on, which the palette validator flags as requiring visible
-   labels rather than colour alone. */
+/* Bar + printed value. Values are always shown: neither fill clears the palette
+   validator's contrast check against the page surface on its own, so the number is
+   never carried by colour alone. */
 .rc-cell { display: flex; align-items: center; gap: var(--space-12); }
 
 .rc-track {
@@ -2320,8 +2346,14 @@ svg {
 .rc-ibo {
   display: block;
   height: 100%;
-  background: var(--medal-gold);
-  border-right: 2px solid var(--color-cream);
+  /* --color-orange, not --medal-gold. The medal tokens are content semantics for
+     .placement-badge (a gold medal is gold) and say so at their own definition;
+     this bar is not a medal, it is a second data series, so it takes the brand
+     accent every other accent on the site takes. The two fills are separated by
+     the surface-coloured rule below rather than by hue contrast — they sit at
+     2.1:1 against each other, which is exactly the case the 2px gap exists for. */
+  background: var(--color-orange);
+  border-right: var(--space-2) solid var(--color-cream);
 }
 
 .rc-val {
@@ -2395,7 +2427,7 @@ svg {
 /* Pill, like the bar caps they stand for — not an arbitrary 4px. */
 .rc-swatch { width: 14px; height: 14px; border-radius: var(--radius-pill); flex: 0 0 auto; }
 .rc-swatch--finalist { background: var(--medal-finalist); }
-.rc-swatch--ibo { background: var(--medal-gold); }
+.rc-swatch--ibo { background: var(--color-orange); }
 
 @media (max-width: 575px) {
   .results-table th,

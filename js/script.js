@@ -72,3 +72,18 @@ for (i = 0; i < coll.length; i++) {
   }); 
 }
 
+
+// Publish the fixed header's own height as --header-h so CSS can offset anchor
+// landings by it (html { scroll-padding-top }). The bar is 72px at lg and up and
+// 97px collapsed, and Bootstrap owns both, so measuring beats writing either
+// number down. Re-measured on resize because the breakpoint flips it.
+(function () {
+  var header = document.querySelector(".navigation");
+  if (!header) return;
+  function publish() {
+    document.documentElement.style.setProperty(
+      "--header-h", header.getBoundingClientRect().height + "px");
+  }
+  publish();
+  window.addEventListener("resize", publish);
+})();
