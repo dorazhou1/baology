@@ -264,7 +264,11 @@ h6,
 .btn {
   font-size: 22px;
   font-family: 'Ropa Sans', sans-serif;
-  text-transform: capitalize;
+  /* One casing for every button, set here so the 16 labels can be written in
+     whatever case reads best in the markup and still render identically.
+     `capitalize` previously left ALL-CAPS labels alone, kept Title Case as-is,
+     and re-cased sentence-case ones — three rendered casings from one rule. */
+  text-transform: uppercase;
   padding: var(--space-16) 44px;
   border-radius: var(--radius-pill);
   font-weight: 700;
