@@ -91,6 +91,26 @@
                                  legible on the navy testimonials carousel, where navy
                                  renders 1.00:1. Not a button colour — do not reuse. */
 
+  /* ── SPACING ───────────────────────────────────────────────────
+     A 4px ladder. Named by value, so `padding: 20px` maps to --space-20
+     without a lookup. Bootstrap's spacers (0/4/8/16/24/48px) are a SUBSET
+     of this ladder, so `mb-3` and var(--space-16) are the same 16px and the
+     two systems agree rather than compete. 2px is the hairline step.
+     Off-ladder values that remain are component geometry, not rhythm. */
+  --space-0:   0;
+  --space-2:   2px;
+  --space-4:   4px;
+  --space-8:   8px;
+  --space-12:  12px;
+  --space-16:  16px;
+  --space-20:  20px;
+  --space-24:  24px;
+  --space-32:  32px;
+  --space-40:  40px;
+  --space-48:  48px;
+  --space-64:  64px;
+  --space-80:  80px;
+
   /* radius — paired: surface cards vs image tiles */
   --radius-card: 22px;
   --radius-card-lg: 36px;  /* raised showcase cards: Register + instructors */
@@ -231,7 +251,7 @@ h6,
   font-size: 22px;
   font-family: 'Ropa Sans', sans-serif;
   text-transform: capitalize;
-  padding: 16px 44px;
+  padding: var(--space-16) 44px;
   border-radius: 50px;
   font-weight: 700;
   border: 0;
@@ -389,12 +409,12 @@ a.link:hover {
 }
 
 .section {
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-top: var(--space-80);
+  padding-bottom: var(--space-80);
 }
 
 .section-title {
-  margin-bottom: 80px;
+  margin-bottom: var(--space-80);
   font-family: 'New York', "Playfair Display", serif;
 }
 
@@ -480,67 +500,6 @@ a.link:hover {
 }
 
 /* ============================================================
-   TEXT ROLE CLASSES — the "set styles" for card/UI copy.
-   Pair a size token with family + weight + color so text never
-   gets hand-sized per component. Use these instead of raw px.
-     .u-title    serif orange   — card titles, names
-     .u-subtitle bold navy sans — subtitles / emphasis
-     .u-body     dark sans      — body copy
-     .u-meta     muted small    — captions, dates, secondary
-     .u-fine     muted tiny     — disclaimers ONLY
-   Add .u-on-dark on a container to flip text for dark backgrounds.
-   ============================================================ */
-.u-title {
-  font-family: var(--font-serif);
-  color: var(--color-orange);
-  font-size: var(--fs-title);
-  line-height: var(--lh-tight);
-}
-
-.u-subtitle {
-  font-family: var(--font-sans);
-  font-weight: var(--fw-bold);
-  color: var(--color-navy);
-  font-size: var(--fs-body);
-  line-height: var(--lh-tight);
-}
-
-.u-body {
-  font-family: var(--font-sans);
-  font-weight: 400;
-  color: var(--color-ink);
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
-}
-
-.u-meta {
-  font-family: var(--font-sans);
-  font-size: var(--fs-meta);
-  color: var(--color-muted);
-  line-height: var(--lh-tight);
-}
-
-.u-fine {
-  font-family: var(--font-sans);
-  font-size: var(--fs-fine);
-  color: var(--color-muted);
-}
-
-.u-on-dark .u-title,
-.u-on-dark .u-subtitle {
-  color: #fff;
-}
-
-.u-on-dark .u-body {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.u-on-dark .u-meta,
-.u-on-dark .u-fine {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-/* ============================================================
    CARD PRESETS — three set styles built on the tokens.
      .card           surface card: cream, big radius, FLAT,
                      float-up on hover (defined at the .card rule)
@@ -584,7 +543,7 @@ a.link:hover {
 }
 
 .mb-20 {
-  margin-bottom: 20px !important;
+  margin-bottom: var(--space-20) !important;
 }
 
 .mb-30 {
@@ -592,7 +551,7 @@ a.link:hover {
 }
 
 .mb-40 {
-  margin-bottom: 40px !important;
+  margin-bottom: var(--space-40) !important;
 }
 
 .mb-50 {
@@ -608,7 +567,7 @@ a.link:hover {
 }
 
 .mb-80 {
-  margin-bottom: 80px !important;
+  margin-bottom: var(--space-80) !important;
 }
 
 .mb-90 {
@@ -680,11 +639,11 @@ span.wow {
 
 @media (max-width: 991px) {
   .navigation.nav-bg {
-    padding: 15px 20px;
+    padding: 15px var(--space-20);
   }
 
   .navigation {
-    padding: 20px;
+    padding: var(--space-20);
   }
 
   .dropdown-item {
@@ -713,7 +672,7 @@ span.wow {
     box-shadow: none !important;
     border-radius: 0 !important;
     padding: 0 !important;
-    margin: 4px 0 12px !important;
+    margin: var(--space-4) 0 var(--space-12) !important;
     min-width: 0 !important;
     width: 100% !important;
     text-align: center;
@@ -722,7 +681,7 @@ span.wow {
   .navbar .nav-item .dropdown-menu .dropdown-item {
     font-size: 0.85em;
     opacity: 0.75;
-    padding: 4px 0;
+    padding: var(--space-4) 0;
     display: block;
   }
 }
@@ -740,7 +699,7 @@ span.wow {
   font-family: 'Ropa Sans', "Inter", serif;
   font-size: 20px;
   text-transform: uppercase;
-  padding: 10px 20px;
+  padding: 10px var(--space-20);
   color: var(--color-navy);
 }
 
@@ -760,7 +719,7 @@ span.wow {
 /* Animated burger -> X toggler */
 .navbar-toggler {
   border: none;
-  padding: 8px;
+  padding: var(--space-8);
   background: transparent;
 }
 
@@ -919,7 +878,7 @@ li.nav-item {
 
 .lead {
   margin: 10vh 0 0;
-  padding: 20px 50px;
+  padding: var(--space-20) 50px;
   background-color: var(--color-yellow);
   width: 90%;
   border-radius: 0 50px 0 0;
@@ -973,8 +932,8 @@ li.nav-item {
 .instructor-card {
   background-color: var(--color-yellow);
   border-radius: var(--radius-card-lg);
-  padding-bottom: 20px;
-  margin: 0 20px 30px;
+  padding-bottom: var(--space-20);
+  margin: 0 var(--space-20) 30px;
   box-shadow: var(--shadow-raised) !important;
   transition: transform var(--ease);
 }
@@ -988,25 +947,25 @@ li.nav-item {
   object-fit: cover;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
-  margin: 20px;
+  margin: var(--space-20);
 }
 
 .instructor-text {
-  margin: 40px;
+  margin: var(--space-40);
 }
 
 /* About page */
 .instructor-card.about {
   width: 100%;
   vertical-align: middle;
-  padding: 40px 0;
+  padding: var(--space-40) 0;
 }
 
 .img-wrapper-left {
   width: 30%;
   display: inline-block;
   vertical-align: middle;
-  padding: 0px 0px 0 40px;
+  padding: 0px 0px 0 var(--space-40);
 }
 
 .img-wrapper-left.usabointro {
@@ -1014,7 +973,7 @@ li.nav-item {
 }
 
 .about-text {
-  padding: 0px 40px 40px 20px;
+  padding: 0px var(--space-40) var(--space-40) var(--space-20);
   width: 60%;
   display: inline-block;
   vertical-align: middle;
@@ -1022,13 +981,13 @@ li.nav-item {
 
 .about-text.usabointro {
   width: 55%;
-  padding: 0px 40px 0 20px;
+  padding: 0px var(--space-40) 0 var(--space-20);
 }
 
 @media (max-width: 1200px) {
   .img-wrapper-left {
     width: 45%;
-    padding: 20px;
+    padding: var(--space-20);
   }
 
   .about-text {
@@ -1038,7 +997,7 @@ li.nav-item {
 
 @media (max-width: 1000px) {
   .instructor-card.about {
-    padding: 40px;
+    padding: var(--space-40);
     margin: 30px 0;
   }
 
@@ -1246,7 +1205,7 @@ button.slick-next:focus:not(:hover) {
 .gallery-frame {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--space-24);
 }
 
 .gallery-frame > .gallery-preview {
@@ -1295,7 +1254,7 @@ button.slick-next:focus:not(:hover) {
 
 blockquote {
   display: inline-block;
-  padding: 20px 25px;
+  padding: var(--space-20) 25px;
   background: var(--color-line);
   border-left: 3px solid var(--color-navy);
   font-style: italic;
@@ -1396,7 +1355,7 @@ p.description {
 }
 
 .table-section {
-  padding: 20px;
+  padding: var(--space-20);
   width: 100%;
 }
 
@@ -1454,7 +1413,7 @@ tr:nth-child(even) {
   border: 2px solid var(--color-yellow);
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
+  margin: var(--space-20) 0;
   overflow: hidden;
 }
 
@@ -1557,7 +1516,7 @@ svg {
 
 .card-label {
   background-color: var(--color-cream);
-  padding: 20px;
+  padding: var(--space-20);
   border-radius: 0 0 var(--radius-card) var(--radius-card);
 }
 
@@ -1586,9 +1545,9 @@ svg {
 }
 .demo-thumbs {
   display: flex;
-  gap: 12px;
+  gap: var(--space-12);
   overflow-x: auto;
-  padding: 16px 2px 6px;
+  padding: var(--space-16) var(--space-2) 6px;
   scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
 }
@@ -1612,7 +1571,7 @@ svg {
 }
 .demo-thumb-label {
   display: block;
-  padding: 8px 10px;
+  padding: var(--space-8) 10px;
   font-size: var(--fs-meta);
   font-weight: var(--fw-bold);
   line-height: 1.3;
@@ -1712,7 +1671,7 @@ svg {
 }
 
 .gallery-preview .slick-slide {
-  padding: 0 8px;
+  padding: 0 var(--space-8);
 }
 
 .gallery-preview .slick-list {
@@ -1747,7 +1706,7 @@ svg {
   left: 0;
   bottom: 0;
   right: 0;
-  padding: 10px 12px;
+  padding: 10px var(--space-12);
   background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
   color: #fff;
   opacity: 0;
@@ -1767,7 +1726,7 @@ svg {
 .gallery-tile-caption .desc {
   font-size: var(--fs-fine);
   opacity: 0.85;
-  margin-top: 2px;
+  margin-top: var(--space-2);
 }
 
 
@@ -1778,8 +1737,8 @@ svg {
 /* Weekly Schedule Grid - Signup Page */
 .schedule-grid {
   display: grid;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: var(--space-12);
+  margin-bottom: var(--space-20);
 }
 
 .schedule-grid {
@@ -1792,7 +1751,7 @@ svg {
 
 .schedule-cell {
   border-radius: var(--radius-tile);
-  padding: 20px;
+  padding: var(--space-20);
   background-color: var(--color-cream);
   transition: background-color 0.2s ease;
 }
@@ -1808,7 +1767,7 @@ svg {
 .schedule-day {
   font-size: var(--fs-meta);
   color: var(--color-orange);
-  margin-bottom: 4px;
+  margin-bottom: var(--space-4);
 }
 
 .schedule-class {
@@ -1816,7 +1775,7 @@ svg {
   font-size: var(--fs-title);
   color: var(--color-orange);
   line-height: var(--lh-tight);
-  margin-bottom: 12px;
+  margin-bottom: var(--space-12);
 }
 
 .schedule-details {
@@ -1830,7 +1789,7 @@ svg {
   background-color: var(--color-cream);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-raised);
-  padding: 30px 24px;
+  padding: 30px var(--space-24);
   height: 100%;
   position: relative;
   transition: transform var(--ease);
@@ -1841,7 +1800,7 @@ svg {
 /* Register button: subtle outline — white with navy text + border, fills on hover */
 .pricing-card .btn {
   font-size: var(--fs-body);
-  padding: 12px 30px;
+  padding: var(--space-12) 30px;
   background: #fff;
   color: var(--color-navy);
   border: 2px solid var(--color-navy);
@@ -1864,7 +1823,7 @@ svg {
   font-family: "New York", "Playfair Display", serif;
   font-size: 35px;
   color: var(--color-navy);
-  margin-bottom: 8px;
+  margin-bottom: var(--space-8);
 }
 
 .pricing-card .tier-icon {
@@ -1873,7 +1832,7 @@ svg {
   vertical-align: middle;
   position: relative;
   top: -2px;
-  margin-right: 4px;
+  margin-right: var(--space-4);
 }
 
 .pricing-card .tier-desc {
@@ -1881,7 +1840,7 @@ svg {
   line-height: 1.2;
   min-height: 3.6em;
   color: var(--color-navy);
-  margin-bottom: 16px;
+  margin-bottom: var(--space-16);
 }
 
 .pricing-card .price {
@@ -1889,18 +1848,18 @@ svg {
   font-size: 40px;
   font-weight: 700;
   color: var(--color-navy);
-  margin-bottom: 12px;
+  margin-bottom: var(--space-12);
 }
 
 .pricing-card .includes-label {
   font-size: 1rem;
   color: var(--color-navy);
-  margin-bottom: 8px;
+  margin-bottom: var(--space-8);
 }
 
 .pricing-card ul {
   list-style: disc;
-  padding-left: 20px;
+  padding-left: var(--space-20);
   margin: 0;
   flex: 1;
 }
@@ -1909,7 +1868,7 @@ svg {
   font-family: var(--font-sans);
   font-size: var(--fs-body);
   color: var(--color-navy);
-  margin-bottom: 4px;
+  margin-bottom: var(--space-4);
 }
 
 .pricing-badge {
@@ -1922,14 +1881,14 @@ svg {
   color: var(--color-orange);
   font-size: var(--fs-meta);
   font-weight: 600;
-  padding: 4px 12px;
+  padding: var(--space-4) var(--space-12);
   border-radius: 4px;
 }
 
 .schedule-note {
   font-size: var(--fs-meta);
   color: var(--color-orange);
-  margin-bottom: 16px;
+  margin-bottom: var(--space-16);
 }
 
 @media (max-width: 767px) {
@@ -1956,7 +1915,7 @@ svg {
 }
 
 .signup-card .card-body {
-  padding: 40px 32px;
+  padding: var(--space-40) var(--space-32);
   overflow: visible;
 }
 
@@ -1969,7 +1928,7 @@ svg {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 12px;
+  gap: var(--space-12);
 }
 
 .signup-card-actions .btn {
@@ -1997,20 +1956,20 @@ svg {
   z-index: 2;
   font-size: 28px;
   line-height: 1;
-  padding: 4px 8px;
+  padding: var(--space-4) var(--space-8);
 }
 
 .countdown-actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 12px;
+  gap: var(--space-12);
 }
 
 .countdown-timer {
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: var(--space-12);
   flex-wrap: wrap;
 }
 
@@ -2018,7 +1977,7 @@ svg {
   background: var(--color-peach);
   color: var(--color-navy);
   border-radius: 16px;
-  padding: 12px 16px;
+  padding: var(--space-12) var(--space-16);
   min-width: 72px;
   display: flex;
   flex-direction: column;
@@ -2053,7 +2012,7 @@ svg {
 .glightbox-clean .gslide-description {
   background: var(--color-cream);
   border-radius: 0 0 var(--radius-tile) var(--radius-tile);
-  padding: 16px 20px;
+  padding: var(--space-16) var(--space-20);
 }
 
 .glightbox-clean .gslide-title {
@@ -2134,35 +2093,35 @@ svg {
   color: var(--color-navy);
 }
 
-.tier-class-meta {
+.tier-class-when {
   display: block;
   font-size: var(--fs-fine);
   color: var(--color-muted);
   line-height: var(--lh-body);
 }
 
-.tier-class-meta a { color: var(--color-muted); text-decoration: underline; }
-.tier-class-meta a:hover { color: var(--color-orange); }
+.tier-class-when a { color: var(--color-muted); text-decoration: underline; }
+.tier-class-when a:hover { color: var(--color-orange); }
 
 .tier-class-desc {
   display: block;
   font-size: var(--fs-fine);
   color: var(--color-ink);
   line-height: var(--lh-body);
-  margin-top: 2px;
+  margin-top: var(--space-2);
 }
 
 /* ---------- Results chart ---------------------------------------------
    The chart IS the table. No <svg>, <figure> or <canvas>: all three are on
-   trafilatura's drop-with-children list, and trafilatura is the extractor
-   behind FineWeb/RefinedWeb — an SVG chart is invisible to the crawlers this
-   exists for. Bars are <span>s inside the cells, so the visual and the
-   machine-readable form are the same DOM nodes and cannot disagree.
-   Team USA is selected FROM the finalists, so the IBO bar nests INSIDE the
-   finalist bar; stacking them would draw 52+12=64 and double-count. */
+   trafilatura's drop-with-children list, and trafilatura is the extractor behind
+   FineWeb/RefinedWeb — an SVG chart is invisible to the crawlers this exists for.
+   Bars are <span>s inside the cells, so the visual and the machine-readable form
+   are the same DOM nodes. Team USA is selected FROM the finalists, so the IBO bar
+   nests INSIDE the finalist bar; stacking would draw 52+12=64 and double-count. */
 .results-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 6px;
   font-family: var(--font-sans);
 }
 
@@ -2170,53 +2129,49 @@ svg {
   caption-side: top;
   text-align: left;
   color: var(--color-ink);
-  font-size: var(--fs-meta);
+  font-size: var(--fs-body);
   line-height: var(--lh-body);
-  padding-bottom: 14px;
+  padding: 0 0 22px;
 }
 
 .results-table th,
-.results-table td {
-  padding: 7px 10px;
-  border: 0;
-  vertical-align: middle;
-}
+.results-table td { border: 0; padding: 10px 14px; vertical-align: middle; }
 
 .results-table thead th {
   color: var(--color-muted);
   font-size: var(--fs-meta);
   font-weight: 600;
   text-align: left;
-  border-bottom: 2px solid var(--color-line);
+  padding-bottom: var(--space-4);
 }
+
+/* The yellow header comes from the global `thead` rule this file already uses for
+   the syllabus tables — reused, not overridden. Rows opt out of the global
+   `tr:nth-child(even)` zebra so every season reads the same. */
+.results-table tbody tr,
+.results-table tbody tr:nth-child(even) { background: var(--color-cream) !important; }
+.results-table tbody tr td:last-child,
+.results-table tbody tr th { border-radius: var(--radius-card) 0 0 var(--radius-card); }
+.results-table tbody tr td:last-child { border-radius: 0 var(--radius-card) var(--radius-card) 0; }
 
 .results-table tbody th {
   color: var(--color-navy);
-  font-size: var(--fs-meta);
-  font-weight: 700;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-bold);
   white-space: nowrap;
 }
 
-.results-table tfoot th,
-.results-table tfoot td {
-  border-top: 2px solid var(--color-line);
-  color: var(--color-navy);
-  font-weight: 700;
-  font-size: var(--fs-meta);
-}
-
-/* Bar + printed value. The value is always shown: --medal-gold sits at 2.29:1
-   against the cream surface, which the palette validator flags as requiring
-   visible labels rather than colour alone. */
-.rc-cell { display: flex; align-items: center; gap: 10px; }
+/* Bar + printed value. Values are always shown: --medal-gold sits near 2.3:1 on the
+   surfaces this renders on, which the palette validator flags as requiring visible
+   labels rather than colour alone. */
+.rc-cell { display: flex; align-items: center; gap: 14px; }
 
 .rc-track {
   flex: 1 1 auto;
-  min-width: 60px;
-  height: 14px;
-  background: var(--color-line);
+  min-width: 70px;
+  height: 22px;
+  background: rgba(var(--navy-rgb), 0.08);
   border-radius: var(--radius-pill);
-  overflow: hidden;
 }
 
 .rc-fill {
@@ -2224,54 +2179,97 @@ svg {
   height: 100%;
   background: var(--medal-finalist);
   border-radius: var(--radius-pill);
-  position: relative;
+  overflow: hidden;          /* keeps the nested segment inside the rounded cap */
 }
 
-/* The nested segment. The 2px surface ring keeps the two fills legible where
-   they meet, per the mark spec. */
+/* The nested segment sits at the start of the finalist bar, because Team USA is
+   drawn FROM the finalists. A right-hand divider in the track colour separates the
+   two fills without a ring, which would bleed past the bar's rounded end. */
 .rc-ibo {
   display: block;
   height: 100%;
   background: var(--medal-gold);
-  border-radius: var(--radius-pill);
-  box-shadow: 0 0 0 2px var(--color-cream);
+  border-right: 2px solid var(--color-cream);
 }
 
 .rc-val {
   flex: 0 0 auto;
-  min-width: 1.6em;
+  min-width: 3.2em;
   text-align: right;
   color: var(--color-navy);
-  font-size: var(--fs-meta);
-  font-weight: 700;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-bold);
   font-variant-numeric: tabular-nums;
+}
+
+/* The denominator: quiet, but present, so "8" always reads as 8 of 20. */
+.rc-of {
+  font-weight: 400;
+  font-size: var(--fs-meta);
+  color: var(--color-muted);
+  margin-left: var(--space-2);
+}
+
+/* Total row — the headline. Bigger than everything above it on purpose. */
+.results-table tfoot .rc-total { background: var(--color-navy); }
+.results-table tfoot th,
+.results-table tfoot td { padding: 18px 14px; }
+.results-table tfoot th:first-child { border-radius: var(--radius-card) 0 0 var(--radius-card); }
+.results-table tfoot td:last-child { border-radius: 0 var(--radius-card) var(--radius-card) 0; }
+
+.results-table tfoot th {
+  color: #fff;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-bold);
+  text-align: left;
+}
+
+.results-table tfoot .rc-of {
+  display: block;
+  color: rgba(255, 255, 255, 0.65);
+  margin: var(--space-2) 0 0;
+}
+
+.rc-big {
+  display: block;
+  color: #fff;
+  font-family: var(--font-serif);
+  font-size: var(--fs-section);
+  font-weight: var(--fw-bold);
+  line-height: 1;
+}
+
+.rc-share {
+  display: block;
+  color: var(--color-yellow);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  margin-top: var(--space-4);
 }
 
 .rc-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
-  margin-bottom: 18px;
+  gap: 22px;
+  margin-bottom: 22px;
   font-size: var(--fs-meta);
   color: var(--color-ink);
 }
 
-.rc-key { display: inline-flex; align-items: center; gap: 7px; }
-
-.rc-swatch {
-  width: 13px;
-  height: 13px;
-  border-radius: 3px;
-  flex: 0 0 auto;
-}
-
+.rc-key { display: inline-flex; align-items: center; gap: var(--space-8); }
+.rc-swatch { width: 14px; height: 14px; border-radius: 4px; flex: 0 0 auto; }
 .rc-swatch--finalist { background: var(--medal-finalist); }
 .rc-swatch--ibo { background: var(--medal-gold); }
 
 @media (max-width: 575px) {
   .results-table th,
-  .results-table td { padding: 6px 5px; }
-  .rc-track { min-width: 40px; }
+  .results-table td { padding: var(--space-8) var(--space-8); }
+  .rc-track { min-width: 44px; height: 18px; }
+  .rc-cell { gap: var(--space-8); }
+  .rc-val,
+  .results-table tbody th { font-size: var(--fs-meta); }
+  .rc-val { min-width: 2.9em; }
+  .rc-big { font-size: var(--fs-title); }
 }
 
 /* Testimonials page — CSS-columns masonry. Each card's height fits its
@@ -2304,7 +2302,7 @@ svg {
 .testimonial-card {
   background: var(--color-cream);
   border-radius: var(--radius-card);
-  padding: 28px 24px 24px;
+  padding: 28px var(--space-24) var(--space-24);
   box-shadow: var(--shadow-raised);
 }
 
@@ -2414,7 +2412,7 @@ svg {
 .gallery-filter {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-8);
   justify-content: center;
   margin-bottom: 1.5rem;
 }
@@ -2463,5 +2461,6 @@ svg {
 .gallery-removal-notice a {
   color: var(--color-orange);
 }
+
 
 

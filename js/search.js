@@ -114,7 +114,6 @@ fetch("./blogs/blogs.json")
     })
 
   function limitDisplay(num,maxnum) {
-      console.log("limit")
         blogs.forEach(blog => {
             const isVisible = blog.element.classList.contains(num.toString());
             blog.element.classList.toggle("hide", !isVisible)            

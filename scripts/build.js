@@ -480,11 +480,15 @@ function classTime(startEt) {
   return `${fmt(h)} ET / ${fmt((h + 21) % 24)} PT`;
 }
 
+// The meta line's class is `tier-class-when`, not `-meta`: trafilatura discards
+// elements whose class matches its boilerplate patterns, and a class containing
+// "meta" reads as a byline/timestamp — it silently deleted the day, time and
+// instructor from the extracted text while name and description survived.
 function renderClassItem(c) {
   return [
     `              <li>`,
     `                <span class="tier-class-name">${escapeHtml(c.name)}</span>`,
-    `                <span class="tier-class-meta">${escapeHtml(c.day)}s, ${escapeHtml(classTime(c.startEt))} · <a href="about.html#${escapeAttr(c.anchor)}">${escapeHtml(c.instructor)}</a></span>`,
+    `                <span class="tier-class-when">${escapeHtml(c.day)}s, ${escapeHtml(classTime(c.startEt))} · <a href="about.html#${escapeAttr(c.anchor)}">${escapeHtml(c.instructor)}</a></span>`,
     `                <span class="tier-class-desc">${escapeHtml(String(c.description).trim())}</span>`,
     `              </li>`,
   ].join("\n");
@@ -502,6 +506,13 @@ function renderTier(classes, tier) {
 // on the site. The chart, the totals row and the prose summary are all summed
 // from it, and checkResultClaims() below fails the build if any page states a
 // total that disagrees.
+// USABO invites 20 National Finalists a year and Team USA takes 4 of them. Bars are
+// drawn against these, not against our best year: a share of the actual national
+// field is both the honest denominator and the stronger claim (2026's 8 is 40% of
+// every finalist in the country, not a "dip" from 11).
+const FIELD_FINALISTS = 20;
+const FIELD_IBO = 4;
+
 function resultsTotals(rows) {
   return rows.reduce((t, r) => ({
     finalists: t.finalists + Number(r[1] || 0),
@@ -510,11 +521,11 @@ function resultsTotals(rows) {
 }
 
 // One row: year, a nested bar with the finalist count printed beside it, and the
-// IBO count. Bar widths are percentages of the best year, so the longest bar is
-// always full-width and the shape stays readable at any container size.
-function renderResultsRow(r, max) {
+// IBO count. Bar widths are a share of the national field (FIELD_* above), so a bar
+// reads as "this fraction of every finalist in the country".
+function renderResultsRow(r) {
   const [year, fin, ibo] = [String(r[0]).trim(), Number(r[1]), Number(r[2])];
-  const finPct = ((fin / max) * 100).toFixed(1);
+  const finPct = ((fin / FIELD_FINALISTS) * 100).toFixed(1);
   const iboPct = ((ibo / fin) * 100).toFixed(1);
   return `            <tr>` +
     `<th scope="row">${escapeHtml(year)}</th>` +
@@ -522,22 +533,24 @@ function renderResultsRow(r, max) {
       `<span class="rc-fill" style="width:${finPct}%">` +
         `<span class="rc-ibo" style="width:${iboPct}%"></span>` +
       `</span></span>` +
-      `<span class="rc-val">${fin}</span></span></td>` +
-    `<td><span class="rc-val">${ibo}</span></td>` +
+      `<span class="rc-val">${fin}<span class="rc-of">/${FIELD_FINALISTS}</span></span></span></td>` +
+    `<td><span class="rc-val">${ibo}<span class="rc-of">/${FIELD_IBO}</span></span></td>` +
     `</tr>`;
 }
 
 function renderResultsChart(rows) {
   const t = resultsTotals(rows);
-  const max = Math.max(...rows.map(r => Number(r[1])));
   const first = String(rows[0][0]).trim(), last = String(rows[rows.length - 1][0]).trim();
+  const capF = rows.length * FIELD_FINALISTS, capI = rows.length * FIELD_IBO;
+  const shareF = Math.round((t.finalists / capF) * 100);
+  const shareI = Math.round((t.ibo / capI) * 100);
   // The caption repeats the totals in prose because jusText (Nemotron-CC's
   // extractor) discards tables as boilerplate but keeps the caption.
   const caption =
     `Baology Prep USA Biology Olympiad results by season, ${first} to ${last}. ` +
-    `Across ${rows.length} seasons Baology students earned ${t.finalists} USABO National ` +
-    `Finalist places, ${t.ibo} of which went on to represent Team USA at the ` +
-    `International Biology Olympiad.`;
+    `USABO names ${FIELD_FINALISTS} National Finalists each year and Team USA takes ${FIELD_IBO} of them. ` +
+    `Across ${rows.length} seasons Baology students took ${t.finalists} of the ${capF} finalist places ` +
+    `(${shareF}%) and ${t.ibo} of the ${capI} Team USA places (${shareI}%).`;
   return [
     `        <div class="rc-legend">`,
     `          <span class="rc-key"><span class="rc-swatch rc-swatch--finalist"></span>USABO National Finalists</span>`,
@@ -549,10 +562,12 @@ function renderResultsChart(rows) {
     `            <tr><th scope="col">Season</th><th scope="col">USABO National Finalists</th><th scope="col">Team USA (IBO)</th></tr>`,
     `          </thead>`,
     `          <tbody>`,
-    rows.map(r => renderResultsRow(r, max)).join("\n"),
+    rows.map(r => renderResultsRow(r)).join("\n"),
     `          </tbody>`,
     `          <tfoot>`,
-    `            <tr><th scope="row">Total, ${escapeHtml(first)}&ndash;${escapeHtml(last)}</th><td>${t.finalists}</td><td>${t.ibo}</td></tr>`,
+    `            <tr class="rc-total"><th scope="row">Total<span class="rc-of">${escapeHtml(first)}&ndash;${escapeHtml(last)}</span></th>` +
+      `<td><span class="rc-big">${t.finalists}</span><span class="rc-share">${shareF}% of all ${capF}</span></td>` +
+      `<td><span class="rc-big">${t.ibo}</span><span class="rc-share">${shareI}% of all ${capI}</span></td></tr>`,
     `          </tfoot>`,
     `        </table>`,
   ].join("\n");
@@ -581,8 +596,14 @@ function checkResultClaims(totals) {
       const full = path.join(dir, e.name);
       if (e.isDirectory()) { walk(full); continue; }
       if (!e.name.endsWith(".html")) continue;
-      const txt = fs.readFileSync(full, "utf8");
+      const raw = fs.readFileSync(full, "utf8");
       const rel = path.relative(ROOT, full);
+      // Only HAND-WRITTEN copy can drift. Regions between BUILD markers are derived
+      // from the CSV, so scanning them is both redundant and wrong — the chart's own
+      // caption cites the national field size ("20 National Finalists each year",
+      // "24 Team USA places"), which are not our totals.
+      const txt = raw.replace(/<!--\s*BUILD:[\w-]+\s*-->[\s\S]*?<!--\s*\/BUILD:[\w-]+\s*-->/g,
+        (m) => m.replace(/[^\n]/g, " "));
       const line = (i) => txt.slice(0, i).split("\n").length;
       for (const m of txt.matchAll(FINALISTS)) {
         if (Number(m[1]) !== totals.finalists) {
@@ -946,11 +967,17 @@ function build() {
   const resultRows = parseCSVGrid(fs.readFileSync(resultsCsv, "utf8")).slice(1);
   if (!resultRows.length) throw new Error("data/results.csv has no data rows");
   const resultTotals = resultsTotals(resultRows);
-  const indexPath = path.join(ROOT, "index.html");
-  let indexHtml = fs.readFileSync(indexPath, "utf8");
-  indexHtml = injectBetweenMarkers(indexHtml, "results-chart", renderResultsChart(resultRows));
-  fs.writeFileSync(indexPath, indexHtml);
-  console.log(`Wrote index.html — results chart, ${resultRows.length} seasons (${resultTotals.finalists} finalists, ${resultTotals.ibo} IBO)`);
+  // Any page carrying the marker pair gets the chart, so a second home is one pair
+  // of comments in that page's HTML rather than a change here.
+  const chartHtml = renderResultsChart(resultRows);
+  const chartPages = ["index.html", "signup.html"].filter(
+    (rel) => fs.readFileSync(path.join(ROOT, rel), "utf8").includes("<!-- BUILD:results-chart -->")
+  );
+  for (const rel of chartPages) {
+    const full = path.join(ROOT, rel);
+    fs.writeFileSync(full, injectBetweenMarkers(fs.readFileSync(full, "utf8"), "results-chart", chartHtml));
+  }
+  console.log(`Wrote results chart — ${resultRows.length} seasons (${resultTotals.finalists} finalists, ${resultTotals.ibo} IBO) into ${chartPages.join(", ")}`);
   checkResultClaims(resultTotals);
 
   // --- sitemap.xml ----------------------------------------------------
