@@ -66,8 +66,8 @@ var SITE_CONFIG = {
   // popup to everyone, including visitors who dismissed the previous one.
   courseStartIso: "2026-09-19T16:00:00-07:00",
 
-  // Recording of the April 27 info session (Zoom)
-  infoSessionRecordingUrl: "https://us02web.zoom.us/rec/play/qVHwtO3SF_3lUnGw1zoTq9kDsxSU9zzq14Q8rpFyxj4CRMy0uD4Gg8T3Q3qTrJ5VA_vzbB_XP9M7HUOo.S6zh8BPgQteQVIKy?eagerLoadZvaPages=sidemenu.billing.plan_management&accessLevel=meeting&canPlayFromShare=true&from=share_recording_detail&startTime=1777334440000&oldStyle=true&pwd=DOfqMutw_8j2ld801QAAIAAAAE_2HP_la0hC830osH4hJv9uh448uiA1Vo8PnaWoLf6zcsN0k3jYpHj127OLSBI6sDAwMDAwNA"
+  // Info session recording (YouTube). Rotate each semester alongside officialAdUrl.
+  infoSessionRecordingUrl: "https://youtu.be/i27Fl1RZlUs",
 };
 
 // Auto-apply config to any element with data-site-href or data-site-src.

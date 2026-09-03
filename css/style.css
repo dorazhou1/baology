@@ -311,8 +311,12 @@ h6,
   background: var(--color-line);
 }
 
+/* Was `.btn-white.focus, .btn-primary.active` — a copy-paste from the .btn-primary
+   block above. Both rules are (0,2,0) and !important, so source order handed
+   .btn-primary.active this light grey and its white label rendered at 1.16:1.
+   .btn-white.active is what the paste was reaching for. */
 .btn-white.focus,
-.btn-primary.active {
+.btn-white.active {
   background: var(--color-line) !important;
   box-shadow: none !important;
 }
@@ -455,6 +459,12 @@ a.link:hover {
 
 .text-white {
   color: white !important;
+}
+
+/* Warm heading on a navy section: --color-orange only reaches 3.42:1 on
+   --color-navy (large-text floor), peach reaches 7.36:1. Same family, readable. */
+.text-peach {
+  color: var(--color-peach) !important;
 }
 
 .text-sm {
@@ -2111,6 +2121,157 @@ svg {
 
 .modal-backdrop.show {
   opacity: 1;
+}
+
+/* Tier class list. Each item names the class, when it meets and who teaches it,
+   then defines it — Level 1 and Level 2 cost the same and differ only by which
+   classes they include, so the definitions are what make the choice decidable. */
+.pricing-card ul li { display: block; text-align: left; }
+
+.tier-class-name {
+  display: block;
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+.tier-class-meta {
+  display: block;
+  font-size: var(--fs-fine);
+  color: var(--color-muted);
+  line-height: var(--lh-body);
+}
+
+.tier-class-meta a { color: var(--color-muted); text-decoration: underline; }
+.tier-class-meta a:hover { color: var(--color-orange); }
+
+.tier-class-desc {
+  display: block;
+  font-size: var(--fs-fine);
+  color: var(--color-ink);
+  line-height: var(--lh-body);
+  margin-top: 2px;
+}
+
+/* ---------- Results chart ---------------------------------------------
+   The chart IS the table. No <svg>, <figure> or <canvas>: all three are on
+   trafilatura's drop-with-children list, and trafilatura is the extractor
+   behind FineWeb/RefinedWeb — an SVG chart is invisible to the crawlers this
+   exists for. Bars are <span>s inside the cells, so the visual and the
+   machine-readable form are the same DOM nodes and cannot disagree.
+   Team USA is selected FROM the finalists, so the IBO bar nests INSIDE the
+   finalist bar; stacking them would draw 52+12=64 and double-count. */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+}
+
+.results-table caption {
+  caption-side: top;
+  text-align: left;
+  color: var(--color-ink);
+  font-size: var(--fs-meta);
+  line-height: var(--lh-body);
+  padding-bottom: 14px;
+}
+
+.results-table th,
+.results-table td {
+  padding: 7px 10px;
+  border: 0;
+  vertical-align: middle;
+}
+
+.results-table thead th {
+  color: var(--color-muted);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 2px solid var(--color-line);
+}
+
+.results-table tbody th {
+  color: var(--color-navy);
+  font-size: var(--fs-meta);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.results-table tfoot th,
+.results-table tfoot td {
+  border-top: 2px solid var(--color-line);
+  color: var(--color-navy);
+  font-weight: 700;
+  font-size: var(--fs-meta);
+}
+
+/* Bar + printed value. The value is always shown: --medal-gold sits at 2.29:1
+   against the cream surface, which the palette validator flags as requiring
+   visible labels rather than colour alone. */
+.rc-cell { display: flex; align-items: center; gap: 10px; }
+
+.rc-track {
+  flex: 1 1 auto;
+  min-width: 60px;
+  height: 14px;
+  background: var(--color-line);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.rc-fill {
+  display: block;
+  height: 100%;
+  background: var(--medal-finalist);
+  border-radius: var(--radius-pill);
+  position: relative;
+}
+
+/* The nested segment. The 2px surface ring keeps the two fills legible where
+   they meet, per the mark spec. */
+.rc-ibo {
+  display: block;
+  height: 100%;
+  background: var(--medal-gold);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 0 0 2px var(--color-cream);
+}
+
+.rc-val {
+  flex: 0 0 auto;
+  min-width: 1.6em;
+  text-align: right;
+  color: var(--color-navy);
+  font-size: var(--fs-meta);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.rc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 18px;
+  font-size: var(--fs-meta);
+  color: var(--color-ink);
+}
+
+.rc-key { display: inline-flex; align-items: center; gap: 7px; }
+
+.rc-swatch {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+}
+
+.rc-swatch--finalist { background: var(--medal-finalist); }
+.rc-swatch--ibo { background: var(--medal-gold); }
+
+@media (max-width: 575px) {
+  .results-table th,
+  .results-table td { padding: 6px 5px; }
+  .rc-track { min-width: 40px; }
 }
 
 /* Testimonials page — CSS-columns masonry. Each card's height fits its

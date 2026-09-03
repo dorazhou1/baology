@@ -1,0 +1,82 @@
+# The seven weekly class types — what each one is, who teaches it, and when it meets.
+# Single source of truth for every class name, description, instructor and time on the
+# site. Descriptions are owner-supplied copy; use them verbatim.
+#
+# Schema:
+#   - name:         class name exactly as it appears in the signup tiers (required)
+#     instructor:   full name, matching the <h3> on about.html (required)
+#     anchor:       that instructor's id on about.html, for deep links (required)
+#     day:          weekday it meets (required)
+#     startEt:      24-hour start time, Eastern (required). Pacific is derived at build
+#                   time as ET minus 3, which holds year-round since both zones shift
+#                   together for DST.
+#     levels:       which tiers include it: 1, 2, or both (required). signup.html's tier
+#                   cards are generated from this, so it is the ONLY place tier
+#                   composition is written down.
+#     description:  one sentence, `>` folded scalar (required)
+#
+# A class is the key, not the instructor: one instructor may teach several classes, so
+# the same name may appear on more than one entry. Tier membership lives in signup.html.
+
+- name: Main Lecture
+  instructor: Kevin Bao
+  anchor: kevinbao
+  day: Saturday
+  startEt: "19:00"
+  levels: [1, 2]
+  description: >
+    Lecture-based class covering the central curriculum.
+
+- name: New Concepts
+  instructor: Joseph Dong
+  anchor: josephdong
+  day: Sunday
+  startEt: "20:00"
+  levels: [2]
+  description: >
+    Learn deeper and more advanced concepts than even what is covered in the main lecture.
+
+- name: Lecture Primer
+  instructor: Jason Wang
+  anchor: jasonwang
+  day: Tuesday
+  startEt: "20:00"
+  levels: [1]
+  description: >
+    Prepares students for the advanced topics of the core lecture by reviewing fundamentals.
+
+- name: Case Study
+  instructor: Vishal Surya
+  anchor: vishalsurya
+  day: Thursday
+  startEt: "20:00"
+  levels: [1, 2]
+  description: >
+    Discuss specific diseases with a focus on real-world clinical applications.
+
+- name: Problem Solving
+  instructor: Suzuko Ohshima
+  anchor: suzukoohshima
+  day: Wednesday
+  startEt: "20:00"
+  levels: [1]
+  description: >
+    Students join in and learn from the pros how to tackle the complicated problems of USABO.
+
+- name: Skill Building
+  instructor: Sunipun Biswas
+  anchor: sunipunbiswas
+  day: Friday
+  startEt: "20:00"
+  levels: [2]
+  description: >
+    Learn how biology is applied in real science and how that is used to develop test questions!
+
+- name: Homework Review
+  instructor: Kian Dhawan
+  anchor: kiandhawan
+  day: Monday
+  startEt: "20:00"
+  levels: [1, 2]
+  description: >
+    Live review of weekly homework where we will go over answers and student questions.

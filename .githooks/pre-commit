@@ -25,6 +25,7 @@ if ! npm run build >/dev/null; then
 fi
 
 # Stage the generated outputs so the fresh render is part of this commit.
-git add explore.html explore/gallery.html explore/testimonials.html blog-main.html sitemap.xml
+git add explore.html explore/gallery.html explore/testimonials.html blog-main.html \
+        index.html about/syllabus.html sitemap.xml
 
 exit 0

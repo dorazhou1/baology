@@ -123,6 +123,8 @@
   </nav>
 </header>
 
+<main>
+
   <!-- hero area -->
   <section class="hero-area bg-primary">
     <div class="container">
@@ -155,9 +157,6 @@
     <div class="layer wow fadeInRight" id="l4">
       <img src="images/illustrations/dots-orange.png" alt="bg-shape">
     </div>
-    <div class="layer wow fadeInLeft" id="l5">
-      <img src="images/illustrations/leaf-yng" alt="bg-shapellow.pe">
-    </div>
     <div class="layer wow fadeInDown" id="l6">
       <img src="images/illustrations/dots-group-orange.png" alt="bg-shape">
     </div>
@@ -178,22 +177,58 @@
   <!-- /hero area -->
 
   <!-- about -->
-  <section class="section">
+  <section class="section bg-dark">
     <div class="container" style="padding-left: 20%; padding-right: 20%;">
       <div class="row">
         <div class="col-lg-10 mx-auto text-center">
-          <h2 class="text-secondary wow fadeInDown mb-3" data-wow-delay=".2s" data-wow-duration=".8s">Why Baology?</h2>
-          <p class="text-primary-dark wow fadeInLeft mb-5" data-wow-delay=".3s" data-wow-duration=".8s">No course has
-            the value that this course offers nor the results. With over <b>54 National Finalists and 13 Team USA IBO
-              competitors</b> in past years and at some of the lowest rates, Baology has no equal! Click below to find
-            out more about what we're all about.</p>
-          <a href="about.html" class="btn btn-primary wow fadeInUp" data-wow-delay=".3s" data-wow-duration=".8s">LEARN
+          <h2 class="text-peach wow fadeInDown mb-3" data-wow-delay=".2s" data-wow-duration=".8s">Why Baology?</h2>
+          <p class="text-white wow fadeInLeft mb-5" data-wow-delay=".3s" data-wow-duration=".8s">No course offers
+            this value or these results. Since 2021, Baology students have earned <b>52 USA Biology Olympiad (USABO)
+              National Finalist places and 12 spots on Team USA at the International Biology Olympiad</b>. At some of
+            the lowest rates anywhere, Baology has no equal! Click below to find out more about what we're all
+            about.</p>
+          <a href="about.html" class="btn btn-white wow fadeInUp" data-wow-delay=".3s" data-wow-duration=".8s">LEARN
             MORE</a>
         </div>
       </div>
     </div>
   </section>
   <!-- /about -->
+
+  <!-- results -->
+  <section class="section" id="results">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9 mx-auto">
+          <h2 class="text-secondary text-center mb-3 wow fadeInDown" data-wow-delay=".2s">See Our Results</h2>
+          <!-- BUILD:results-chart -->
+        <div class="rc-legend">
+          <span class="rc-key"><span class="rc-swatch rc-swatch--finalist"></span>USABO National Finalists</span>
+          <span class="rc-key"><span class="rc-swatch rc-swatch--ibo"></span>Team USA at the IBO (selected from the finalists)</span>
+        </div>
+        <table class="results-table">
+          <caption>Baology Prep USA Biology Olympiad results by season, 2021 to 2026. USABO names 20 National Finalists each year and Team USA takes 4 of them. Across 6 seasons Baology students took 52 of the 120 finalist places (43%) and 12 of the 24 Team USA places (50%).</caption>
+          <thead>
+            <tr><th scope="col">Season</th><th scope="col">USABO National Finalists</th><th scope="col">Team USA (IBO)</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">2021</th><td><span class="rc-cell"><span class="rc-track"><span class="rc-fill" style="width:35.0%"><span class="rc-ibo" style="width:14.3%"></span></span></span><span class="rc-val">7<span class="rc-of">/20</span></span></span></td><td><span class="rc-val">1<span class="rc-of">/4</span></span></td></tr>
+            <tr><th scope="row">2022</th><td><span class="rc-cell"><span class="rc-track"><span class="rc-fill" style="width:35.0%"><span class="rc-ibo" style="width:28.6%"></span></span></span><span class="rc-val">7<span class="rc-of">/20</span></span></span></td><td><span class="rc-val">2<span class="rc-of">/4</span></span></td></tr>
+            <tr><th scope="row">2023</th><td><span class="rc-cell"><span class="rc-track"><span class="rc-fill" style="width:55.0%"><span class="rc-ibo" style="width:18.2%"></span></span></span><span class="rc-val">11<span class="rc-of">/20</span></span></span></td><td><span class="rc-val">2<span class="rc-of">/4</span></span></td></tr>
+            <tr><th scope="row">2024</th><td><span class="rc-cell"><span class="rc-track"><span class="rc-fill" style="width:45.0%"><span class="rc-ibo" style="width:11.1%"></span></span></span><span class="rc-val">9<span class="rc-of">/20</span></span></span></td><td><span class="rc-val">1<span class="rc-of">/4</span></span></td></tr>
+            <tr><th scope="row">2025</th><td><span class="rc-cell"><span class="rc-track"><span class="rc-fill" style="width:50.0%"><span class="rc-ibo" style="width:30.0%"></span></span></span><span class="rc-val">10<span class="rc-of">/20</span></span></span></td><td><span class="rc-val">3<span class="rc-of">/4</span></span></td></tr>
+            <tr><th scope="row">2026</th><td><span class="rc-cell"><span class="rc-track"><span class="rc-fill" style="width:40.0%"><span class="rc-ibo" style="width:37.5%"></span></span></span><span class="rc-val">8<span class="rc-of">/20</span></span></span></td><td><span class="rc-val">3<span class="rc-of">/4</span></span></td></tr>
+          </tbody>
+          <tfoot>
+            <tr class="rc-total"><th scope="row">Total<span class="rc-of">2021&ndash;2026</span></th><td><span class="rc-big">52</span><span class="rc-share">43% of all 120</span></td><td><span class="rc-big">12</span><span class="rc-share">50% of all 24</span></td></tr>
+          </tfoot>
+        </table>
+        <!-- /BUILD:results-chart -->
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /results -->
 
   <!-- team -->
   <section class="section bg-primary">
@@ -346,6 +381,8 @@
     </div>
   </section>
   <!-- /demo CTA -->
+
+</main>
 
   <!-- footer -->
   <footer class="bg-dark footer-section">

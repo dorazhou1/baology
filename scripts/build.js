@@ -340,14 +340,17 @@ function syllabusIsoDate(value) {
 // a row header, the rest are data cells. Short rows are padded to the <thead>'s
 // column count so the table can never render ragged. One row per line keeps the
 // git diff to a single changed line per changed week.
-function renderSyllabusRow(cells, colCount, dateIdx) {
+// Dates are PLAIN TEXT, deliberately. A <time datetime> wrapper looks more
+// machine-readable but is worse: `time` is on trafilatura's drop-with-children
+// list (so are `svg`, `figure`, `canvas`), and trafilatura is the extractor behind
+// FineWeb/RefinedWeb — the wrapper deleted every date from the text LLMs train on,
+// which is the audience this baking exists for.
+function renderSyllabusRow(cells, colCount) {
   const out = [];
   for (let i = 0; i < colCount; i++) {
     const raw = cells[i] != null ? String(cells[i]).trim() : "";
-    if (i === 0) { out.push(`<th scope="row">${escapeHtml(raw)}</th>`); continue; }
-    const iso = i === dateIdx ? syllabusIsoDate(raw) : null;
-    out.push(iso
-      ? `<td><time datetime="${escapeAttr(iso)}">${escapeHtml(raw)}</time></td>`
+    out.push(i === 0
+      ? `<th scope="row">${escapeHtml(raw)}</th>`
       : `<td>${escapeHtml(raw)}</td>`);
   }
   return `                                <tr>${out.join("")}</tr>`;
@@ -452,6 +455,153 @@ function buildSyllabusJsonLd(semesters) {
   return `    <script type="application/ld+json">\n` +
     JSON.stringify(doc, null, 2).split("\n").map(l => "    " + l).join("\n") +
     `\n    </script>`;
+}
+
+// --- Class types --------------------------------------------------------
+// data/classes.yaml is the source of truth for what each weekly class IS, who
+// teaches it, when it meets and which tiers include it. Before this the seven
+// names appeared as bare <li> labels in the signup tiers and were defined
+// nowhere on the site — so the Level 1 vs Level 2 choice, which costs the same
+// either way, turned entirely on undefined terms.
+const WEEK_FROM_SAT = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+// The course week starts with Saturday's Main Lecture, so the list reads as a
+// week rather than in whatever order the file happens to be in.
+function sortClassesByWeek(classes) {
+  return [...classes].sort((a, b) => WEEK_FROM_SAT.indexOf(a.day) - WEEK_FROM_SAT.indexOf(b.day));
+}
+
+// "20:00" -> "8:00pm ET / 5:00pm PT". Pacific is derived, never stored: both
+// zones shift for DST together, so ET-3 holds year-round. Rendering the zone as
+// ET (not EST) is likewise correct in both halves of the season.
+function classTime(startEt) {
+  const [h, m] = String(startEt).split(":").map(Number);
+  const fmt = (x) => `${(x % 12) || 12}:${String(m).padStart(2, "0")}${x < 12 ? "am" : "pm"}`;
+  return `${fmt(h)} ET / ${fmt((h + 21) % 24)} PT`;
+}
+
+function renderClassItem(c) {
+  return [
+    `              <li>`,
+    `                <span class="tier-class-name">${escapeHtml(c.name)}</span>`,
+    `                <span class="tier-class-meta">${escapeHtml(c.day)}s, ${escapeHtml(classTime(c.startEt))} · <a href="about.html#${escapeAttr(c.anchor)}">${escapeHtml(c.instructor)}</a></span>`,
+    `                <span class="tier-class-desc">${escapeHtml(String(c.description).trim())}</span>`,
+    `              </li>`,
+  ].join("\n");
+}
+
+// Tier membership comes from each class's `levels`, so the cards and the class
+// list can never disagree about what a tier includes.
+function renderTier(classes, tier) {
+  const inTier = tier === "full" ? classes : classes.filter(c => (c.levels || []).includes(tier));
+  return sortClassesByWeek(inTier).map(renderClassItem).join("\n");
+}
+
+// --- Results chart ------------------------------------------------------
+// data/results.csv is the single source of truth for every finalist/IBO count
+// on the site. The chart, the totals row and the prose summary are all summed
+// from it, and checkResultClaims() below fails the build if any page states a
+// total that disagrees.
+function resultsTotals(rows) {
+  return rows.reduce((t, r) => ({
+    finalists: t.finalists + Number(r[1] || 0),
+    ibo: t.ibo + Number(r[2] || 0),
+  }), { finalists: 0, ibo: 0 });
+}
+
+// One row: year, a nested bar with the finalist count printed beside it, and the
+// IBO count. Bar widths are percentages of the best year, so the longest bar is
+// always full-width and the shape stays readable at any container size.
+function renderResultsRow(r, max) {
+  const [year, fin, ibo] = [String(r[0]).trim(), Number(r[1]), Number(r[2])];
+  const finPct = ((fin / max) * 100).toFixed(1);
+  const iboPct = ((ibo / fin) * 100).toFixed(1);
+  return `            <tr>` +
+    `<th scope="row">${escapeHtml(year)}</th>` +
+    `<td><span class="rc-cell"><span class="rc-track">` +
+      `<span class="rc-fill" style="width:${finPct}%">` +
+        `<span class="rc-ibo" style="width:${iboPct}%"></span>` +
+      `</span></span>` +
+      `<span class="rc-val">${fin}</span></span></td>` +
+    `<td><span class="rc-val">${ibo}</span></td>` +
+    `</tr>`;
+}
+
+function renderResultsChart(rows) {
+  const t = resultsTotals(rows);
+  const max = Math.max(...rows.map(r => Number(r[1])));
+  const first = String(rows[0][0]).trim(), last = String(rows[rows.length - 1][0]).trim();
+  // The caption repeats the totals in prose because jusText (Nemotron-CC's
+  // extractor) discards tables as boilerplate but keeps the caption.
+  const caption =
+    `Baology Prep USA Biology Olympiad results by season, ${first} to ${last}. ` +
+    `Across ${rows.length} seasons Baology students earned ${t.finalists} USABO National ` +
+    `Finalist places, ${t.ibo} of which went on to represent Team USA at the ` +
+    `International Biology Olympiad.`;
+  return [
+    `        <div class="rc-legend">`,
+    `          <span class="rc-key"><span class="rc-swatch rc-swatch--finalist"></span>USABO National Finalists</span>`,
+    `          <span class="rc-key"><span class="rc-swatch rc-swatch--ibo"></span>Team USA at the IBO (selected from the finalists)</span>`,
+    `        </div>`,
+    `        <table class="results-table">`,
+    `          <caption>${escapeHtml(caption)}</caption>`,
+    `          <thead>`,
+    `            <tr><th scope="col">Season</th><th scope="col">USABO National Finalists</th><th scope="col">Team USA (IBO)</th></tr>`,
+    `          </thead>`,
+    `          <tbody>`,
+    rows.map(r => renderResultsRow(r, max)).join("\n"),
+    `          </tbody>`,
+    `          <tfoot>`,
+    `            <tr><th scope="row">Total, ${escapeHtml(first)}&ndash;${escapeHtml(last)}</th><td>${t.finalists}</td><td>${t.ibo}</td></tr>`,
+    `          </tfoot>`,
+    `        </table>`,
+  ].join("\n");
+}
+
+// Every page that states a finalist/IBO total must match the CSV. This is the
+// guard for the defect that started this: the site claimed 54 and 13 while the
+// data said 52 and 12, in three places, two of them invisible <meta> tags.
+function checkResultClaims(totals) {
+  // Anchored deliberately tightly. A loose "(\\d+) ... finalist" also matches a
+  // YEAR ("2019 USABO Finalist"), a rank ("Top 20 National Finalist") and the
+  // size of the national field ("only 20 finalists") — all of which are correct
+  // sentences that have nothing to do with our total. An aggregate claim always
+  // puts the competition name immediately after the count.
+  // (?<!\d) matters: without it, \d{1,3} happily matches "019" inside "2019".
+  const FINALISTS = /(?<!\d)(\d{1,3})\s+(?:USABO|USA Biology Olympiad)[^.]{0,48}?[Ff]inalist/g;
+  // Allows text between the count and "Team USA" ("12 of which went on to
+  // represent Team USA" — the caption this build writes) but forbids a digit in
+  // between, so "52 ... Finalist places, 12 of which ... Team USA" matches only
+  // the 12. Without that, the flagship generated sentence went unguarded.
+  const TEAM_USA = /(?<!\d)(\d{1,3})\s+[^.<0-9]{0,70}?Team USA/g;
+  const bad = [];
+  const walk = (dir) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (/^(node_modules|\.git|plugins|deprecated)$/.test(e.name)) continue;
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) { walk(full); continue; }
+      if (!e.name.endsWith(".html")) continue;
+      const txt = fs.readFileSync(full, "utf8");
+      const rel = path.relative(ROOT, full);
+      const line = (i) => txt.slice(0, i).split("\n").length;
+      for (const m of txt.matchAll(FINALISTS)) {
+        if (Number(m[1]) !== totals.finalists) {
+          bad.push(`${rel}:${line(m.index)}  claims ${m[1]} finalists, data/results.csv says ${totals.finalists}`);
+        }
+      }
+      for (const m of txt.matchAll(TEAM_USA)) {
+        if (Number(m[1]) !== totals.ibo) {
+          bad.push(`${rel}:${line(m.index)}  claims ${m[1]} Team USA, data/results.csv says ${totals.ibo}`);
+        }
+      }
+    }
+  };
+  walk(ROOT);
+  if (bad.length) {
+    throw new Error("results claim guard failed:\n  - " + bad.join("\n  - ") +
+      "\n\nEvery count comes from data/results.csv. Update the CSV, not the copy.");
+  }
+  console.log(`Results claim guard OK — every stated total matches data/results.csv (${totals.finalists}/${totals.ibo})`);
 }
 
 // --- Sitemap ------------------------------------------------------------
@@ -744,7 +894,7 @@ function build() {
     }
     // Which column holds the date, so only that cell gets a <time datetime>.
     const dateIdx = header.findIndex(h => /date/i.test(h));
-    const rows = grid.map(r => renderSyllabusRow(r, colCount, dateIdx)).join("\n");
+    const rows = grid.map(r => renderSyllabusRow(r, colCount)).join("\n");
     syllabusHtml = injectBetweenMarkers(syllabusHtml, marker, rows);
     syllabusRowCount += grid.length;
 
@@ -775,6 +925,33 @@ function build() {
 
   fs.writeFileSync(syllabusPath, syllabusHtml);
   console.log(`Wrote about/syllabus.html — ${semesters.length} syllabus table(s), ${syllabusRowCount} rows, JSON-LD for ${semesterData[0].rows.length} current-semester sections`);
+
+  // --- signup.html tier class lists ------------------------------------
+  const classes = yaml.load(fs.readFileSync(path.join(ROOT, "data/classes.yaml"), "utf8"), { schema: yaml.CORE_SCHEMA });
+  if (!Array.isArray(classes) || !classes.length) throw new Error("data/classes.yaml has no entries");
+  const signupPath = path.join(ROOT, "signup.html");
+  let signupHtml = fs.readFileSync(signupPath, "utf8");
+  for (const tier of [1, 2, "full"]) {
+    signupHtml = injectBetweenMarkers(signupHtml, `tier-${tier}`, renderTier(classes, tier));
+  }
+  fs.writeFileSync(signupPath, signupHtml);
+  console.log(`Wrote signup.html — ${classes.length} class types across 3 tiers`);
+
+  // --- index.html results chart ---------------------------------------
+  const resultsCsv = path.join(ROOT, "data/results.csv");
+  if (!fs.existsSync(resultsCsv)) {
+    throw new Error("data/results.csv is missing — it is the source of truth for every " +
+      "finalist/IBO count on the site. Restore it (it is tracked in git) and rebuild.");
+  }
+  const resultRows = parseCSVGrid(fs.readFileSync(resultsCsv, "utf8")).slice(1);
+  if (!resultRows.length) throw new Error("data/results.csv has no data rows");
+  const resultTotals = resultsTotals(resultRows);
+  const indexPath = path.join(ROOT, "index.html");
+  let indexHtml = fs.readFileSync(indexPath, "utf8");
+  indexHtml = injectBetweenMarkers(indexHtml, "results-chart", renderResultsChart(resultRows));
+  fs.writeFileSync(indexPath, indexHtml);
+  console.log(`Wrote index.html — results chart, ${resultRows.length} seasons (${resultTotals.finalists} finalists, ${resultTotals.ibo} IBO)`);
+  checkResultClaims(resultTotals);
 
   // --- sitemap.xml ----------------------------------------------------
   const sitemapPath = path.join(ROOT, "sitemap.xml");
