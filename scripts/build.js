@@ -826,6 +826,7 @@ function checkScrims() {
 function build() {
   checkScrims();
   require("./color-guard.js").checkColors();
+  require("./spacing-guard.js").checkSpacing();
   syncNav();
   const galleryCsv = fs.readFileSync(path.join(ROOT, "data/gallery.csv"), "utf8");
   const photos = parseCSV(galleryCsv)

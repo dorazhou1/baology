@@ -7,7 +7,8 @@
     "build": "node scripts/build.js",
     "check:generated": "node scripts/check-generated.js",
     "prepare": "git config core.hooksPath .githooks || true",
-    "check:colors": "node scripts/color-guard.js"
+    "check:colors": "node scripts/color-guard.js",
+    "check:spacing": "node scripts/spacing-guard.js"
   },
   "devDependencies": {
     "image-size": "^2.0.2",
