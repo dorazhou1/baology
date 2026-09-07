@@ -1,39 +1,36 @@
-/*  typography */
-@import url("https://fonts.googleapis.com/css?family=Ropa+Sans");
-@import url("https://fonts.googleapis.com/css?family=Roboto");
-@import url("https://fonts.googleapis.com/css?family=Inter");
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+/* Both @imports use the v1 `css?family=` form, which returns ONE 400 face, and New York is a single Bold
+   TTF declared at weight normal: every bold here is synthetic. A new weight means a new FACE, not a number. */
+@import url("https://fonts.googleapis.com/css?family=Ropa+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Inter&display=swap");
+/* EB Garamond, the ACCENT serif and the only face here with a TRUE italic — New York declares none, so
+   `<em>` on it renders a synthetic oblique. Add an axis here before using a weight: an undeclared weight is
+   silently rounded to the nearest declared one, and no guard catches it. */
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,600;1,700&display=swap');
 
 @font-face {
   font-family: 'New York';
-  src: url('../plugins/fonts/New-York-Bold.ttf') format('truetype'), url('../plugins/fonts/New-York-Bold.woff2') format('woff2');
+  /* woff2 FIRST: the browser takes the first src it can use, so listing the ttf first meant every page
+     downloaded 206KB and the 52KB woff2 beside it was never fetched. */
+  src: url('../plugins/fonts/New-York-Bold.woff2') format('woff2'), url('../plugins/fonts/New-York-Bold.ttf') format('truetype');
   font-weight: normal;
 }
 
-/* ============================================================
-   DESIGN TOKENS — single source of truth for color, radius,
-   shadow, motion, and the readable type scale. Change a value
-   here and every card / text role updates together. Do NOT
-   hard-code these values in component rules; reference the var.
-   ============================================================ */
+/* HOUSE RULES — stated once here; nothing below restates them.
+   TOKENS. :root is the single source of truth; never hard-code a value a token already holds.
+   UNUSED CODE. A scale keeps its unused rungs; a rule that paints a state the site never draws is DELETED,
+   not documented — no guard catches a default that is wrong because it renders nowhere.
+   GUARDS. `npm run check:colors / :spacing / :radius / :type` enforce the token rules mechanically.
+   VENDOR OVERRIDES. Bootstrap, slick-theme and GLightbox load BEFORE this file; where their rules out-specify
+   ours we RESTATE AT THEIR SPECIFICITY, and !important appears only where the vendor's own declaration
+   carries it or an inline style is beaten. Do not "simplify" such rules away, and do not scope a suppressor
+   more narrowly than the rule it suppresses. */
 :root {
-  /* ── BRAND COLOUR ──────────────────────────────────────────────
-     Every brand colour is written down ONCE, as channels. The `*-rgb`
-     triplet IS the source of truth; `--color-*` is DERIVED from it, so the
-     solid and the tinted form can never drift apart.
-       solid:  color: var(--color-navy);
-       alpha:  background: rgba(var(--navy-rgb), 0.45);
-     Change a brand colour by editing ONE triplet. Never write a hex or a
-     numeric rgba() anywhere else — `npm run check:colors` fails if you do.
-
-     NOT color-mix(): a token holding it is invalid-at-computed-value-time on
-     Chrome <111 / iOS <16.2 (~3.8% of traffic), which computes the property
-     to `unset` — the scrim would go fully transparent, and neither a twin
-     declaration nor a var() fallback can catch that.
-
-     Pure white and black are deliberately NOT tokens: they are paper and
-     shadow, not brand, and a token that can only ever hold one value is not
-     a token. */
+  /* ── BRAND COLOUR ──
+     The `*-rgb` triplet IS the source of truth and `--color-*` is DERIVED from it: change a brand colour by
+     editing ONE triplet, and never write a hex or numeric rgba() elsewhere — `check:colors` fails if you do.
+     NOT color-mix(): invalid-at-computed-value-time on Chrome <111 / iOS <16.2, which computes the property
+     to `unset`, and no twin declaration or var() fallback catches that.
+     White and black are deliberately not tokens: they are paper and shadow. */
   --orange-rgb:     226, 76, 53;
   --orange-dk-rgb:  199, 61, 41;
   --navy-rgb:        22, 45, 89;
@@ -42,61 +39,58 @@
   --yellow-rgb:     255, 214, 134;
   --cream-rgb:      254, 248, 236;
   --ink-rgb:         76, 76, 76;
-  --muted-rgb:      119, 119, 119;
+  /* 114, not 119: at 119 every --color-muted node failed WCAG AA on its ground. 114 is the LIGHTEST value
+     clearing 4.5:1 on both cream and white. */
+  --muted-rgb:      114, 114, 114;
   --line-rgb:       238, 238, 238;
 
-  --color-orange:    rgb(var(--orange-rgb));     /* = .text-secondary; titles, links, accents */
-  --color-orange-dk: rgb(var(--orange-dk-rgb));  /* orange's hover/active partner (mirrors navy-dk) */
+  /* TWO RUNGS, AND WHICH IS TEXT IS NOT A TASTE CALL. --color-orange clears 4.5:1 as body-size text on NO
+     ground this site prints it on (3.95 white, 2.86 yellow), so it is the FILL rung: backgrounds, borders and
+     decorative glyphs, which owe only 1.4.11's 3:1. ORANGE TEXT IS --color-orange-dk, except on the three
+     warm fills where that fails too and the text takes navy. */
+  --color-orange:    rgb(var(--orange-rgb));     /* fills, borders, decorative glyphs */
+  --color-orange-dk: rgb(var(--orange-dk-rgb));  /* ALL orange TEXT; also orange's hover/active partner on fills */
   --color-navy:      rgb(var(--navy-rgb));       /* = .text-primary; headings, body on light, solid CTA */
-  --color-navy-dk:   rgb(var(--navy-dk-rgb));    /* = .text-primary-dark; navy's hover/active partner */
+  --color-navy-dk:   rgb(var(--navy-dk-rgb));    /* = .text-primary-dark; the DARKEST navy — h1 on the peach
+                                                    hero, navy's hover partner. NOT body copy. */
   --color-peach:     rgb(var(--peach-rgb));      /* = .bg-primary; the hero band */
   --color-yellow:    rgb(var(--yellow-rgb));     /* nav bar, badges, highlights, hover fills, .selected */
   --color-cream:     rgb(var(--cream-rgb));      /* THE card background; warm surfaces, table stripes */
   --color-ink:       rgb(var(--ink-rgb));        /* body copy */
-  --color-muted:     rgb(var(--muted-rgb));      /* meta / subtext / disabled on light */
+  --color-muted:     rgb(var(--muted-rgb));      /* meta / subtext on light: captions, dates, labels.
+                                                    NOT a disabled state. */
   --color-line:      rgb(var(--line-rgb));       /* hairlines, subtle gray hover, scrollbar track */
 
-  /* ── SURFACE & UTILITY ────────────────────────────────────────
-     Colours that already ship but were never named. Each is
-     perceptually distinct from every brand token (CIE76 dE > 4 from
-     its nearest neighbour), so these are NAMES for existing colours,
-     not new colours. Four literals were retired into the tokens
-     above instead, because they were perceptually invisible against
-     one: #FFF8EC->cream (dE 0.37), #F1F1F1->line (1.05),
-     #EAEAEA->line (1.40), #888->gray (0.77). */
+  /* ── SURFACE & UTILITY ──
+     Names for colours that already shipped, not new colours. THE PALETTE'S SPACING RULE: every token in
+     BRAND and here is CIE76 dE > 4 from every other, with ONE DECLARED EXCEPTION — --color-ink rgb(76,76,76)
+     vs --color-gray-dk #555555 at dE 3.83, which stays because ink is BODY COPY and gray-dk is scrollbar
+     chrome. Medals are exempt by construction. */
   --slate-rgb:        108, 117, 125;             /* tinted in blogs/blog.css, so it needs a triplet */
   --color-slate:      rgb(var(--slate-rgb));     /* muted UI state: "coming soon" bubbles */
   --color-slate-dk:   #495057;                   /* blog bubble body text */
   --color-ink-dk:     #212529;                   /* blog bubble text on hover */
   --color-gray:       #888888;                   /* scrollbar thumb */
   --color-gray-dk:    #555555;                   /* scrollbar thumb, hover */
-  --color-gray-lt:    #999999;                   /* = .text-light */
   --color-amber:      #F77F00;                   /* interactive accent: search field, accordion glyph, focus ring */
   --color-yellow-lt:  #FFE4AD;                   /* hover/active fill on yellow surfaces: tags, pagination, accordion */
   --color-cream-dk:   #FFF1D6;                   /* warm field/stripe: table zebra, search input */
-  --color-ice:        #C8D5EF;                   /* pale blue icon on dark */
   --color-mist:       #EFF3FB;                   /* accordion body background */
-  --color-salmon:     #EE8457;                   /* .team section background */
 
-  /* ── MEDAL COLOUR ──────────────────────────────────────────────
-     Content semantics, not brand: the hue IS the meaning (a silver medal is
-     silver). Chosen from data/testimonials.yaml via js/testimonials.js
-     medalVariant(). Never tinted, never reused outside .placement-badge — so
-     plain hex, no triplet. Semifinalist deliberately reuses --color-muted. */
+  /* ── MEDAL COLOUR ──
+     CONTENT semantics, not brand: the hue IS the meaning. From data/testimonials.yaml via js/testimonials.js.
+     Nothing outside .placement-badge may take a medal token.
+     KNOWN, UNFIXED: .placement-badge prints #fff on these at 2.42-4.34:1, under 4.5:1. Owner call. */
   --medal-gold:     #C9A227;
   --medal-silver:   #8A8A8A;
   --medal-bronze:   #B5651D;
   --medal-none:     #6E7782;  /* semifinalist + no-medal badges */
-  --medal-finalist: #254D9A;  /* the ONE blue that is not --color-navy: it must stay
-                                 legible on the navy testimonials carousel, where navy
-                                 renders 1.00:1. Not a button colour — do not reuse. */
+  --medal-finalist: #254D9A;  /* the ONE blue that is not --color-navy: it must stay legible on the navy
+                                 carousel, where navy renders 1.00:1. Do not reuse. */
 
-  /* ── SPACING ───────────────────────────────────────────────────
-     A 4px ladder. Named by value, so `padding: 20px` maps to --space-20
-     without a lookup. Bootstrap's spacers (0/4/8/16/24/48px) are a SUBSET
-     of this ladder, so `mb-3` and var(--space-16) are the same 16px and the
-     two systems agree rather than compete. 2px is the hairline step.
-     Off-ladder values that remain are component geometry, not rhythm. */
+  /* ── SPACING ──
+     A 4px ladder named by value, so `padding: 20px` maps to --space-20. Bootstrap's spacers are a SUBSET, so
+     `mb-3` and var(--space-16) are the same 16px. Anything off-ladder is component geometry, not rhythm. */
   --space-0:   0;
   --space-2:   2px;
   --space-4:   4px;
@@ -111,29 +105,69 @@
   --space-64:  64px;
   --space-80:  80px;
 
+  /* ── COMPONENT CONSTANTS ── five numbers that are NOT rungs and must never be read as rhythm. */
+
+  /* WCAG 2.5.5's minimum hit area, and already the measured size of the slick arrows and .gallery-arrow, so
+     the carousel's side gutter is DERIVED from it. NOT .btn's padding or .rc-track's min-width: both happen
+     to be 44px, and neither is a hit area. */
+  --tap-target: 44px;
+
+  /* THE CARD HEIGHT, written raw and byte-identical in `.card { height }` and `.signup-card { min-height }`.
+     The hero card's body is centred inside it, so that card's padding is a FLOOR that never binds.
+     A height, so deliberately NOT a rung. */
+  --card-h: 400px;
+
+  /* The hero band's top clearance. ART, not rhythm: it is NOT derived from the 56px fixed nav. #l7's
+     neighbouring 190px is a deliberate 10px lift off this line. */
+  --hero-clearance: 200px;
+
+  /* The burger's bar PITCH: the three bars sit at 0, 1x and 2x this and the X state rotates bars 1 and 3
+     onto this same line, so one drifted pixel draws a crooked X. Geometry, NOT a rung — hence the guard
+     finding. */
+  --burger-pitch: 9px;
+
+  /* Bootstrap's $grid-gutter-width — 2 x the 15px `.col-*` padding it ships, and OFF our 4px grid on purpose
+     because it is the VENDOR's number. Only for a row gap that has to line up with a Bootstrap column
+     gutter. Never a general step, never a radius. */
+  --grid-gutter: 30px;
+
   /* radius — paired: surface cards vs image tiles */
   --radius-card: 17px;
   --radius-card-lg: 36px;  /* raised showcase cards: Register + instructors, results table */
   --radius-tile: 9px;
   --radius-pill: 999px;
+  /* Decorative single-corner cut: the site's one ASYMMETRIC corner, written twice as a bare 50px
+     (.navigation bottom-left, .lead top-right). Named so the pair stays in step. */
+  --radius-cut: 50px;
+  /* No --radius-circle on purpose: `border-radius: 50%` is a SHAPE, not a step on this scale, and the
+     radius guard skips percentages for that reason. */
 
-  /* shadows; flat (none) is the default */
+  /* Two shadows, two ROLES; flat (none) is the default. Both navy-tinted, because black over this
+     cream/peach palette reads as grey dirt. --shadow-raised is the ONE elevation and EVERY raised surface
+     takes it, here and in blogs/blog.css. */
   --shadow-raised: 0 8px 20px rgba(var(--navy-rgb), 0.16);
-  --shadow-soft:   0px 18px 39.1px 6.9px rgba(209, 218, 225, 0.34);  /* = .shadow; a cooler, wider lift */
+  /* The fixed header's ambient glow. NOT an elevation: zero offset, equal blur and spread. */
+  --shadow-nav: 0 0 5px 5px rgba(var(--navy-rgb), 0.05);
 
-  /* scrim — the dim behind an open overlay. Navy-tinted, never pure black.
-     Only the last number is the dim level; leave the (22, 45, 89) alone.
-     The alpha IS the whole dim — every surface below carries opacity: 1 —
-     so what the token says is what renders. Both are rgba COLORS: never
-     store a bare number here, `opacity: rgba(...)` silently computes to 1
-     and blacks the page out. */
-  --scrim-lightbox: rgba(var(--navy-rgb), 0.85);  /* photo viewer — was #000 / rgba(0,0,0,.92) */
-  --scrim-modal:    rgba(var(--navy-rgb), 0.45);  /* countdown popup — was #000 @ opacity .5 */
+  /* scrim — the dim behind an open overlay. Navy-tinted, never pure black; only the last number is the dim
+     level. These are rgba COLORS: NEVER store a bare number here — `opacity: rgba(...)` silently computes
+     to 1 and blacks the page out. */
+  --scrim-lightbox: rgba(var(--navy-rgb), 0.85);  /* photo viewer */
+  --scrim-modal:    rgba(var(--navy-rgb), 0.45);  /* countdown popup */
+  /* The gallery caption band: the third scrim, and the only GRADIENT one. 0.90 AND NOT 0.70 because navy is
+     lighter than black, so keeping the old rgba(0,0,0,0.7) alpha measured as a legibility REGRESSION; 0.90
+     puts the worst caption line back where black had it (2.56:1). KNOWN: the first line rides the fade and is
+     under 4.5:1 in BOTH spellings. */
+  --scrim-caption:  rgba(var(--navy-rgb), 0.90);  /* gallery caption band */
 
-  /* Live height of the Bootstrap `fixed-top` header, republished on every resize
-     by js/script.js from the header's own box. Declared here so it has a defined
-     value during the first paint and so the token list stays complete; the inline
-     style JS sets on <html> overrides this rule on the same element. */
+  /* Focus ring — the ONE keyboard focus indicator. It sits OUTSIDE the control, so it must contrast with the
+     page behind it: navy clears 3:1 on every surface here and fails on exactly one, navy itself. Hence a
+     VARIABLE — dark surfaces re-point it to amber (5.1:1) on the container, which inherits down instead of
+     starting a specificity fight. */
+  --focus-ring: var(--color-navy);
+
+  /* Live height of the `fixed-top` header, republished on resize by js/script.js. Declared here so it has a
+     value during the first paint; JS's inline style on <html> overrides this rule. */
   --header-h: 0px;
 
   /* motion */
@@ -141,61 +175,96 @@
   --tile-zoom: 1.05;
   --ease: 0.25s ease;
 
-  /* font families + weights */
-  --font-sans:  "Inter", sans-serif;
-  --font-serif: "New York", "Playfair Display", serif;
-  --fw-bold: 700;
+  /* ── FONT FAMILY ── three faces, three roles, three tokens. */
+  --font-sans:    "Inter", sans-serif;                    /* body, UI, meta */
+  --font-serif:   "New York", "Playfair Display", serif;  /* headings, prices, numerals */
+  /* READING MEASURE. 45-75 characters is the readable band and ~65 the optimum; 62ch is about 65 characters
+     at --fs-body Inter, the measure explore.html's testimonials and about.html's bios already sat at. `ch`
+     and not px so it tracks the font. Headings are exempt. */
+  --measure: 62ch;
 
-  /* TYPE SCALE — 5 readable steps (+ 2 art exceptions) */
+  --font-accent:  "EB Garamond", "Playfair Display", serif; /* .font-secondary only — the one face
+                    with a real italic */
+  --font-display: "Ropa Sans", "Inter", sans-serif;       /* the uppercase CONTROL face: buttons, nav
+                                                             links, filter pills */
+
+  /* ── FONT WEIGHT ── numbers, not keywords. On the faces this file loads 600/700/800 are indistinguishable
+     and 500 is indistinguishable from 400; see the @import note at the top. */
+  --fw-normal:   400;   /* body copy — and the RESET back to it inside a bold block */
+  --fw-semibold: 600;   /* labels, badges, pills: heavier than copy, lighter than a title */
+  --fw-bold:     700;   /* titles, buttons, table values */
+
+  /* TYPE SCALE — 6 readable steps (+ 2 art exceptions + 1 control size) */
   --fs-display: 80px;     /* hero h1 — ART (keeps existing vw media queries) */
-  --fs-section: 40px;     /* h2 / h3 section headers — ART */
+  --fs-heading: 60px;     /* h2 — ART. Also the CEILING of the h2 clamp below, so one name holds both. */
+  --fs-section: 40px;     /* h3 / section sub-headers — ART. Every <h3> takes it, and so does any <h2>
+                             carrying class="h3" to be demoted a visual step. A bare h2 is --fs-heading. */
   --fs-title:   1.625rem; /* 26px — card titles, h4, sub-headers */
-  --fs-body:    1.25rem; /* 20px — paragraph / subtitle / body copy (matches content lists) */
+  --fs-control: 22px;     /* the BUTTON size, and only that — NOT a near-duplicate of the 20px below. Ropa
+                             Sans at 22px has a 15.02px cap height and Inter at 20px has 15.06px, so a 20px
+                             button would draw its caps 9% short of the prose beside it. */
+  --fs-body:    1.25rem;  /* 20px — paragraph / subtitle / body copy (matches content lists) */
+  --fs-base:    16px;     /* the UA/Bootstrap 1rem: what an element inherits when nothing sizes it. NOT a
+                             design step. */
   --fs-meta:    0.875rem; /* 14px — captions, dates, meta */
   --fs-fine:    0.75rem;  /* 12px — disclaimers / micro-labels ONLY */
-  --lh-tight: 1.2;
-  --lh-body: 1.6;
+
+  /* ── LINE HEIGHT ── three values, each with a role and a consumer; do not add a fourth without both.
+     The one raw leading left in this file is `line-height: 0` on .slick-dots li, which collapses a line box
+     rather than setting leading; `check:type` skips it by construction. */
+  --lh-tight: 1.2;  /* UI AND SHORT COPY — headings, buttons, labels, nav, short marketing paragraphs.
+                       <body> sets it, so it is what an element gets when nothing else speaks. */
+  --lh-body:  1.6;  /* LONG-FORM PROSE, and not a near-duplicate of the above: 1.2 sets a 700-word article
+                       nearly solid. Its consumers are declared in ONE rule below, under "THE LONG-FORM
+                       SURFACES". Nothing else on the site is long-form. */
+  --lh-solid: 1;    /* SET SOLID — one line of display type in a box that must hug it: .collapsible:after,
+                       .countdown-close, .cd-block, .rc-big. NOT for prose. */
+
+  /* ── TRACKING ── one value, for a SMALL UPPERCASE MICRO-LABEL where caps at --fs-fine need air to stay
+     countable. NOT "the tracking for uppercase": .btn, nav links and .filter-pill run at sizes the face
+     already spaces itself at. */
+  --tracking-label: 0.05em;
 }
 
 html {
   scroll-behavior: smooth;
-  /* Every in-page anchor (the index instructor cards link to about.html#name)
-     otherwise lands with the target's top edge at y=0 — underneath .navigation,
-     which is Bootstrap `fixed-top`. --header-h is published by js/script.js from
-     the header's own measured height, so this tracks the 72px desktop bar and the
-     97px collapsed one without either number appearing here. The fallback is only
-     0px until the script runs, so the pre-script paint is simply un-offset;
-     --space-24 is the breathing room below the bar. */
+  /* Without this every in-page anchor lands with the target's top edge under the `fixed-top` .navigation.
+     --header-h is published by js/script.js from the header's own measured box. */
   scroll-padding-top: calc(var(--header-h) + var(--space-24));
 }
 
 body {
-  line-height: 1.2;
-  font-family: "Inter", sans-serif;
+  line-height: var(--lh-tight);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  font-size: 16px;
+  font-size: var(--fs-base);
   color: var(--color-ink);
 }
 
 p,
 .paragraph {
-  font-weight: 400;
+  font-weight: var(--fw-normal);
   color: var(--color-ink);
   font-size: var(--fs-body);
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-sans);
 }
 
-p-lg,
-.paragraph-lg {
-  font-size: var(--fs-title);
+/* THE LONG-FORM SURFACES — every consumer of --lh-body, in one place. The .blog-content pair lives HERE, not
+   in blogs/blog.css, because the leading it overrides is declared here on <body> and blog.css carries no `p`
+   rule. `li` AS WELL AS `p`: a blog row is `<li><p>…</p></li>` and the bullet is an absolutely positioned
+   ::before inheriting the li's line box, so leading the p alone lifts the text off its own marker. */
+.blog-content p,
+.blog-content li,
+.testimonial-card .quote,
+.testimonial-content p {
+  line-height: var(--lh-body);
 }
 
 a {
-  color: var(--color-orange);
+  color: var(--color-orange-dk);
 }
 
-/* Buttons/inputs don't inherit the page font by default — keep them on the body font.
-   (.btn sets its own font-family, so styled buttons are unaffected.) */
+/* Buttons/inputs don't inherit the page font by default. (.btn sets its own, so it is unaffected.) */
 button,
 input,
 select,
@@ -209,9 +278,9 @@ h3,
 h4,
 h5,
 h6 {
-  color: #000;
-  font-family: "New York", "Playfair Display", serif;
-  line-height: 1.2;
+  color: var(--color-navy);
+  font-family: var(--font-serif);
+  line-height: var(--lh-tight);
 }
 
 h1,
@@ -219,11 +288,15 @@ h1,
   font-size: var(--fs-display);
 }
 
-/* Viewport-scaled below the lg breakpoint, but CLAMPED. Unclamped, 12vw passes the
-   80px desktop size at a 667px viewport and keeps growing (119px at 991px) — the
-   heading got LARGER as the screen got smaller, until it outgrew its container and
-   overflowed instead of centring. Ceiling is the desktop size; floor keeps it legible. */
-@media (max-width: 991px) {
+/* CLAMPED because unclamped 12vw passes the 80px desktop size at a 667px viewport and keeps growing: the
+   heading got LARGER as the screen got smaller.
+   THE SLOPES ARE THE DESKTOP LADDER AND ALL SIX LEVELS USE THIS CONSTRUCTION — 80:60:40:26:20:14 is
+   12:9:6:3.9:3:2.1, so every level reaches its ceiling at the same 667px viewport, every CEILING is that
+   level's own token and every FLOOR is the next token DOWN.
+   ORDER MATTERS: each media block sits AFTER its own unconditional rule; a media query adds no specificity.
+   The two raw floors are deliberate and are the type guard's two standing findings: neither can ever render,
+   and the scale has no rung between --fs-title and --fs-section for them to take. */
+@media (max-width: 991.98px) {
 
   h1,
   .h1 {
@@ -233,24 +306,14 @@ h1,
 
 h2,
 .h2 {
-  font-size: 60px;
+  font-size: var(--fs-heading);
 }
 
-@media (max-width: 991px) {
+@media (max-width: 991.98px) {
 
   h2,
   .h2 {
-    font-size: clamp(1.75rem, 11vw, 60px);
-  }
-}
-
-/* h3 needs the same treatment: at 320-340px a fixed --fs-section name overflows
-   its centred card and sits visibly off-centre. */
-@media (max-width: 575px) {
-
-  h3,
-  .h3 {
-    font-size: clamp(1.5rem, 9vw, var(--fs-section));
+    font-size: clamp(1.75rem, 9vw, var(--fs-heading));
   }
 }
 
@@ -259,9 +322,30 @@ h3,
   font-size: var(--fs-section);
 }
 
+/* h3's floor is the ONLY one of the six that renders, so it is the only one that is a token: 6vw falls under
+   24px below a 400px viewport, which is every phone. --fs-title is THE NEXT RUNG DOWN from this rule's own
+   ceiling, and does not collide with h4. */
+@media (max-width: 991.98px) {
+
+  h3,
+  .h3 {
+    font-size: clamp(var(--fs-title), 6vw, var(--fs-section));
+  }
+}
+
 h4,
 .h4 {
   font-size: var(--fs-title);
+}
+
+/* h4 had no responsive rule, so h3's clamp floored BELOW it (24px against 26px). The floor is --fs-body:
+   a sub-header does not render smaller than its own paragraph. */
+@media (max-width: 991.98px) {
+
+  h4,
+  .h4 {
+    font-size: clamp(var(--fs-body), 3.9vw, var(--fs-title));
+  }
 }
 
 h5,
@@ -269,47 +353,62 @@ h5,
   font-size: var(--fs-body);
 }
 
+/* h5 and h6 are unused rungs, kept defensively — see HOUSE RULES. THE ONE LIVE CONSTRAINT: h4's clamp FLOORS
+   at --fs-body and h5 IS --fs-body, so both rendered 20px at narrow widths. h5 floors at --fs-meta rather
+   than raising h4's floor, because the only value between 20 and 26 is --fs-control, the BUTTON size. */
+@media (max-width: 991.98px) {
+
+  h5,
+  .h5 {
+    font-size: clamp(var(--fs-meta), 3vw, var(--fs-body));
+  }
+}
+
 h6,
 .h6 {
   font-size: var(--fs-meta);
 }
 
-/* Button style */
+@media (max-width: 991.98px) {
+
+  h6,
+  .h6 {
+    font-size: clamp(var(--fs-fine), 2.1vw, var(--fs-meta));
+  }
+}
+
 .btn {
-  font-size: 22px;
-  font-family: 'Ropa Sans', sans-serif;
-  /* One casing for every button, set here so the 16 labels can be written in
-     whatever case reads best in the markup and still render identically.
-     `capitalize` previously left ALL-CAPS labels alone, kept Title Case as-is,
-     and re-cased sentence-case ones — three rendered casings from one rule. */
+  font-size: var(--fs-control);
+  font-family: var(--font-display);
+  /* One casing for every button, so labels can be written in whatever case reads best in the markup. */
   text-transform: uppercase;
-  padding: var(--space-16) 44px;
+  padding: var(--space-16) var(--space-48);
   border-radius: var(--radius-pill);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   border: 0;
   position: relative;
   z-index: 1;
   transition: 0.2s ease;
 }
 
-.btn:focus {
-  outline: 0;
+/* Answers Bootstrap's `.btn:focus, .btn.focus { box-shadow: 0 0 0 .2rem rgba(0,123,255,.25) }` (0,2,0).
+   DO NOT SCOPE THIS TO `:not(:focus-visible)`: that stops it on KEYBOARD focus and the blue halo returns.
+   Only the OUTLINE suppressor below is pointer-scoped, which is what leaves the :focus-visible ring.
+   `.btn-secondary:hover, :focus, :active` below restates that variant's navy inset ring !important at the
+   same (0,2,0) and wins by being LATER — delete that restatement and this rule erases the button's edge. */
+.btn:focus,
+.btn.focus {
   box-shadow: none !important;
+}
+
+.btn:focus:not(:focus-visible) {
+  outline: 0;
 }
 
 .btn:active {
   box-shadow: none;
 }
 
-.btn-sm {
-  font-size: 15px;
-  padding: var(--space-8) var(--space-32);
-}
-
-.btn-xs {
-  padding: var(--space-4) var(--space-8);
-  font-size: 15px;
-}
 
 .btn-primary {
   background: var(--color-navy);
@@ -324,28 +423,31 @@ h6,
   background: var(--color-navy-dk);
 }
 
+/* Answers Bootstrap's `.btn-primary:focus` AND `.focus` (both 0,2,0); naming only the class left a
+   keyboard-focused primary button on Bootstrap's #0069d9. */
+.btn-primary:focus,
 .btn-primary.focus,
 .btn-primary.active {
   background: var(--color-navy-dk) !important;
   box-shadow: none !important;
 }
 
-/* The site uses .btn-secondary in three places (hero DEMO, WATCH INFO SESSION,
-   ENTER THE CLASSROOM) but never defined it, so it fell through to Bootstrap's
-   #6c757d gray — a colour that appears nowhere else in this palette. Brand navy
-   is the darker partner to .btn-primary's var(--color-navy), and --color-navy-dk is navy's
-   own declared darker shade — the same base/darker pairing .btn-primary uses. */
+/* Undefined here, .btn-secondary falls through to Bootstrap's #6c757d, a colour in no other part of this
+   palette. Navy + --color-navy-dk is the same base/darker pairing .btn-primary uses. */
 .btn-secondary {
   background: transparent;
   color: var(--color-navy);
   box-shadow: inset 0 0 0 2px var(--color-navy);
 }
 
+/* Answers Bootstrap's `.btn-secondary:focus { background-color: #5a6268 }`. */
 .btn-secondary:hover,
+.btn-secondary:focus,
 .btn-secondary:active,
 .btn-secondary.focus,
 .btn-secondary.active {
-  background: var(--color-navy);
+  /* !important answers Bootstrap's `.btn-secondary:not(:disabled):not(.disabled):active` (0,4,0). */
+  background: var(--color-navy) !important;
   color: #fff;
   box-shadow: inset 0 0 0 2px var(--color-navy) !important;
 }
@@ -355,34 +457,26 @@ h6,
   color: var(--color-navy);
 }
 
+/* Answers Bootstrap's `.btn:hover { color: #212529 }` (0,2,0), which out-specifies this variant's (0,1,0)
+   base colour. */
 .btn-white:active {
   background: var(--color-line) !important;
+  color: var(--color-navy-dk);
 }
 
 .btn-white:hover {
   background: var(--color-line);
+  color: var(--color-navy-dk);
 }
 
-/* Was `.btn-white.focus, .btn-primary.active` — a copy-paste from the .btn-primary
-   block above. Both rules are (0,2,0) and !important, so source order handed
-   .btn-primary.active this light grey and its white label rendered at 1.16:1.
-   .btn-white.active is what the paste was reaching for. */
+.btn-white:focus,
 .btn-white.focus,
 .btn-white.active {
   background: var(--color-line) !important;
+  color: var(--color-navy-dk);
   box-shadow: none !important;
 }
 
-.btn-transparent {
-  background: transparent;
-  color: var(--color-navy);
-  font-weight: bold;
-}
-
-.btn-transparent:active,
-.btn-transparent:hover {
-  color: var(--color-navy);
-}
 
 body {
   background-color: #fff;
@@ -417,27 +511,74 @@ select {
   transition: 0.2s ease;
 }
 
-a:focus,
-button:focus,
-select:focus {
-  outline: 0;
+/* FOCUS RING — the site's ONE keyboard focus indicator. `:focus-visible` is the whole mechanism, so "no ring
+   when you click" is kept by scoping every suppressor to `:focus:not(:focus-visible)`, never by blanket-
+   killing outline.
+   The four restatements each answer a vendor rule that out-specifies a bare `:focus-visible` (0,1,0):
+   Bootstrap reboot `button:focus { outline: 5px auto }` (0,1,1), Bootstrap `.btn:focus, .btn.focus` (0,2,0),
+   and slick-theme's `outline: none` on .slick-arrow (0,2,0) and .slick-dots li button (0,3,0). Matching
+   their specificity is enough, since this file loads later. Without the `button` line, .navbar-toggler /
+   .collapsible / .filter-pill / .demo-thumb render Chrome's default ring instead. */
+:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.slick-arrow:focus-visible,
+.slick-dots li button:focus-visible {
+  outline: var(--space-2) solid var(--focus-ring);
+  outline-offset: var(--space-2);
 }
 
-a.text-dark:hover {
-  color: var(--color-navy) !important;
+/* Dark surfaces re-point the ring rather than re-declaring outline-color, so the swap inherits to every
+   depth and cannot lose a specificity race. */
+.bg-dark,
+.bg-secondary {
+  --focus-ring: var(--color-amber);
+}
+
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+select:focus:not(:focus-visible) {
+  outline: 0;
 }
 
 a:hover {
   color: var(--color-navy);
 }
 
-a.link:hover {
-  color: var(--color-orange);
-  text-decoration: underline;
+/* Slick puts tabindex on its slides; pointer focus only, so a keyboard user tabbing in still sees where. */
+.slick-slide:focus:not(:focus-visible) {
+  outline: 0;
 }
 
-.slick-slide {
-  outline: 0;
+/* ...and slick CLIPS its own viewport (`.slick-list { overflow: hidden }`), so a ring drawn OUTSIDE an item
+   never paints. The items get ROOM instead: padding cancelled by an equal negative margin, so no box moves.
+   VERTICAL ONLY — horizontal padding would widen the clip window and let the neighbouring slide bleed into
+   view on every carousel, permanently. */
+.slick-list {
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+  margin-top: calc(-1 * var(--space-4));
+  margin-bottom: calc(-1 * var(--space-4));
+}
+
+/* A slide is flush with both clip edges by construction, so a focused slide must draw its ring INSIDE its
+   own box. */
+.slick-slide:focus-visible {
+  outline-offset: calc(-1 * var(--space-2));
+}
+
+/* ...except in the gallery preview: .gallery-tile is `position: relative` and paints over its parent's
+   outline, and pushing the ring OUTWARD is what the paragraph above rules out. So the ring moves to the TILE,
+   inset inside the slide, never at a clip edge in either axis.
+   KNOWN: slick gives every slide `tabindex="0"`, so the tile is a SECOND tab stop for the same photo; the fix
+   is slick's `accessibility` option in js/explore.js, not CSS. */
+.gallery-preview .gallery-slide:focus-visible {
+  outline: none;
+}
+
+.gallery-preview .gallery-slide:focus-visible .gallery-tile {
+  outline: var(--space-2) solid var(--focus-ring);
+  outline-offset: var(--space-2);
 }
 
 .section {
@@ -445,23 +586,35 @@ a.link:hover {
   padding-bottom: var(--space-80);
 }
 
-.section-title {
-  margin-bottom: var(--space-80);
-  font-family: 'New York', "Playfair Display", serif;
+/* THE BAND HAS A MOBILE STEP. ONE breakpoint, the site's own 991.98px `navbar-expand-lg` boundary — a band
+   that steps twice is a second rhythm. LONGHANDS, NOT A SHORTHAND: `.section.pb-0` sets padding-bottom
+   !important on signup.html, and blogs/blog.css's `.blog-post { padding-top }` loads later at equal
+   specificity; both must keep winning. */
+@media (max-width: 991.98px) {
+  .section {
+    padding-top: var(--space-48);
+    padding-bottom: var(--space-48);
+  }
 }
 
-.bg-cover {
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+/* SECTION HEADING RHYTHM — the gap under a section <h2>. Two roles, two values:
+     a heading and its own intro line are ONE unit           -> --space-16
+     that unit, or a bare heading, is separated from content -> --space-48
+   Bootstrap's `mb-3` / `mb-40` / `mb-5` beat this with !important on most such h2; removing them is markup.
+   The `h4` arm of `:is(p, h4)` matches nothing today and is defensive — do not "simplify" it to a bare `+ p`.
+   :not(.blog-post): the posts are also `.section`, but blogs/blog.css owns their rhythm.
+   DEGRADATION IS DELIBERATE — :has() is unsupported below Chrome 105 / Safari 15.4 and `:not(:has())` is not
+   forgiving, so the rule drops there and everything falls back to --space-16, the tight case. */
+.section:not(.blog-post) h2 {
+  margin-bottom: var(--space-16);
 }
 
-.outline-0 {
-  outline: 0 !important;
+.section:not(.blog-post) h2:not(:has(+ :is(p, h4))) {
+  margin-bottom: var(--space-48);
 }
 
-.d-unset {
-  display: unset !important;
+.section:not(.blog-post) h2 + :is(p, h4) {
+  margin-bottom: var(--space-48);
 }
 
 .bg-primary {
@@ -476,15 +629,21 @@ a.link:hover {
   background-color: var(--color-navy) !important;
 }
 
-.bg-gray {
-  background: var(--color-line) !important;
-}
-
-.bg-yellow {
-  background: var(--color-yellow) !important;
+/* The warm neutral band, completing the .bg-* family so the surface is not chosen in markup. */
+.bg-cream {
+  background-color: var(--color-cream) !important;
 }
 
 
+/* TEXT COLOUR BY ROLE — the whole contract. The defect was never a wrong VALUE but a wrong CHOICE.
+     ROLE                          LIGHT GROUND (white/cream)   NAVY GROUND
+     body copy, any paragraph      --color-ink  (no class)      .text-white
+     section heading               .text-secondary (orange)  .text-peach
+     h1, heading on peach/yellow   .text-primary-dark
+     card/list titles, numerals    .text-primary (navy)
+     meta, captions, sub-labels    --color-muted (no class)     --color-peach
+   BODY COPY NEEDS NO CLASS — `body` and `p` already declare --color-ink. If a paragraph needs a colour
+   utility, that is the signal it is not a paragraph. */
 .text-primary {
   color: var(--color-navy) !important;
 }
@@ -493,28 +652,22 @@ a.link:hover {
   color: var(--color-navy-dk) !important;
 }
 
+/* THE BRAND ORANGE, not the dark rung. Every .text-secondary HEADING renders 26px or larger, so it is WCAG
+   "large text" and owes 3:1, which --color-orange clears on the two light grounds it prints on: 3.95:1 on
+   white, 3.73:1 on cream. Darkening this rule wholesale made every section heading read drab.
+   IT IS NOT SAFE EVERYWHERE. The class also lands on <em>/<i>/<b>/<p> below 26px, which owe 4.5:1 — those
+   take the dark rung, as .collapsible, .taglist and .blog-backlink already do. And never on a warm FILL:
+   2.15:1 on peach, 2.86:1 on yellow. Headings on those grounds take .text-primary-dark. */
 .text-secondary {
   color: var(--color-orange) !important;
 }
 
-.text-color {
-  color: var(--color-amber);
-}
-
-.text-dark {
-  color: #000 !important;
-}
-
-.text-light {
-  color: var(--color-gray-lt) !important;
-}
-
 .text-white {
-  color: white !important;
+  color: #fff !important;
 }
 
-/* Warm heading on a navy section: --color-orange only reaches 3.42:1 on
-   --color-navy (large-text floor), peach reaches 7.36:1. Same family, readable. */
+/* Warm heading on a navy section: .text-secondary reaches only 2.66:1 there, under the 3:1 large-text floor;
+   peach reaches 7.36:1. */
 .text-peach {
   color: var(--color-peach) !important;
 }
@@ -531,55 +684,31 @@ a.link:hover {
   font-size: var(--fs-title);
 }
 
-/* ============================================================
-   CARD PRESETS — three set styles built on the tokens.
-     .card           surface card: cream, big radius, FLAT,
-                     float-up on hover (defined at the .card rule)
-     .is-raised      adds the ONE soft shadow (showcase cards only)
-     .tile           image tile: small radius, inner-image zoom,
-                     no shadow, no radius change on hover
-   ============================================================ */
+/* CARD PRESETS: .card is the flat surface card, .is-raised adds the ONE soft shadow (showcase cards only). */
 .card.is-raised,
 .is-raised {
   box-shadow: var(--shadow-raised);
-}
-
-.tile {
-  display: block;
-  width: 100%;
-  border-radius: var(--radius-tile);
-  overflow: hidden;
-  position: relative;
-}
-
-.tile img {
-  width: 100%;
-  display: block;
-  transition: transform var(--ease);
-}
-
-.tile:hover img {
-  transform: scale(var(--tile-zoom));
 }
 
 .pb-0 {
   padding-bottom: 0 !important;
 }
 
-.pt-0 {
-  padding-top: 0 !important;
+/* Cancels the trailing vertical gutter the last row of a card grid would otherwise add below itself, so the
+   grid ends flush with its section's padding. The gutter reaches the grid two ways — .tier-row's columns
+   carry it as .mb-30, .instructor-row's cards carry it as .instructor-card's own margin-bottom — but it is
+   the same --grid-gutter either way, so one cancel serves both. */
+.tier-row,
+.instructor-row {
+  margin-bottom: calc(-1 * var(--grid-gutter));
 }
 
-.mb-10 {
-  margin-bottom: var(--space-8) !important;
-}
-
-.mb-20 {
-  margin-bottom: var(--space-20) !important;
-}
-
+/* THE NUMBER IN THESE NAMES IS THE PX VALUE THEY EMITTED BEFORE THE LADDER MIGRATION: .mb-50 emits 48px, so
+   its NAME is wrong on the pages using it. Renaming it is a markup change, left for the owner. */
 .mb-30 {
-  margin-bottom: var(--space-32) !important;
+  /* --grid-gutter: every consumer is a Bootstrap grid column, so this IS the vertical half of a gutter whose
+     horizontal half Bootstrap fixes at 30px. */
+  margin-bottom: var(--grid-gutter) !important;
 }
 
 .mb-40 {
@@ -590,111 +719,75 @@ a.link:hover {
   margin-bottom: var(--space-48) !important;
 }
 
-.mb-60 {
-  margin-bottom: 60px !important;
-}
-
-.mb-70 {
-  margin-bottom: 70px !important;
-}
-
 .mb-80 {
   margin-bottom: var(--space-80) !important;
 }
 
-.mb-90 {
-  margin-bottom: 90px !important;
-}
-
-.mb-100 {
-  margin-bottom: 100px !important;
-}
-
-.zindex-1 {
-  z-index: 1;
-}
-
-.rounded-lg {
-  border-radius: 15px;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
+/* THREE FAMILIES, THREE JOBS: --font-sans is body and UI, --font-serif is the title face on every page's h1
+   and the numerals, --font-accent is the sparing third — .font-secondary only, and the one face with a real
+   italic. */
 .font-secondary {
-  font-family: 'EB Garamond', "Playfair Display", serif !important;
+  font-family: var(--font-accent) !important;
 }
 
 .font-tertiary {
-  font-family: "New York", "Playfair Display", serif !important;
-}
-
-.shadow {
-  box-shadow: var(--shadow-soft) !important;
+  font-family: var(--font-serif) !important;
 }
 
 span.wow {
   display: inline-block;
 }
 
-/* icon */
+/* The decorative quote glyph: --fs-section in the full-width band, --fs-title inside a card. */
 .icon {
-  font-size: 45px;
+  font-size: var(--fs-section);
 }
 
-.icon-bg {
-  height: 100px;
-  width: 100px;
-  line-height: 100px;
-  text-align: center;
-}
-
-.icon-light {
-  color: var(--color-ice);
-}
-
-/* /icon */
 .navigation {
   padding: var(--space-8) var(--space-8);
   background-color: var(--color-yellow);
   transition: 0.3s ease;
-  color: rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-nav);
 }
 
+/* Background and shadow are restated identically to the rule above on purpose, so the token is what the two
+   states agree ON; only the vertical padding changes. */
 .navigation.nav-bg {
   background-color: var(--color-yellow);
-  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-nav);
   padding: 0px var(--space-8);
 }
 
-@media (max-width: 991px) {
+/* THE lg BOUNDARY. Bootstrap writes the pair as max-width: 991.98px / min-width: 992px precisely so the two
+   never both match; ours was 991 / 991, which BOTH matched at 991px. DO NOT reintroduce a bare 991. */
+@media (max-width: 991.98px) {
   .navigation.nav-bg {
     padding: var(--space-16) var(--space-20);
   }
 
+  /* THE OPEN MENU SCROLLS — the direct consequence of the tap-target fix below: eleven items at --tap-target
+     make the burger menu 657px tall, past the bottom of a small phone. The two ship together.
+     TWIN DECLARATION, NOT A FALLBACK HACK: dvh is the viewport height with the mobile URL bar showing, and a
+     browser that does not know the unit drops it. Keep both. */
   .navigation {
     padding: var(--space-20);
+    max-height: 100vh;
+    max-height: 100dvh;
+    overflow-y: auto;
   }
 
   .dropdown-item {
     text-align: center;
   }
 
-  /* Mobile nav: ensure each nav-item takes the full burger-menu width
-     so its dropdown can render full-width-centered inside it. */
+  /* Full burger-menu width, so the dropdown can render full-width-centred inside it. */
   .navbar-nav .nav-item {
     width: 100%;
     text-align: center;
   }
 
-  /* Drop the desktop absolute-positioned dropdown. Render sub-items
-     inline below their parent, always visible (the burger menu is the
-     toggle), with smaller + dimmer text so hierarchy reads at a glance.
-     !important is used because the desktop rule at line ~558 sets
-     `display: none` with the same specificity and appears later in the
-     cascade. */
+  /* Sub-items inline below their parent, always visible (the burger is the toggle). !important because the
+     desktop rule sets `display: none` at equal specificity and appears LATER. */
   .navbar .nav-item .dropdown-menu {
     display: block !important;
     position: static !important;
@@ -710,52 +803,68 @@ span.wow {
     text-align: center;
   }
 
+  /* TWO INDEPENDENT AXES. SIZE carries the hierarchy: a sub-item is one step DOWN from the 20px top-level
+     link, and --fs-base sits between them but :root says it is not a design step, so --fs-meta is the step.
+     Navy at 0.75 on the yellow bar is 5.25:1, AA at any size. HIT AREA is WCAG 2.5.5: min-height, not the
+     line box, sets every row, so size and target never trade. */
   .navbar .nav-item .dropdown-menu .dropdown-item {
-    font-size: 0.85em;
+    font-size: var(--fs-meta);
     opacity: 0.75;
     padding: var(--space-4) 0;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--tap-target);
   }
 }
 
-@media (min-width: 991px) {
+@media (min-width: 992px) {
   .navigation {
     min-width: 400px;
     right: 0 !important;
     left: auto !important;
-    border-radius: 0 0 0 50px;
+    border-radius: 0 0 0 var(--radius-cut);
   }
 }
 
 .navbar .nav-item .nav-link {
-  font-family: 'Ropa Sans', "Inter", serif;
-  font-size: 20px;
+  font-family: var(--font-display);
+  font-size: var(--fs-body);
   text-transform: uppercase;
   padding: var(--space-8) var(--space-20);
   color: var(--color-navy);
 }
 
 .navbar-dark .navbar-nav .active>.nav-link {
-  /* font-weight: bold; */
   color: var(--color-navy);
-}
-
-.navbar-dark .navbar-nav .active>.nav-link:hover {
-  color: rgba(255, 255, 255, .75);
 }
 
 .navbar-dark .navbar-nav .nav-link {
   color: var(--color-navy);
 }
 
+/* The top-level half of the same WCAG 2.5.5 fix. It MUST sit after `.navbar .nav-item .nav-link`'s padding
+   rule, not inside that earlier media block: both are 0-3-0 and a media query adds no specificity. */
+@media (max-width: 991.98px) {
+  .navbar .nav-item .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--tap-target);
+  }
+}
+
 /* Animated burger -> X toggler */
 .navbar-toggler {
   border: none;
   padding: var(--space-8);
+  /* Bootstrap sets `border-radius: .25rem` here. The button is transparent and borderless, so this corner is
+     only ever seen as the shape of the keyboard focus ring — which is why it should be ours. */
+  border-radius: var(--radius-tile);
   background: transparent;
 }
 
-.navbar-toggler:focus {
+.navbar-toggler:focus:not(:focus-visible) {
   outline: none;
   box-shadow: none;
 }
@@ -773,7 +882,8 @@ span.wow {
   width: 100%;
   height: 3px;
   background-color: var(--color-navy);
-  border-radius: 2px;
+  /* 3px tall, so the pill clamps to 1.5px. */
+  border-radius: var(--radius-pill);
   transition: top 0.3s ease, transform 0.3s ease, opacity 0.2s ease;
 }
 
@@ -782,15 +892,16 @@ span.wow {
 }
 
 .navbar-toggler .burger>span:nth-child(2) {
-  top: 9px;
+  top: var(--burger-pitch);
 }
 
 .navbar-toggler .burger>span:nth-child(3) {
-  top: 18px;
+  top: calc(var(--burger-pitch) * 2);
 }
 
+/* The X: both outer bars land on the MIDDLE bar's line — one token, so they cannot disagree. */
 .navbar-toggler[aria-expanded="true"] .burger>span:nth-child(1) {
-  top: 9px;
+  top: var(--burger-pitch);
   transform: rotate(45deg);
 }
 
@@ -799,7 +910,7 @@ span.wow {
 }
 
 .navbar-toggler[aria-expanded="true"] .burger>span:nth-child(3) {
-  top: 9px;
+  top: var(--burger-pitch);
   transform: rotate(-45deg);
 }
 
@@ -814,16 +925,20 @@ li.nav-item {
   border-width: 0;
   border-radius: 0;
   min-width: 100px;
+  /* THE ROW INSET, and what sets the menu's outer size. Safe only because the rows carry no hover fill, so
+     nothing has to reach the rounded corners. */
   padding: var(--space-4) var(--space-8);
   left: 50%;
   text-align: center;
-  font-family: 'Ropa Sans', "Inter", serif;
-  font-size: 20px;
+  font-family: var(--font-display);
+  font-size: var(--fs-body);
   text-transform: uppercase;
   animation: rotateX 500ms ease-in-out forwards;
   transform-origin: top center;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
+  /* Square where it meets the bar, rounded where it leaves it. A raised panel, so it takes the raised-panel
+     radius; both menus are large enough for the corner to draw a TRUE 36px. */
+  border-bottom-left-radius: var(--radius-card-lg);
+  border-bottom-right-radius: var(--radius-card-lg);
 }
 
 .navbar .nav-item:hover .dropdown-menu {
@@ -838,17 +953,34 @@ li.nav-item {
   color: var(--color-navy);
 }
 
-.dropdown-item:hover {
-  color: white;
-}
+/* ONE HOVER TREATMENT FOR THE WHOLE BAR: top-level items and the dropdown rows share this block so they
+   cannot drift apart. NO FILL — a fill on the rows alone reads as a pale bar the width of the menu and
+   made the two levels look like unrelated controls.
 
-.dropdown-item.active {
+   WHITE IS AN OWNER DECISION, NOT AN OVERSIGHT — DO NOT "FIX" IT. #fff is 1.38:1 on this --color-yellow, so
+   the label washes out under the pointer; that is the effect asked for, and it is what the bar shipped
+   with. It was tried at --color-navy-dk (11.56:1) and rejected as too subtle to read as a cue at all.
+   Any future contrast pass that darkens this is re-litigating a decision, not fixing a bug. If it must
+   change, the fix is a second, non-colour cue — not a darker text colour and not the fill.
+
+   `background-color` is DECLARED, not omitted: Bootstrap paints .dropdown-item:hover/:focus #f8f9fa and
+   :active white on rgb(0,123,255), and keyboard and touch reach :active with no :hover, so all three
+   states are named — on BOTH halves. The `.navbar-dark …` forms answer Bootstrap's rgba(255,255,255,.75)
+   at its own 4-class specificity. */
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link:focus,
+.navbar-dark .navbar-nav .nav-link:active,
+.navbar-dark .navbar-nav .active>.nav-link:hover,
+.navbar-dark .navbar-nav .active>.nav-link:focus,
+.navbar-dark .navbar-nav .active>.nav-link:active,
+.dropdown-item:hover,
+.dropdown-item:focus,
+.dropdown-item:active {
+  /* #fff, not the `white` keyword: this repo spells paper as a hex so it cannot hide from a hex audit. */
+  color: #fff;
   background-color: transparent;
 }
 
-/* (Removed .blog-card-shadow — blog & testimonial cards are now FLAT with a
-   float-up hover. The one approved soft shadow lives in --shadow-raised /
-   .is-raised, used only on the Register and instructor showcase cards.) */
 
 @keyframes rotateX {
   0% {
@@ -866,44 +998,20 @@ li.nav-item {
   }
 }
 
-@keyframes growDown {
-  0% {
-    transform: scaleY(0)
-  }
-
-  80% {
-    transform: scaleY(1.1)
-  }
-
-  100% {
-    transform: scaleY(1)
-  }
-}
-
 .navbar .nav-item .dropdown-item {
   padding: var(--space-8);
 }
 
-.dropdown-menu li>a:hover,
-.dropdown-menu li>a:focus {
-  background-color: transparent;
-}
-
-
 .hero-area {
-  padding: 200px 0 0;
+  /* The bottom clearance is the section band's own 80, so the hero -> section boundary is the same 160px as
+     every other pair. NOTE, BECAUSE IT CHANGES WHAT YOU SEE: ten of the eleven hero pages carry an inline
+     `style="padding-bottom: 20vh"` that beats this, so index.html is the only page where it renders.
+     Deleting those attributes is a MARKUP change and has not been made. */
+  padding: var(--hero-clearance) 0 var(--space-80);
   position: relative;
-  /* Contain #l5, which is deliberately hung right:-150px. Previously this was
-     scoped to max-width:767px, so from 768px up the leaf escaped its section and
-     only body{overflow-x:hidden} hid it — masking 150px of page overflow. */
+  /* Contains #l5, which is deliberately hung right:-150px. Unscoped on purpose: scoped to max-width:767px the
+     leaf escaped its section from 768px up. */
   overflow: hidden;
-}
-
-@media (max-width: 767px) {
-  .hero-area {
-    padding: 200px 0 0;
-    overflow: hidden;
-  }
 }
 
 .hero-area h1,
@@ -912,36 +1020,97 @@ li.nav-item {
   z-index: 2;
 }
 
+/* THE COURSE-DESCRIPTION PANEL IS A SIBLING OF .container, NOT A CHILD, so nothing here can read the
+   container's per-breakpoint max-width without hand-copying Bootstrap's 540/720/960/1140 ladder.
+   THE SIDE MARGIN IS THEREFORE WRITTEN TWICE AND THE SELECTOR IS THE SWITCH: the base rule is what the panel
+   wants once it is moved inside .container; `.hero-area > .lead` is the half that matches today. */
 .lead {
-  margin: 10vh 0 0;
+  margin: var(--space-80) 0 0;
+  /* 48px frames the panel at desktop, where it is 90% of a wide viewport. On a 288px phone that same padding
+     ate two thirds of the line, which is what the <=575px override below reduces. */
   padding: var(--space-20) var(--space-48);
   background-color: var(--color-yellow);
-  width: 90%;
-  border-radius: 0 50px 0 0;
+  border-radius: 0 var(--radius-cut) 0 0;
 }
 
+/* DELIBERATELY OFF THE GRID. This panel is a tab card: it runs to the left screen edge and its bottom sits
+   flush on the section below, so the curved top-right corner reads as a tab poking out of that band. Aligning
+   it to the container gutter and giving the hero a bottom clearance removes the effect. 90% is the tab's own
+   width, not a grid measure. */
+@media (max-width: 575.98px) {
+
+  .lead {
+    padding-left: var(--space-20);
+    padding-right: var(--space-20);
+  }
+}
+
+.hero-area > .lead {
+  /* DELIBERATELY EXEMPT FROM --measure: it is a full-bleed tab keyed to the viewport, not a prose column.
+     Narrowing it to the reading measure made the yellow hug the copy and lost the tab. Do not "fix" it. */
+  width: 90%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* The tab docks: no gap between it and the band below. Scoped to the hero that actually has a .lead, so
+   every other hero keeps its 80px clearance. */
+.hero-area:has(> .lead) {
+  padding-bottom: 0;
+}
+
+/* NO COLOUR RULE HERE ON PURPOSE: the global contract already says it — `a` is --color-orange-dk, `a:hover`
+   is --color-navy, and a local pair was a second contract whose hover fell to 2.86:1 on this yellow.
+   The underline must be local: the link sits inside navy copy at ~2.9:1, so colour alone cannot mark it
+   (WCAG 1.4.1). */
+/* The panel's own title: SEMIBOLD, because 700 reads heavy at 40px on this small tab and Bootstrap's heading
+   500 is a weight this family does not ship. The matching `1,600` axis is in the @import at the top of this
+   file — drop it and the browser rounds to a weight it does have and this rule stops doing anything. */
+/* Caps a prose block at the reading measure, with auto side margins so a centred section stays centred. The
+   .lead panel is deliberately NOT capped — see the exemption on `.hero-area > .lead`. */
+.measure {
+  max-width: var(--measure);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.lead-title {
+  font-weight: var(--fw-semibold);
+}
+
+/* --color-orange-dk is 1.00-1.69:1 against the copy it sits in, under the 3:1 WCAG 1.4.1 requires before
+   colour alone may mark a link. `.link` is the site's own marker for a text link and was a no-op at rest,
+   so the container tag alone decided the look: the same `.link` underlined inside a <p> and not inside an
+   <li>. Both are named here. A decoration modifier only — do not add a `color`. */
+p a:not(.btn),
+a.link,
+.pricing-card ul li a {
+  text-decoration: underline;
+  /* Clear of the descenders, so the rule reads as an underline and not a strike. Written once here for
+     every underlined link on the site; the tier links used to restate it. */
+  text-underline-offset: 3px;
+}
+
+/* A 35% tint of the link's own rung rather than full-strength currentColor: the line still marks the
+   link but stops competing with the word. Same recipe and same 0.35 the tier links use, keyed to the
+   colour these actually paint — measured: all 41 in-prose links across 11 pages are rgb(199,61,41),
+   --color-orange-dk, so one tint covers every one of them. (rgba() on the triplet, not color-mix — that
+   is invalid-at-computed-value-time on Chrome <111 / iOS <16.2.) */
+p a:not(.btn),
+a.link {
+  text-decoration-color: rgba(var(--orange-dk-rgb), 0.35);
+}
+
+/* Hero leaves — art, not rhythm: a leaf's top is not a gap between two things, and some are negative
+   because the leaf hangs off the edge. The spacing guard's Tier B warnings here are on purpose. */
 .layer {
   position: absolute;
   z-index: 1;
 }
 
-#l1 {
-  bottom: 0;
-  left: 0;
-}
-
-#l2 {
-  top: 190px;
-  left: -250px;
-}
-
-#l3 {
-  top: 360px;
-  left: 50px;
-}
-
 #l4 {
-  top: 200px;
+  /* Aligned with the hero's first line of content, hence the shared constant. */
+  top: var(--hero-clearance);
   right: 40%;
 }
 
@@ -955,42 +1124,20 @@ li.nav-item {
   left: 5%;
 }
 
-#l7 {
-  top: 190px;
-  right: 35%;
-}
 
-.team {
-  background-color: var(--color-salmon);
-}
-
-/* Instructor card — raised showcase card (yellow + larger radius + standard shadow + float-up) */
 .instructor-card {
   background-color: var(--color-yellow);
   border-radius: var(--radius-card-lg);
   /* Side padding so long names ("Sunipun Biswas") never touch the rounded edge. */
   padding: 0 var(--space-16) var(--space-20);
-  margin: 0 0 var(--space-32);   /* side gutters come from the grid column */
+  /* Bootstrap's column gutters are 15+15, so this row gap matches them and the grid is square. */
+  margin: 0 0 var(--grid-gutter);
   box-shadow: var(--shadow-raised) !important;
   transition: transform var(--ease);
 }
 
-.instructor-card:hover {
-  transform: translateY(var(--card-lift));
-}
-
-/* The index staff grid is capped at the fraction Bootstrap's own .col-10 uses,
-   rather than the full 1140px container: at desktop widths three 254px portraits
-   were the largest thing on the page. Only from lg up — below that the container
-   is already narrow and capping would just crowd the cards. */
-@media (min-width: 992px) {
-  .instructor-row {
-    max-width: 83.333333%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
+/* Without a width the <img> falls back to intrinsic size, and images/team holds originals up to
+   3109x3109, which blows out the document width. 80% so the portrait scales with its grid column. */
 .instructor-img {
   width: 80%;
   object-fit: cover;
@@ -999,22 +1146,17 @@ li.nav-item {
   margin: var(--space-20);
 }
 
-.instructor-text {
-  margin: var(--space-40);
-}
+/* No max-width here: 83.333333% resolves against .container's 1110px content box where the .col-10
+   class resolves against .row's 1140px, leaving the cards 12.5px inboard of their own heading. */
 
 /* About page */
-/* Three blocks: photo and headline side by side, bio full width beneath.
-   Previously the photo and the text were inline-block at 30%/60%, so the
-   TEACHES panel was squeezed into a narrow column beside the portrait and
-   overflowed at medium widths. Grid gives the headline the full remaining
-   width and lets the bio span both columns. */
+/* NO align-items — the absence is the fix. `center` (and `start`) split the text cell's leftover
+   height around the portrait, so the rendered gap varied per card. Do not re-add either. */
 .instructor-card.about {
   width: 100%;
   padding: var(--space-40);
   display: grid;
   grid-template-columns: auto 1fr;
-  align-items: center;
   column-gap: var(--space-24);
   row-gap: var(--space-24);
 }
@@ -1022,6 +1164,18 @@ li.nav-item {
 .instructor-card.about .img-wrapper-left { grid-column: 1; grid-row: 1; }
 .instructor-card.about .about-head { grid-column: 2; grid-row: 1; }
 .instructor-card.about .about-text { grid-column: 1 / -1; grid-row: 2; }
+
+/* The card owns its heading colour instead of each h3 carrying a utility, so the rung is set once for the
+   ground rather than fourteen times on the elements.
+
+   BASE ORANGE IS AN OWNER DECISION — DO NOT "FIX" IT. It measures 2.86:1 on this --color-yellow card,
+   under the 3:1 that 26px/40px large text owes. It was tried at --color-orange-dk (3.69:1, and passing)
+   and rejected: the darker rung read as unintentional against the brand orange used everywhere else.
+   A contrast pass that darkens this is re-litigating a decision, not fixing a bug. If it ever must
+   change, the ground is the thing to change — not the text rung. */
+.instructor-card h3 {
+  color: var(--color-orange);
+}
 
 .about-head h3 { margin-top: 0; }
 
@@ -1046,9 +1200,7 @@ li.nav-item {
   padding: 0px 0px 0 var(--space-40);
 }
 
-/* Inside a grid card the wrapper sizes to its image instead of a percentage.
-   The portrait is clamped: there is no size-token family in this repo, so the
-   floor/ceiling are stated here deliberately rather than reused from elsewhere. */
+/* Literal clamp bounds on purpose: there is no size-token family in this repo to borrow from. */
 .instructor-card.about .img-wrapper-left {
   width: clamp(96px, 18vw, 176px);
   display: block;
@@ -1058,10 +1210,6 @@ li.nav-item {
 .instructor-card.about .instructor-img {
   width: 100%;
   margin: 0;
-}
-
-.img-wrapper-left.usabointro {
-  width: 40%;
 }
 
 .about-text {
@@ -1078,11 +1226,6 @@ li.nav-item {
   padding: 0;
 }
 
-.about-text.usabointro {
-  width: 55%;
-  padding: 0px var(--space-40) 0 var(--space-20);
-}
-
 @media (max-width: 1200px) {
   .img-wrapper-left {
     width: 45%;
@@ -1095,9 +1238,11 @@ li.nav-item {
 }
 
 @media (max-width: 1000px) {
+  /* No margin here. This was the only card on the site given a TOP margin, and it also doubled the gap
+     under the section intro once the heading column became a flex item. The base rule's
+     `margin: 0 0 var(--grid-gutter)` governs at every width, which is what index's cards use. */
   .instructor-card.about {
     padding: var(--space-40);
-    margin: var(--space-32) 0;
   }
 
   .img-wrapper-left {
@@ -1114,20 +1259,17 @@ li.nav-item {
 
 @media (max-width: 790px) {
 
-  .instructor-card.about,
-  .instructor-card-usabointro {
+  .instructor-card.about {
     text-align: center;
   }
 
-  .img-wrapper-left,
-  .img-wrapper-left.usabointro {
+  .img-wrapper-left {
     width: 100%;
     padding: 0 0px;
     float: left;
   }
 
-  .about-text,
-  .about-text.usabointro {
+  .about-text {
     width: 100%;
     display: inline-block;
   }
@@ -1169,7 +1311,8 @@ li.nav-item {
   width: 12px;
   background: rgba(255, 255, 255, 0.5);
   color: transparent;
-  border-radius: 10px;
+  /* 6px tall, so the pill clamps to 3px. */
+  border-radius: var(--radius-pill);
   overflow: hidden;
   transition: width 0.3s ease, background 0.2s ease;
   border: 0;
@@ -1187,40 +1330,18 @@ li.nav-item {
   content: none;
 }
 
-/* Black chevrons by default (gallery / light sections). Repeat the
-   background-image in :hover/:focus because slick-theme.css's hover
-   rule uses `background: transparent` (shorthand) which would otherwise
-   wipe the chevron mid-hover. */
-/* Chevron SVG + position/size/repeat must be redeclared in every state
-   that slick-theme.css resets (it uses `background: transparent`
-   shorthand on :hover/:focus, which wipes ALL background properties
-   including size). Without re-pinning size, the SVG falls back to
-   the browser's default (300×150ish) and looks giant on hover. */
-.slick-prev,
-.slick-prev:hover,
-.slick-prev:focus-visible,
-.slick-prev:focus {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M10 3 L5 8 L10 13' stroke='black' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-  background-size: 22px 22px;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-.slick-next,
-.slick-next:hover,
-.slick-next:focus-visible,
-.slick-next:focus {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M6 3 L11 8 L6 13' stroke='black' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-  background-size: 22px 22px;
-  background-position: center;
-  background-repeat: no-repeat;
-}
+/* slick-theme.css uses the `background` SHORTHAND on :hover/:focus, wiping size/position too — so
+   every state below has to redeclare the SVG, size, position and repeat. */
 
-/* White chevrons on dark sections (testimonials) for legibility. */
+/* The only .slick-prev/.slick-next that render sit inside .bg-dark. A light-ground carousel would
+   have to declare BOTH halves on its ground class — chip fill AND chevron — or it renders as an
+   invisible 44px button, since the rule above suppresses slick's own glyph. #fff is percent-encoded
+   because a bare # would be read as the URL's fragment. */
 .bg-dark .slick-prev,
 .bg-dark .slick-prev:hover,
 .bg-dark .slick-prev:focus-visible,
 .bg-dark .slick-prev:focus {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M10 3 L5 8 L10 13' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M10 3 L5 8 L10 13' stroke='%23fff' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
   background-size: 22px 22px;
   background-position: center;
   background-repeat: no-repeat;
@@ -1229,42 +1350,25 @@ li.nav-item {
 .bg-dark .slick-next:hover,
 .bg-dark .slick-next:focus-visible,
 .bg-dark .slick-next:focus {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M6 3 L11 8 L6 13' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M6 3 L11 8 L6 13' stroke='%23fff' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
   background-size: 22px 22px;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-/* Larger, circular hit-target with an SVG chevron rendered via
-   background-image. SVG paths are drawn at the viewBox center, so
-   centering is pixel-deterministic — no font hinting, no rotation. */
+/* Shape only — the chip's fill lives with the ground it must be legible on (the .bg-dark rules above). */
 button.slick-prev,
 button.slick-next {
   z-index: 5;
-  width: 44px;
-  height: 44px;
+  width: var(--tap-target);
+  height: var(--tap-target);
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.35);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 22px 22px;
   padding: 0;
   cursor: pointer;
   transition: background-color 0.2s ease;
-}
-
-button.slick-prev:hover,
-button.slick-next:hover {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-/* Mouse-click focus must not leave a persistent darken. Force the bg
-   back to the default whenever focused-but-not-hovered, regardless of
-   whether the browser honors :focus-visible on mouse activation. */
-button.slick-prev:focus:not(:hover),
-button.slick-next:focus:not(:hover) {
-  background-color: rgba(0, 0, 0, 0.35);
-  outline: none;
 }
 
 .bg-dark button.slick-prev,
@@ -1277,30 +1381,29 @@ button.slick-next:focus:not(:hover) {
   background-color: rgba(255, 255, 255, 0.3);
 }
 
+/* Mouse-click focus must not leave a persistent darken, whatever the browser does with :focus-visible. */
 .bg-dark button.slick-prev:focus:not(:hover),
 .bg-dark button.slick-next:focus:not(:hover) {
   background-color: rgba(255, 255, 255, 0.15);
-  outline: none;
 }
 
-.slick-prev { left: 12px; }
-.slick-next { right: 12px; }
+.slick-prev { left: var(--space-12); }
+.slick-next { right: var(--space-12); }
 
+/* Gutter = the arrow's footprint (--space-12 offset + --tap-target) plus clearance to the first slide. */
 [data-testimonial-slider] {
-  padding-left: 84px;
-  padding-right: 84px;
+  padding-left: calc(var(--space-12) + var(--tap-target) + var(--space-24));
+  padding-right: calc(var(--space-12) + var(--tap-target) + var(--space-24));
 }
 
 @media (max-width: 575px) {
   [data-testimonial-slider] {
-    padding-left: 60px;
-    padding-right: 60px;
+    padding-left: calc(var(--space-12) + var(--tap-target) + var(--space-4));
+    padding-right: calc(var(--space-12) + var(--tap-target) + var(--space-4));
   }
 }
 
-/* Explore landing — gallery uses an external arrow frame so arrows sit
-   outside the slick container entirely. Symmetric flex layout means
-   spacing is determined by `gap`, not pixel offsets. */
+/* External arrow frame: the arrows sit outside the slick container, so spacing is `gap`, not offsets. */
 .gallery-frame {
   display: flex;
   align-items: center;
@@ -1314,8 +1417,8 @@ button.slick-next:focus:not(:hover) {
 
 .gallery-arrow {
   flex: 0 0 auto;
-  width: 44px;
-  height: 44px;
+  width: var(--tap-target);
+  height: var(--tap-target);
   background-color: var(--color-orange);
   background-repeat: no-repeat;
   background-position: center;
@@ -1333,21 +1436,27 @@ button.slick-next:focus:not(:hover) {
 
 .gallery-arrow:focus:not(:hover) {
   background-color: var(--color-orange);
-  outline: none;
 }
 
 /* SVG chevrons — centered in their 16×16 viewBox, no rotation/font issues */
 .gallery-arrow-prev {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M10 3 L5 8 L10 13' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M10 3 L5 8 L10 13' stroke='%23fff' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
 }
 
 .gallery-arrow-next {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M6 3 L11 8 L6 13' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M6 3 L11 8 L6 13' stroke='%23fff' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
 }
 
 /* /slick slider */
 /* /testimonial */
 /* footer */
+
+/* The footer markup carries no side padding, so at 375px the disclaimer ran off both edges. The gutter
+   goes on .footer-section, not the inner div, so the bg-dark band still spans edge to edge. */
+.footer-section {
+  padding-left: var(--space-16);
+  padding-right: var(--space-16);
+}
 
 /* /footer */
 
@@ -1357,80 +1466,125 @@ blockquote {
   background: var(--color-line);
   border-left: 3px solid var(--color-navy);
   font-style: italic;
-  font-size: 22px;
-  line-height: 1.7;
+  font-size: var(--fs-body);
+  line-height: var(--lh-tight);
 }
 
 ul.course-overview-list li {
   font-size: var(--fs-body);
-  line-height: var(--lh-body);
+  line-height: var(--lh-tight);
   list-style-type: disc;
   margin-bottom: var(--space-8);
+  /* "competitors/Campers" is one unbreakable token and was still overflowing signup.html at 200%
+     zoom (WCAG 1.4.4 reflow). */
+  overflow-wrap: anywhere;
 }
 
 ol.steps {
   list-style: none !important;
+  /* Each list numbers from 1; without this a second ol.steps on a page continues from the first. */
+  counter-reset: item;
 }
 
 ol.steps li {
+  /* `ol.steps li:before` is absolutely positioned, so the li must be its containing block — without
+     this every badge resolves against the enclosing Bootstrap column and they all stack.
+     NOT flex: these items mix inline text with an <a> and a <p>, which flex would column-stack. */
+  position: relative;
   /* The Zelle address is one unbreakable token; without this it is clipped
      by body{overflow-x:hidden} below ~388px and the characters are unrecoverable. */
   overflow-wrap: anywhere;
-  margin-bottom: 35px;
-  line-height: 36px;
-  font-size: 22px;
-  padding-left: var(--space-16);
+  margin-bottom: var(--space-32);
+  line-height: var(--lh-tight);
+  font-size: var(--fs-body);
+  /* The badge's gutter: --space-40 disc + --space-8 gap. The badge sits inside the li, so the text
+     must be indented past it. */
+  padding-left: var(--space-48);
   counter-increment: item;
 }
 
 ol.steps li:before {
   content: counter(item) " ";
-  font-family: "New York", "Playfair Display", serif;
-  text-align: center;
+  font-family: var(--font-serif);
   color: var(--color-yellow);
+  /* The `top` below is derived from the li's own type metrics, so it holds for any item that opens at
+     the li's font-size. For items that open larger, see ol.steps--lg below. */
   position: absolute;
-  left: 20px;
-  z-index: -1;
-  display: inline-block;
-  width: 36px;
-  height: 36px;
+  /* Flush to the li's left edge, inside the gutter its padding-left reserves. */
+  left: 0;
+  /* Flex centring, not `line-height: <disc>`, so it stays true if the circle or type size changes. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-40);
+  height: var(--space-40);
+  /* Centres the disc on the first line instead of hanging it from the line box top: half the difference
+     between the li's line box and the disc, so a type- or disc-size change still lands. Negative — the
+     disc overhangs upward, well inside the --space-32 between items. */
+  top: calc((var(--lh-tight) * 1em - var(--space-40)) / 2);
   border-radius: var(--radius-pill);
   background: var(--color-orange);
+}
+
+/* Items whose first line is a .text-lg label rather than the li's own body type. about.html opens each
+   item with a 26px --fs-title <strong>, so its first line box is 34px against the li's 24px and a badge
+   derived from `1em` sits 3px low. Re-derived from the label's size. */
+ol.steps--lg li:before {
+  top: calc((var(--lh-tight) * var(--fs-title) - var(--space-40)) / 2);
+}
+
+/* Meta role — --fs-meta + --color-muted. It sits inside `ol.steps li`, so it inherits that rule's
+   overflow-wrap and the address cannot be clipped at small widths. */
+.step-note {
+  margin: var(--space-4) 0 0;
+  font-size: var(--fs-meta);
+  color: var(--color-muted);
+}
+
+/* The same note standing at the FOOT of a section rather than tucked under the line it annotates.
+   .step-note's --space-4 is a caveat's gap; a section foot takes the section's own rhythm — the same
+   --space-48 .gallery-removal-notice uses for the identical role. */
+.step-note--section {
+  margin-top: var(--space-48);
 }
 
 /*collapse*/
 .collapsible {
   background-color: var(--color-cream);
-  color: var(--color-orange);
-  font-weight: 600;
+  color: var(--color-orange-dk);
+  font-weight: var(--fw-semibold);
   border: none;
   border-bottom: 2px solid var(--color-line);
   cursor: pointer;
   padding: var(--space-16) var(--space-48) var(--space-16) var(--space-16);
   width: 100%;
   text-align: left;
-  outline: none;
   font-size: var(--fs-body);
   position: relative;
   transition: background-color 0.2s ease;
 }
 
+/* Cream (rest) -> cream-dk (hover) -> yellow-lt (open), so hover and open stay distinguishable. The
+   dark orange rung clears 4.5:1 on the first two (4.81 / 4.56) but only 4.11 on yellow-lt, so the OPEN
+   row swaps to navy at 10.91:1. */
 .collapsible:hover {
-  background-color: var(--color-yellow-lt);
+  background-color: var(--color-cream-dk);
 }
 
 .collapsible.active {
   background-color: var(--color-yellow-lt);
+  color: var(--color-navy);
 }
 
 .collapsible:after {
   content: '\002B';
   color: var(--color-amber);
-  font-weight: bold;
+  font-weight: var(--fw-bold);
   font-size: 1.4em;
-  line-height: 1;
+  line-height: var(--lh-solid);
   position: absolute;
-  right: 18px;
+    /* --space-16 puts the glyph's right inset on the button's own left text inset. */
+  right: var(--space-16);
   top: 50%;
   transform: translate(0, -55%);
 }
@@ -1448,7 +1602,7 @@ ol.steps li:before {
 }
 
 .content>.table-responsive {
-  margin-top: 1rem;
+  margin-top: var(--space-16);
 }
 
 p.description {
@@ -1462,7 +1616,6 @@ p.description {
 }
 
 .table {
-  /* display: block !important; */
   overflow-x: auto !important;
   width: 100% !important;
   color: var(--color-navy);
@@ -1479,12 +1632,13 @@ p.description {
 
 .table-responsive::-webkit-scrollbar-track {
   background: var(--color-line);
-  border-radius: 4px;
+  /* The bar is 8px tall, so the pill clamps to 4px. */
+  border-radius: var(--radius-pill);
 }
 
 .table-responsive::-webkit-scrollbar-thumb {
   background: var(--color-gray);
-  border-radius: 4px;
+  border-radius: var(--radius-pill);
 }
 
 .table-responsive::-webkit-scrollbar-thumb:hover {
@@ -1508,31 +1662,26 @@ tr:nth-child(even) {
 
 /* calendar */
 
+/* Google's pasted embed ships `style="border: 0"` ON THE IFRAME and an inline style beats a stylesheet
+   rule; that is what the !important answers. Remove the inline style and it goes too. */
 .calendar {
   width: 100%;
   max-width: 100%;
   height: 500px;
-  border: 2px solid var(--color-yellow);
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--color-yellow) !important;
+  border-radius: var(--radius-card);
+  /* NO box-shadow: --shadow-raised marks OUR raised surfaces, and this is a third-party iframe that
+     draws its own chrome. The yellow border already separates it from the page. */
   margin: var(--space-20) 0;
   overflow: hidden;
 }
 
-/* @media (max-width: 768px) {
-  .calendar {
-    height: 400px;
-  }
-}
-
-@media (max-width: 480px) {
-  .calendar {
-    height: 350px;
-  }
-} */
 
 input#query {
-  font: 16px Inter;
+  /* Longhand: the `font:` SHORTHAND resets every longhand it omits, line-height included. */
+  font-family: var(--font-sans);
+  /* Below --fs-base iOS Safari zooms the page on focus. Do not go smaller. */
+  font-size: var(--fs-base);
   height: 100%;
   padding: var(--space-12) var(--space-16);
   border-radius: var(--radius-pill);
@@ -1542,9 +1691,7 @@ input#query {
   margin: var(--space-8);
 }
 
-input#query:focus {
-  outline-color: var(--color-amber);
-}
+/* #query takes the shared :focus-visible ring; text fields match it on pointer focus too. */
 
 input#query::placeholder {
   color: var(--color-amber);
@@ -1552,12 +1699,22 @@ input#query::placeholder {
 }
 
 .search {
-  height: 100%;
+  /* DO NOT GIVE THIS ITS OWN TYPE: a `font:` shorthand here, ~1200 lines after .btn at equal
+     specificity, defeats the site's button type. Height comes from the flex row's align-self: stretch. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--color-amber);
-  color: white;
-  font: 16px Inter;
+  color: #fff;
   padding: var(--space-8) var(--space-16);
   margin: var(--space-8);
+}
+
+/* Answers Bootstrap's `.btn:hover { color: #212529 }` (0,2,0) over `.search` (0,1,0). */
+.btn.search:hover,
+.btn.search:focus,
+.btn.search:active {
+  color: #fff;
 }
 
 form#search {
@@ -1566,7 +1723,7 @@ form#search {
   justify-content: center;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 991.98px) {
   form#search {
     width: 100%;
   }
@@ -1584,17 +1741,16 @@ svg {
 .blog-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 1rem;
+  gap: var(--space-32);
+  margin-top: var(--space-16);
 }
 
-/* Surface card preset — cream, big radius, FLAT, float-up on hover */
 .card {
   border: none;
   background-color: var(--color-cream);
   border-radius: var(--radius-card);
   box-shadow: none;
-  height: 400px;
+  height: var(--card-h);
   min-height: fit-content;
   display: flex;
   justify-content: flex-end;
@@ -1606,7 +1762,9 @@ svg {
   overflow: auto;
 }
 
-.card:hover {
+/* NOT .signup-card: the lift previews a click, and a blog card IS the <a>. The Register card is a
+   container holding two buttons, with no destination of its own. */
+.card:not(.signup-card):hover {
   transform: translateY(var(--card-lift));
 }
 
@@ -1628,14 +1786,14 @@ svg {
   background-color: #fff;
 }
 
-/* Demo (demo/index.html + explore.html): YouTube player embed + Week-1 thumbnail
-   strip. Self-contained 16:9 embed (bundled Bootstrap lacks .ratio). See js/demo-player.js. */
+/* Demo player (demo/index.html + explore.html). Hand-rolled 16:9 because the bundled Bootstrap lacks
+   .ratio. See js/demo-player.js. */
 .demo-embed {
   position: relative;
   padding-bottom: 56.25%;
   height: 0;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: var(--radius-tile);
 }
 .demo-embed iframe {
   position: absolute;
@@ -1657,7 +1815,7 @@ svg {
   flex: 0 0 200px;
   padding: 0;
   border: 2px solid transparent;
-  border-radius: 10px;
+  border-radius: var(--radius-tile);
   background: var(--color-cream);
   overflow: hidden;
   cursor: pointer;
@@ -1676,17 +1834,26 @@ svg {
   padding: var(--space-8) var(--space-8);
   font-size: var(--fs-meta);
   font-weight: var(--fw-bold);
-  line-height: 1.3;
+  line-height: var(--lh-tight);
   color: var(--color-navy);
 }
-.demo-thumb:hover,
+/* .is-active is declared LAST so the playing thumb keeps its orange under the pointer. */
+.demo-thumb:hover {
+  border-color: var(--color-navy);
+}
+
 .demo-thumb.is-active {
   border-color: var(--color-orange);
 }
 
-/* blog card title — bold brand-orange sans (standardized tokens) */
+.demo-thumb.is-active:hover {
+  border-color: var(--color-orange-dk);
+}
+
+/* blog card title — bold brand-orange sans. --fs-title 26px at --fw-bold is WCAG large text
+   (>=18.66px bold), so it owes 3:1 and --color-orange's 3.95:1 clears it; see .text-secondary. */
 .card-label>.header {
-  margin-bottom: .3rem;
+  margin-bottom: var(--space-4);
   color: var(--color-orange);
   font-family: var(--font-sans);
   font-weight: var(--fw-bold);
@@ -1694,21 +1861,19 @@ svg {
   line-height: var(--lh-tight);
 }
 
-/* subtitle role — bold navy sans */
 .card-label>.subtitle {
   font-family: var(--font-sans);
   font-weight: var(--fw-bold);
   font-size: var(--fs-body);
   color: var(--color-navy);
-  margin-bottom: .15rem;
+  margin-bottom: var(--space-2);
 }
 
-/* small subtext (excerpt + date) — standardized sans-serif muted-grey meta role */
 .card-label>.body {
   font-family: var(--font-sans);
   font-size: var(--fs-meta);
   color: var(--color-muted);
-  line-height: var(--lh-body);
+  line-height: var(--lh-tight);
 }
 
 .card-label>.date {
@@ -1724,13 +1889,15 @@ svg {
   flex-wrap: wrap;
 }
 
+/* Navy, not either orange rung: at 16px this needs 4.5:1 and the dark rung reaches only 4.11 on
+   yellow-lt. Navy is 10.91, the same pairing .page-nums>li.active-num uses on this fill. */
 .taglist>li {
   padding: var(--space-4);
   background-color: var(--color-yellow-lt);
   margin-right: var(--space-4);
   margin-bottom: var(--space-4);
-  border-radius: 5px;
-  color: var(--color-orange);
+  border-radius: var(--radius-pill);
+  color: var(--color-navy);
   list-style-type: none;
 }
 
@@ -1741,8 +1908,12 @@ svg {
 
 .page-nums {
   display: flex;
-  font: 800 15px New York;
-  font-family: "New York", "Playfair Display", serif;
+  /* Reboot's `ul { margin-bottom: 1rem }` otherwise leaks 16px below the pill row. */
+  margin-bottom: 0;
+  /* Longhand: the `font:` SHORTHAND resets every longhand it omits, line-height included. */
+  font-family: var(--font-serif);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-bold);
   margin-top: var(--space-48);
   list-style: none;
   padding: 0;
@@ -1768,16 +1939,17 @@ svg {
 
 /* Explore landing — gallery preview (Slick carousel: autoplay + arrows + drag) */
 .gallery-preview {
-  padding-top: 1rem;
-  padding-bottom: 1.5rem;
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-24);
 }
 
 .gallery-preview .slick-slide {
   padding: 0 var(--space-8);
 }
 
+/* Cancels the slide's 8px side padding so the end tiles sit flush; the vertical half is the ring gutter. */
 .gallery-preview .slick-list {
-  margin: 0 -8px;
+  margin: calc(-1 * var(--space-4)) calc(-1 * var(--space-8));
 }
 
 .gallery-tile {
@@ -1809,7 +1981,8 @@ svg {
   bottom: 0;
   right: 0;
   padding: var(--space-8) var(--space-12);
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+  /* Both stops are the same navy so the fade cannot drift towards grey; --scrim-caption is set in :root. */
+  background: linear-gradient(to top, var(--scrim-caption), rgba(var(--navy-rgb), 0));
   color: #fff;
   opacity: 0;
   transition: opacity 250ms ease;
@@ -1820,7 +1993,7 @@ svg {
 }
 
 .gallery-tile-caption .loc {
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   font-size: var(--fs-meta);
   line-height: var(--lh-tight);
 }
@@ -1831,10 +2004,6 @@ svg {
   margin-top: var(--space-2);
 }
 
-
-.about-usabointro {
-  display: flex;
-}
 
 /* Weekly Schedule Grid - Signup Page */
 .schedule-grid {
@@ -1873,7 +2042,7 @@ svg {
 }
 
 .schedule-class {
-  font-family: "New York", "Playfair Display", serif;
+  font-family: var(--font-serif);
   font-size: var(--fs-title);
   color: var(--color-orange);
   line-height: var(--lh-tight);
@@ -1883,10 +2052,12 @@ svg {
 .schedule-details {
   font-size: var(--fs-meta);
   color: var(--color-orange);
-  line-height: var(--lh-body);
+  line-height: var(--lh-tight);
 }
 
 /* Pricing Cards - Signup Page */
+/* SCOPED TEXT ROLE, ON PURPOSE — not drift. Everything here is --color-navy on --color-cream at
+   12.78:1. The one place body-weight text is not --color-ink: do not "fix" it, do not copy it outward. */
 .pricing-card {
   background-color: var(--color-cream);
   border-radius: var(--radius-card);
@@ -1899,9 +2070,7 @@ svg {
   flex-direction: column;
 }
 
-/* Register button: subtle outline — white with navy text + border, fills on hover */
 .pricing-card .btn {
-  font-size: var(--fs-body);
   padding: var(--space-12) var(--space-32);
   background: #fff;
   color: var(--color-navy);
@@ -1916,45 +2085,41 @@ svg {
   transform: translateY(var(--card-lift));
 }
 
-.pricing-card.selected {
-  background-color: var(--color-yellow);
-  transform: translateY(var(--card-lift));
-}
-
 .pricing-card .tier-name {
-  font-family: "New York", "Playfair Display", serif;
-  font-size: 35px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-title);
   color: var(--color-navy);
   margin-bottom: var(--space-8);
 }
 
 .pricing-card .tier-icon {
-  font-size: 20px;
+  font-size: var(--fs-body);
   display: inline-block;
   vertical-align: middle;
   position: relative;
-  top: -2px;
+  /* optical centring against the tier name */
+  top: calc(-1 * var(--space-2));
   margin-right: var(--space-4);
 }
 
 .pricing-card .tier-desc {
-  font-size: 1rem;
-  line-height: 1.2;
+  font-size: var(--fs-body);
+  line-height: var(--lh-tight);
   min-height: 3.6em;
   color: var(--color-navy);
   margin-bottom: var(--space-16);
 }
 
 .pricing-card .price {
-  font-family: "New York", "Playfair Display", serif;
-  font-size: 40px;
-  font-weight: 700;
+  font-family: var(--font-serif);
+  font-size: var(--fs-section);
+  font-weight: var(--fw-bold);
   color: var(--color-navy);
   margin-bottom: var(--space-12);
 }
 
 .pricing-card .includes-label {
-  font-size: 1rem;
+  font-size: var(--fs-meta);
   color: var(--color-navy);
   margin-bottom: var(--space-8);
 }
@@ -1975,16 +2140,18 @@ svg {
 
 .pricing-badge {
   position: absolute;
-  top: -12px;
+  /* Half the badge hangs above the card's top edge. */
+  top: calc(-1 * var(--space-12));
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
   background-color: var(--color-yellow);
-  color: var(--color-orange);
+  /* Warm fill at 14px: the dark orange rung is 3.69 here, navy is 9.79. */
+  color: var(--color-navy);
   font-size: var(--fs-meta);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   padding: var(--space-4) var(--space-12);
-  border-radius: 4px;
+  border-radius: var(--radius-pill);
 }
 
 .schedule-note {
@@ -2007,29 +2174,26 @@ svg {
   }
 }
 
-/* Hero signup / Register card — raised showcase: cream (inherits .card), larger radius, soft shadow (index.html: .is-raised) */
-/* One clamp governs the width. Below the lg breakpoint the card leaves its
-   col-lg-5 and goes full-bleed, which stretches it across the whole viewport on
-   tablets; the clamp caps it and mx-auto keeps it centred. Above lg the column
-   is already narrower than the ceiling, so this has no effect there. */
+/* Below lg the card leaves its col-lg-5 and goes full-bleed across tablets; the clamp is what caps it. */
 .signup-card {
   border-radius: var(--radius-card-lg);
   border: none;
   margin-top: var(--space-48);
   height: auto;
-  min-height: 400px;
+  min-height: var(--card-h);
   width: clamp(280px, 100%, 440px);
   margin-left: auto;
   margin-right: auto;
 }
 
+/* The vertical padding is a FLOOR, not the rendered gap: the body is centred inside --card-h. */
 .signup-card .card-body {
   padding: var(--space-40) var(--space-32);
   overflow: visible;
 }
 
 .signup-card-title {
-  margin-bottom: 28px;
+  margin-bottom: var(--space-24);
   text-wrap: balance;
 }
 
@@ -2044,14 +2208,12 @@ svg {
   white-space: nowrap;
 }
 
-/* Countdown popup. The card is white on a white page with border:none and a
-   downward-offset shadow, so its top edge had NO boundary of its own — the
-   backdrop was the only thing separating it from the page. Lightening the
-   scrim dissolves that, so the card carries its own 1px navy ring (13.5:1
-   against the card interior, 5.2:1 against the scrim). This is what frees
-   --scrim-modal to be tuned without the popup losing its edge. */
+/* A white card on a white page with border:none: the 1px navy ring is the only thing separating them,
+   which is what frees --scrim-modal to be tuned. The 0 20px 60px throw is the OVERLAY shadow, not
+   --shadow-raised; it is written twice — here and on `.glightbox-clean .gslide-media` — same geometry,
+   different alpha, because color-mix() is banned (see :root). Change geometry in one, change both. */
 .countdown-modal {
-  border-radius: 32px;
+  border-radius: var(--radius-card-lg);
   border: none;
   box-shadow: 0 20px 60px rgba(var(--navy-rgb), 0.25),
               0 0 0 1px var(--color-navy);
@@ -2060,11 +2222,11 @@ svg {
 
 .countdown-close {
   position: absolute;
-  top: 12px;
-  right: 16px;
+  top: var(--space-12);
+  right: var(--space-16);
   z-index: 2;
-  font-size: 28px;
-  line-height: 1;
+  font-size: var(--fs-title);
+  line-height: var(--lh-solid);
   padding: var(--space-4) var(--space-8);
 }
 
@@ -2091,30 +2253,28 @@ svg {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: "New York", serif;
-  font-size: 28px;
-  font-weight: 600;
-  line-height: 1;
+  font-family: var(--font-serif);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-solid);
 }
 
 .countdown-timer .cd-block small {
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-sans);
   font-size: var(--fs-fine);
-  font-weight: 500;
+  font-weight: var(--fw-normal);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--tracking-label);
   margin-top: var(--space-4);
   opacity: 0.85;
 }
 
-/* Gallery lightbox — brand-aligned overrides for GLightbox.
-   Loaded after plugins/glightbox/glightbox.min.css so these win on equal specificity.
-   Shadow needs !important because the plugin's unscoped .gslide-media reset uses it. */
-/* Media + caption read as ONE rounded card: image rounds the top corners,
-   the caption panel (cream, not white) rounds the bottom — they meet flush. */
+/* Loaded after GLightbox so these win on source order; the shadow needs !important because the plugin's
+   unscoped .gslide-media reset carries one. */
 .glightbox-clean .gslide-media {
   border-radius: var(--radius-tile) var(--radius-tile) 0 0;
   overflow: hidden;
+  /* Twinned with the .countdown-modal overlay shadow. Change one, change both. */
   box-shadow: 0 20px 60px rgba(var(--navy-rgb), 0.45) !important;
 }
 
@@ -2125,64 +2285,47 @@ svg {
 }
 
 .glightbox-clean .gslide-title {
-  font-family: "Inter", sans-serif;
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-weight: var(--fw-bold);
   color: var(--color-navy);
   font-size: var(--fs-title);
 }
 
 .glightbox-clean .gslide-desc {
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-sans);
   color: rgba(var(--navy-rgb), 0.75);
   font-size: var(--fs-body);
-  line-height: var(--lh-body);
+  line-height: var(--lh-tight);
 }
 
+/* Not unified with .gallery-arrow:hover (--color-orange-dk): on the lightbox scrim orange-dk is 1.68:1,
+   under the 3:1 floor for a control. */
 .glightbox-clean .gclose:hover,
 .glightbox-clean .gnext:hover,
 .glightbox-clean .gprev:hover {
-  background-color: rgba(var(--peach-rgb), 0.85);
+  background-color: var(--color-peach);
 }
 
-/* The orange hover chip is only 2.2:1 against GLightbox's white glyph — under
-   the 3:1 non-text floor even before the overlay was lightened. Navy on orange
-   is 6.0:1. Specificity (0,3,1) beats the plugin's `.gclose path { fill:#fff }`. */
+/* White on the peach hover chip is 1.84:1, under the 3:1 non-text floor; navy on peach is 7.36:1.
+   (0,3,1) beats the plugin's `.gclose path { fill:#fff }`. */
 .glightbox-clean .gclose:hover path,
 .glightbox-clean .gnext:hover path,
 .glightbox-clean .gprev:hover path {
   fill: var(--color-navy);
 }
 
-/* ---------- Overlay scrims -------------------------------------------
-   Both plugins hardcode their own dim and both load BEFORE this file, so
-   these win on source order — no !important anywhere. Do not simplify the
-   selectors and do not move these into a media query; see each note. */
+/* ---------- Overlay scrims ----------
+   Both plugins hardcode their own dim and load before this file, so these win on source order. */
 
-/* GLightbox paints .goverlay FOUR times: the base rule, `.glightbox-mobile
-   .goverlay` (0,2,0 — the JS adds that class to <body> on every touch device
-   and at any viewport <= 768px), and two @media rules (min-width:769px and
-   max-height:420px). Media queries add no specificity, so the bare selector
-   covers those two; the second selector is the ONLY thing that reaches
-   phones — drop it and the token silently does nothing on mobile.
-   NEVER express this dim as `opacity`: .gfadeIn/.gfadeOut animate this
-   element's opacity on open/close, and drag-to-dismiss writes an inline
-   opacity onto it that no stylesheet rule can beat. The dim lives in alpha,
-   which multiplies with both cleanly. */
+/* `.glightbox-mobile .goverlay` (JS adds that class on touch devices and at <= 768px) is the only selector
+   that reaches phones. Never use `opacity` here: the plugin animates it and drag-to-dismiss inlines one. */
 .goverlay,
 .glightbox-mobile .goverlay {
   background: var(--scrim-lightbox, rgba(var(--navy-rgb), 0.85));
 }
 
-/* Bootstrap paints an OPAQUE #000 and dims via .modal-backdrop.show{opacity:.5},
-   which would MULTIPLY the token's alpha (0.45 x .5 = 0.22 — a pale grey wash,
-   and the token would lie about its own value). Pinning the shown opacity to 1
-   makes --scrim-modal's alpha the only dim and puts this surface on the same
-   rgba mechanism as the lightbox.
-   background-color sits on the SINGLE-class rule because .show is removed for
-   the whole 150ms fade-out — scoping it to .show would flash Bootstrap's black
-   on every dismiss. .modal-backdrop.fade{opacity:0} is deliberately untouched,
-   so .fade still transitions 0 -> 1 and _showBackdrop still gets a real
-   transitionend to sequence the dialog's entrance off. */
+/* Bootstrap's `.modal-backdrop.show { opacity: .5 }` would multiply the token's alpha, so opacity is pinned
+   to 1. Colour sits on the single-class rule: .show is dropped for the whole fade-out, flashing black. */
 .modal-backdrop {
   background-color: var(--scrim-modal, rgba(var(--navy-rgb), 0.45));
 }
@@ -2191,31 +2334,27 @@ svg {
   opacity: 1;
 }
 
-/* Tier class list stays a compact bulleted list — the disc markers come from
-   `.pricing-card ul { list-style: disc }`, so the li must remain a list-item.
-   Each class links to the instructor who teaches it, where the day, time and
-   description are stated once instead of repeated in all three tiers. */
+/* Disc markers come from `.pricing-card ul { list-style: disc }`, so the li must stay a list-item. */
 .pricing-card ul li a {
   color: var(--color-navy);
-  text-decoration: underline;
   text-decoration-color: rgba(var(--navy-rgb), 0.35);
-  text-underline-offset: 3px;
 }
 
-.pricing-card ul li a:hover { color: var(--color-orange); }
+/* Documented exception to the orange-rest / navy-hover contract: orange on cream is 3.73:1, under the 4.5:1
+   floor for this 20px text; navy is 12.78:1, navy-dk 15.09:1. The 35% underline tint does not track
+   currentColor, so it is restated here. */
+.pricing-card ul li a:hover {
+  color: var(--color-navy-dk);
+  text-decoration-color: rgba(var(--navy-dk-rgb), 0.35);
+}
 
-/* The index staff cards fade in together rather than staggering. Scoped to this
-   one grid on purpose — every other section keeps its authored data-wow-delay.
-   !important because WOW.js writes the delay as an inline style. */
+/* Scoped to this one grid so every other section keeps its authored data-wow-delay. !important because
+   WOW.js writes the delay as an inline style. */
 .instructor-card.wow {
   animation-duration: 0.8s !important;
   animation-delay: 0s !important;
 }
 
-/* What an instructor teaches. A tinted block under their name, before the bio,
-   so the class description reads as a separate subject rather than as more
-   biography. The "Teaches" label carries the meaning; the tint carries the
-   grouping. */
 .teaches {
   background: var(--color-cream);
   border-radius: var(--radius-card);
@@ -2230,7 +2369,7 @@ svg {
   font-family: var(--font-sans);
   font-size: var(--fs-fine);
   font-weight: var(--fw-bold);
-  letter-spacing: 0.05em;   /* matches the site's one existing tracking value */
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--color-muted);
   margin-bottom: var(--space-4);
@@ -2244,7 +2383,7 @@ svg {
 
 .teaches-name::after {
   content: " · ";
-  font-weight: 400;
+  font-weight: var(--fw-normal);
   color: var(--color-muted);
 }
 
@@ -2257,7 +2396,8 @@ svg {
   margin-top: var(--space-4);
 }
 
-/* Under each name on the index staff grid. */
+/* --fs-body ties the h4 name's size at <= 480px, which is fine: family, weight and colour already
+   separate them. Do not drop this back to --fs-meta. */
 .instructor-class {
   display: block;
   font-family: var(--font-sans);
@@ -2267,22 +2407,29 @@ svg {
   margin-top: calc(-1 * var(--space-8));
 }
 
-/* ---------- Results chart ---------------------------------------------
-   The chart IS the table. No <svg>, <figure> or <canvas>: all three are on
-   trafilatura's drop-with-children list, and trafilatura is the extractor behind
-   FineWeb/RefinedWeb — an SVG chart is invisible to the crawlers this exists for.
-   Bars are <span>s inside the cells, so the visual and the machine-readable form
-   are the same DOM nodes. Team USA is selected FROM the finalists, so the IBO bar
-   nests INSIDE the finalist bar; stacking would draw 52+12=64 and double-count. */
+/* ---------- Results chart ----------
+   The chart is the table. No <svg>, <figure> or <canvas>: all three are on trafilatura's drop-with-children
+   list, and trafilatura is the extractor behind FineWeb/RefinedWeb. Bars are <span>s inside the cells. */
 .results-table {
   width: 100%;
+  /* THE WHOLE BLOCK TAKES THE READING MEASURE, table and caption together, so they share one left and
+     one right edge under the centred <h2>. Before this the caption alone was capped and stopped 138px
+     short of the table's right edge — three different alignments in one block. These are .measure's two
+     halves inlined, because a generated <table>/<caption> cannot carry the utility class.
+     font-size is set for one reason: --measure is 62ch, and `ch` resolves against the element's OWN
+     font-size. The table inherited 16px from <body> while the caption sets --fs-body, so the same token
+     gave the table 626px and the caption 782px. Matching the caption's size makes one token mean one
+     width. It changes no type: every cell, label and value in this table sets its own font-size. */
+  font-size: var(--fs-body);
+  max-width: var(--measure);
+  margin-left: auto;
+  margin-right: auto;
   border-collapse: separate;
-  border-spacing: 0 6px;
+  border-spacing: 0 var(--space-8);
   font-family: var(--font-sans);
 }
 
-/* Matches the body copy above it: the site's paragraphs render at --lh-tight,
-   not --lh-body, so the caption used to sit looser than the prose it sits under. */
+/* No max-width here: the table above now carries the measure, and a caption is as wide as its table. */
 .results-table caption {
   caption-side: top;
   text-align: left;
@@ -2303,14 +2450,13 @@ svg {
   padding-bottom: var(--space-4);
 }
 
-/* The yellow header comes from the global `thead` rule this file already uses for
-   the syllabus tables — reused, not overridden. Rows opt out of the global
-   `tr:nth-child(even)` zebra so every season reads the same. */
+/* Header colour comes from the global `thead` rule. The !important opts rows out of the global zebra. */
 .results-table tbody tr,
 .results-table tbody tr:nth-child(even) { background: var(--color-cream) !important; }
-.results-table tbody tr td:last-child,
-.results-table tbody tr th { border-radius: var(--radius-card-lg) 0 0 var(--radius-card-lg); }
-.results-table tbody tr td:last-child { border-radius: 0 var(--radius-card-lg) var(--radius-card-lg) 0; }
+/* Body rows are pills, the tfoot row is a card. On a 35-40px row --radius-card-lg clamps to a pill anyway,
+   so unifying them would make the shape a side effect of row height. Do not unify. */
+.results-table tbody tr th { border-radius: var(--radius-pill) 0 0 var(--radius-pill); }
+.results-table tbody tr td:last-child { border-radius: 0 var(--radius-pill) var(--radius-pill) 0; }
 
 .results-table tbody th {
   color: var(--color-navy);
@@ -2319,39 +2465,34 @@ svg {
   white-space: nowrap;
 }
 
-/* Bar + printed value. Values are always shown: neither fill clears the palette
-   validator's contrast check against the page surface on its own, so the number is
-   never carried by colour alone. */
+/* Values are always printed: no number may be carried by colour alone. */
 .rc-cell { display: flex; align-items: center; gap: var(--space-12); }
 
 .rc-track {
   flex: 1 1 auto;
+  /* Narrowest a bar can be and still read as one; not a --tap-target, and width is outside the spacing guard. */
   min-width: 70px;
   height: 22px;
-  background: rgba(var(--navy-rgb), 0.08);
+  /* --color-line is the site's one "unfilled part of a control" role; do not mint a tinted second grey. */
+  background: var(--color-line);
   border-radius: var(--radius-pill);
 }
 
+/* Brand primary, not a medal token: medal tokens are reserved to .placement-badge. */
 .rc-fill {
   display: block;
   height: 100%;
-  background: var(--medal-finalist);
+  background: var(--color-navy);
   border-radius: var(--radius-pill);
   overflow: hidden;          /* keeps the nested segment inside the rounded cap */
 }
 
-/* The nested segment sits at the start of the finalist bar, because Team USA is
-   drawn FROM the finalists. A right-hand divider in the track colour separates the
-   two fills without a ring, which would bleed past the bar's rounded end. */
+/* The nested segment starts at the bar's left: Team USA is drawn from the finalists. The divider is a right
+   border, not a ring, which would bleed past the bar's rounded end. */
 .rc-ibo {
   display: block;
   height: 100%;
-  /* --color-orange, not --medal-gold. The medal tokens are content semantics for
-     .placement-badge (a gold medal is gold) and say so at their own definition;
-     this bar is not a medal, it is a second data series, so it takes the brand
-     accent every other accent on the site takes. The two fills are separated by
-     the surface-coloured rule below rather than by hue contrast — they sit at
-     2.1:1 against each other, which is exactly the case the 2px gap exists for. */
+  /* Brand accent, not a medal token (same reservation as .rc-fill). Against the navy fill: 3.42:1. */
   background: var(--color-orange);
   border-right: var(--space-2) solid var(--color-cream);
 }
@@ -2366,15 +2507,13 @@ svg {
   font-variant-numeric: tabular-nums;
 }
 
-/* The denominator: quiet, but present, so "8" always reads as 8 of 20. */
 .rc-of {
-  font-weight: 400;
+  font-weight: var(--fw-normal);
   font-size: var(--fs-meta);
   color: var(--color-muted);
   margin-left: var(--space-2);
 }
 
-/* Total row — the headline. Bigger than everything above it on purpose. */
 .results-table tfoot .rc-total { background: var(--color-navy); }
 .results-table tfoot th,
 .results-table tfoot td { padding: var(--space-16) var(--space-12); }
@@ -2388,10 +2527,11 @@ svg {
   text-align: left;
 }
 
+/* muted/peach is the light/dark pair for this sub-label role; tbody .rc-of keeps --color-muted. */
 .results-table tfoot .rc-of {
   display: block;
   font-size: var(--fs-body);
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--color-peach);
   margin: var(--space-2) 0 0;
 }
 
@@ -2401,32 +2541,36 @@ svg {
   font-family: var(--font-serif);
   font-size: var(--fs-section);
   font-weight: var(--fw-bold);
-  line-height: 1;
+  line-height: var(--lh-solid);
 }
 
-/* Same size as the /20 and /4 denominators in the table above. */
+/* Same role as `tfoot .rc-of` beside it, so the same size and weight. */
 .rc-share {
   display: block;
-  color: var(--color-yellow);
-  font-size: var(--fs-meta);
-  font-weight: 600;
+  color: var(--color-peach);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-normal);
   margin-top: var(--space-4);
 }
 
-/* Sits below the table: it explains the bars, so it reads after them. */
 .rc-legend {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-24);
   margin-top: var(--space-20);
+  /* Same measure as the table it labels — it is a sibling, so it does not inherit the cap. --fs-body
+     below is what makes 62ch resolve to the same width the table gets. */
+  max-width: var(--measure);
+  margin-left: auto;
+  margin-right: auto;
   font-size: var(--fs-body);
   color: var(--color-ink);
 }
 
 .rc-key { display: inline-flex; align-items: center; gap: var(--space-8); }
-/* Pill, like the bar caps they stand for — not an arbitrary 4px. */
+/* Pill, like the bar caps they stand for. */
 .rc-swatch { width: 14px; height: 14px; border-radius: var(--radius-pill); flex: 0 0 auto; }
-.rc-swatch--finalist { background: var(--medal-finalist); }
+.rc-swatch--finalist { background: var(--color-navy); }
 .rc-swatch--ibo { background: var(--color-orange); }
 
 @media (max-width: 575px) {
@@ -2438,17 +2582,20 @@ svg {
   .results-table tbody th { font-size: var(--fs-meta); }
   .rc-val { min-width: 2.9em; }
   .rc-big { font-size: var(--fs-title); }
+
+  /* Sub-labels follow the body values down to --fs-meta; at --fs-body they render larger than the
+     figure they summarise and wrap. */
+  .results-table tfoot .rc-of,
+  .rc-share { font-size: var(--fs-meta); }
 }
 
-/* Testimonials page — CSS-columns masonry. Each card's height fits its
-   content; columns scale 3 → 2 → 1 with viewport. No hardcoded heights,
-   no JS, gaps are consistent on both axes. */
+/* CSS-columns masonry: columns scale 3 -> 2 -> 1. No fixed heights, no JS. */
 .testimonials-grid {
   columns: 3;
-  column-gap: 1.5rem;
+  column-gap: var(--space-24);
 }
 
-@media (max-width: 991px) {
+@media (max-width: 991.98px) {
   .testimonials-grid {
     columns: 2;
   }
@@ -2462,7 +2609,7 @@ svg {
 
 .testimonials-grid > .testimonial-card {
   break-inside: avoid;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-24);
   display: inline-block; /* prevents Safari column-break quirks on flow children */
   width: 100%;
 }
@@ -2470,39 +2617,37 @@ svg {
 .testimonial-card {
   background: var(--color-cream);
   border-radius: var(--radius-card);
-  padding: 28px var(--space-24) var(--space-24);
+  /* No --space-28: 28px was reached independently in three places, which is an undesigned value rather
+     than a missing rung. */
+  padding: var(--space-24);
   box-shadow: var(--shadow-raised);
 }
 
 .testimonial-card .icon {
   color: var(--color-orange);
-  font-size: 1.6rem;
+  font-size: var(--fs-title);
 }
 
+/* Leading is not here: this is one of the long-form surfaces, and they are listed together. */
 .testimonial-card .quote {
   color: var(--color-navy);
-  line-height: 1.6;
-  margin-bottom: 1.25rem;
+  margin-bottom: var(--space-20);
 }
 
-/* Shared name + placement typography (used by the landing carousel
-   slide AND the full Testimonials page card). Sized relative to the
-   18px paragraph baseline: name is larger than body copy, placement
-   matches body so it reads as a caption. */
+/* Shared by the landing carousel slide AND the Testimonials page card. */
 .testimonial-name {
   color: var(--color-navy);
-  font-family: "Inter", sans-serif;
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-weight: var(--fw-bold);
   font-size: var(--fs-title);
-  margin-bottom: 0.25rem;
+  margin-bottom: var(--space-4);
 }
 
-/* Placement badge container — wraps multiple medal pills per testimonial */
 .testimonial-placements {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-4);
-  margin-top: 0.25rem;
+  margin-top: var(--space-4);
 }
 
 .testimonial-content .testimonial-placements {
@@ -2516,8 +2661,8 @@ svg {
   padding: var(--space-2) var(--space-8);
   border-radius: var(--radius-pill);
   font-size: var(--fs-fine);
-  font-weight: 600;
-  font-family: 'Inter', sans-serif;
+  font-weight: var(--fw-semibold);
+  font-family: var(--font-sans);
   color: #fff;
   white-space: nowrap;
 }
@@ -2529,20 +2674,15 @@ svg {
 .placement-badge--semifinalist{ background: var(--medal-none); }
 .placement-badge--default     { background: var(--medal-none); }
 
-/* On dark backgrounds (landing carousel), flip the name to white. */
 .bg-dark .testimonial-name {
   color: #fff;
 }
 
-/* Gallery page — CSS-columns masonry (reuses the testimonials pattern) */
-/* Gallery layout — flex container of N column divs (one per visible column).
-   JS distributes tiles round-robin into the right column. We don't use CSS
-   `columns` because it auto-balances by HEIGHT, which silently shifts tiles
-   across columns when image aspect ratios vary, breaking the "newest across
-   the top row" invariant we want. */
+/* Gallery masonry: a flex container of N column divs, with JS distributing tiles round-robin. Not CSS
+   `columns`, which balances by height and would break "newest across the top" as aspect ratios vary. */
 .gallery-grid {
   display: flex;
-  gap: 1rem;
+  gap: var(--space-16);
   align-items: flex-start;
 }
 
@@ -2551,7 +2691,7 @@ svg {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--space-16);
 }
 
 .gallery-tile--page {
@@ -2563,56 +2703,53 @@ svg {
   position: relative;
 }
 
+/* Hover = inner-image zoom only, inherited from `.gallery-tile:hover img` (page tiles carry both classes). */
 .gallery-tile--page img {
   width: 100%;
   height: auto;
   display: block;
 }
 
-/* Hover = inner-image zoom only, inherited from `.gallery-tile:hover img`
-   (page tiles carry both classes). No whole-tile scale, no radius change. */
-
-.gallery-tile--page.is-hidden {
-  display: none;
-}
-
-/* Year filter row — container for filter pills */
 .gallery-filter {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-8);
   justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-24);
 }
 
-/* Reusable filter pill — pill-shaped toggle button.
-   Used by the gallery year filter; intended for future filter UIs as well. */
 .filter-pill {
   background: transparent;
   border: 2px solid var(--color-navy);
   color: var(--color-navy);
   padding: var(--space-8) var(--space-20);
   border-radius: var(--radius-pill);
-  font-family: 'Ropa Sans', sans-serif;
+  font-family: var(--font-display);
   text-transform: uppercase;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-semibold);
   cursor: pointer;
   transition: background 250ms ease-out, color 250ms ease-out, transform 250ms ease-out;
 }
 
+/* Solid navy means "selected" only; hover is --color-line. .is-active must stay declared AFTER :hover so a
+   selected pill stays navy under the pointer. */
 .filter-pill:hover {
   transform: scale(1.05);
+  background: var(--color-line);
+  color: var(--color-navy);
 }
 
-.filter-pill:hover,
 .filter-pill.is-active {
   background: var(--color-navy);
   color: #fff;
 }
 
-/* Gallery grid crossfade — JS toggles .is-swapping during filter changes so
-   the old tiles fade out before the new ones are inserted. */
+.filter-pill.is-active:hover {
+  background: var(--color-navy-dk);
+}
+
+/* Crossfade: JS toggles .is-swapping during filter changes so old tiles fade out before new ones land. */
 .gallery-grid {
   transition: opacity 250ms ease-out;
 }
@@ -2621,13 +2758,15 @@ svg {
 }
 
 .gallery-removal-notice {
-  margin-top: 3rem;
+  margin-top: var(--space-48);
+  /* Reboot's `p { margin-bottom: 1rem }` otherwise leaks 16px between this and the section's padding. */
+  margin-bottom: 0;
   font-size: var(--fs-meta);
   color: var(--color-muted);
 }
 
 .gallery-removal-notice a {
-  color: var(--color-orange);
+  color: var(--color-orange-dk);
 }
 
 

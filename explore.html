@@ -7,6 +7,7 @@
   <title>Explore | Baology Prep</title>
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- One description per page: og:description, any twitter:description and any JSON-LD description repeat this verbatim. -->
   <meta name="description"
     content="Meet the Baology community: testimonials, gallery, and recent stories from our students.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
@@ -16,7 +17,7 @@
   <meta property="og:site_name" content="Baology Prep">
   <meta property="og:url" content="https://baology.org/explore.html">
   <meta property="og:description"
-    content="Meet the Baology community through student testimonials, gallery highlights, and recent stories.">
+    content="Meet the Baology community: testimonials, gallery, and recent stories from our students.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://baology.org/images/demo-preview.png">
   <meta property="og:image:alt" content="Baology Prep student community highlights">
@@ -31,7 +32,6 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <link href="css/style.css" rel="stylesheet">
-  <meta name="google-site-verification" content="bU7HWMJGjCA3XwfkKLwIi6N_rOAkMtPDo7IznqjFfe4" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-FHD7V5736Y"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -45,7 +45,7 @@
       "@type": "CollectionPage",
       "name": "Explore | Baology Prep",
       "url": "https://baology.org/explore.html",
-      "description": "Testimonials, gallery highlights, and recent posts from Baology Prep."
+      "description": "Meet the Baology community: testimonials, gallery, and recent stories from our students."
     }
   </script>
 
@@ -54,8 +54,10 @@
 <body>
 
 
-  <!--Navigation bar-->
-  <header class="navigation fixed-top wow fadeInRight"  data-wow-delay=".4s" data-wow-duration="1.3s">
+  <!-- Navigation bar. Synced from header.html on every build; edit it there, not here. -->
+<header class="navigation fixed-top animated fadeInRight">
+  <!-- `animated`, not `wow`: a position:fixed element can never pass WOW's viewport test, so `wow` here
+       hides the bar on any page not scrolled to the top. `animated` is WOW's own class. -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
       aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -115,7 +117,6 @@
         </div>
       </div>
     </div>
-    <div class="layer wow fadeInLeft" id="l3"></div>
     <div class="layer wow fadeInRight" id="l4">
       <img src="images/illustrations/dots-orange.png" alt="bg-shape">
     </div>
@@ -133,38 +134,38 @@
     <div class="container">
       <div class="row">
         <div class="col-12 text-center">
-          <h2 class="text-white mb-5 wow fadeInDown" data-wow-delay=".2s">Testimonials</h2>
+          <h2 class="text-peach mb-5 wow fadeInDown" data-wow-delay=".2s">Testimonials</h2>
         </div>
         <div class="col-lg-10 mx-auto" data-testimonial-slider>
           <!-- BUILD:testimonials-carousel -->
           <div class="text-center testimonial-content">
             <i class="fa-solid fa-quote-left icon mb-4 d-inline-block"></i>
             <p class="text-white mb-4">Signing up for Baology was one of the biggest steps in my journey in biology. The various lectures and practice sessions hosted by this class not only supplied me with a lot of information, but it also gave me motivation and a structure to study and work along with. All the teachers, Kevin especially, make the class enjoyable to attend while still being informative and helpful.</p>
-            <h5 class="testimonial-name">Eric Liu</h5>
-            <div class="testimonial-placements mb-4"><span class="placement-badge placement-badge--finalist">USABO Finalist · 2026</span> <span class="placement-badge placement-badge--gold">USABO Gold Medal · 2025</span> <span class="placement-badge placement-badge--silver">IBO Silver Medal · 2025</span></div>
+            <h3 class="testimonial-name">Eric Liu</h3>
+            <div class="testimonial-placements mb-4"><span class="placement-badge placement-badge--silver">USABO Silver Medal · 2026</span> <span class="placement-badge placement-badge--gold">USABO Gold Medal · 2025</span> <span class="placement-badge placement-badge--silver">IBO Silver Medal · 2025</span></div>
           </div>
           <div class="text-center testimonial-content">
             <i class="fa-solid fa-quote-left icon mb-4 d-inline-block"></i>
             <p class="text-white mb-4">Without Baology, I would not have even known how much I didn&#39;t know-- I was exposed to so many fascinating topics with cool applications that you can&#39;t find in textbooks. Kevin, Joseph, and the rest of the TAs are always so dedicated to explaining everything thoroughly, even if it takes six hours, and genuinely helping their students succeed not only at the USABO but also with general life advice. I&#39;m forever grateful to all of the TAs and students for creating a welcoming community and inspiring me to work harder and learn more.</p>
-            <h5 class="testimonial-name">Selena Yang</h5>
+            <h3 class="testimonial-name">Selena Yang</h3>
             <div class="testimonial-placements mb-4"><span class="placement-badge placement-badge--silver">USABO Silver Medal · 2025</span> <span class="placement-badge placement-badge--bronze">USABO Bronze Medal · 2024</span></div>
           </div>
           <div class="text-center testimonial-content">
             <i class="fa-solid fa-quote-left icon mb-4 d-inline-block"></i>
             <p class="text-white mb-4">Baology was critical in developing my fundamental understanding of biology, while at the same time providing me with practice and guidance on applying my knowledge. In addition, it has uniquely fostered an inviting yet also close community where the students motivate and bolster each others growth.</p>
-            <h5 class="testimonial-name">Kaiden Wu</h5>
+            <h3 class="testimonial-name">Kaiden Wu</h3>
             <div class="testimonial-placements mb-4"><span class="placement-badge placement-badge--gold">IBO Gold Medal · 2023</span> <span class="placement-badge placement-badge--gold">USABO Gold Medal · 2023</span></div>
           </div>
           <div class="text-center testimonial-content">
             <i class="fa-solid fa-quote-left icon mb-4 d-inline-block"></i>
             <p class="text-white mb-4">Baology was the reason I was able to make camp. The classes were really engaging and extremely informative, teaching me alot of what i needed to know for the olympiad. And the community and instructors were very helpful whenever I had an issue or was stuck somewhere and needed advice.</p>
-            <h5 class="testimonial-name">Aarav Jindal</h5>
+            <h3 class="testimonial-name">Aarav Jindal</h3>
             <div class="testimonial-placements mb-4"><span class="placement-badge placement-badge--bronze">USABO Bronze Medal · 2025</span></div>
           </div>
           <div class="text-center testimonial-content">
             <i class="fa-solid fa-quote-left icon mb-4 d-inline-block"></i>
             <p class="text-white mb-4">I liked how Kevin actually enjoyed teaching people biology, rather than doing [it] as a job. The reviews and techniques (especially Joseph&#39;s acronyms actually) helped me memorize a lot of info. Plus, classes are insanely cheap compared to everywhere else.</p>
-            <h5 class="testimonial-name">Daniel Liu</h5>
+            <h3 class="testimonial-name">Daniel Liu</h3>
             <div class="testimonial-placements mb-4"><span class="placement-badge placement-badge--finalist">USABO Finalist · 2023</span></div>
           </div>
         <!-- /BUILD:testimonials-carousel -->
@@ -182,7 +183,7 @@
     <div class="container">
       <div class="text-center">
         <h2 class="text-primary-dark mb-3 wow fadeInDown" data-wow-delay=".2s">Gallery</h2>
-        <p class="text-primary-dark mb-5 wow fadeInLeft" data-wow-delay=".3s">Check out what the Baology
+        <p class="measure text-primary-dark mb-5 wow fadeInLeft" data-wow-delay=".3s">Check out what the Baology
           community has been up to, from competition days to informal meetups!</p>
       </div>
       <div class="gallery-frame">
@@ -201,8 +202,8 @@
   <section class="section">
     <div class="container">
       <div class="text-center">
-        <h2 class="text-primary-dark mb-3 wow fadeInDown" data-wow-delay=".2s">Blog Posts</h2>
-        <p class="text-primary-dark mb-5 wow fadeInLeft" data-wow-delay=".3s">Check out our latest blog posts.</p>
+        <h2 class="text-secondary mb-3 wow fadeInDown" data-wow-delay=".2s">Blog Posts</h2>
+        <p class="measure text-primary-dark mb-5 wow fadeInLeft" data-wow-delay=".3s">Check out our latest blog posts!</p>
       </div>
       <div class="blog-cards" data-blog-cards-container>
         <!-- BUILD:recent-blogs -->
@@ -229,7 +230,7 @@
         <a class="card is-raised wow fadeInLeft" href="blogs/jasons-usabo-experience-freshman1.html">
           <img class="card-img-blog" src="blogs/images/jason-usabo-experience-intro/jason wang podium.jpg" alt="">
           <div class="card-label">
-            <div class="header">Jason&#39;s USABO Experience: Freshman Year Part 1</div>
+            <div class="header">Jason&#39;s USABO Experience: Freshman Year, Part 1</div>
             <div class="subtitle"></div>
             <div class="body">Jason Wang discusses the first half of his freshman year in high school</div>
             <ul class="taglist"><li>Jason</li><li>JasonWang</li><li>USABO</li><li>Story</li><li>Part1</li><li>Advice</li><li>Finals</li></ul>
@@ -238,18 +239,6 @@
         </a>
         <!-- /BUILD:recent-blogs -->
       </div>
-      <template data-blog-template>
-        <a class="card is-raised wow fadeInLeft">
-          <img class="card-img-blog" data-img>
-          <div class="card-label">
-            <div class="header" data-header></div>
-            <div class="subtitle" data-subtitle></div>
-            <div class="body" data-body></div>
-            <ul class="taglist" data-taglist></ul>
-            <div class="date" data-date></div>
-          </div>
-        </a>
-      </template>
       <div class="text-center mt-5">
         <a href="blog-main.html" class="btn btn-primary">View all posts</a>
       </div>
@@ -258,12 +247,12 @@
   <!-- /recent blogs -->
 
   <!-- demo / free week CTA -->
-  <section class="section" style="background-color: var(--color-cream);">
+  <section class="section bg-cream">
     <div class="container">
       <div class="row justify-content-center text-center">
-        <div class="col-lg-9 wow fadeInUp" data-wow-delay=".2s">
+        <div class="col-lg-10 mx-auto wow fadeInUp" data-wow-delay=".2s">
           <h2 class="text-secondary mb-3">Not sure? Watch the demo.</h2>
-          <p class="text-primary-dark mb-4">Watch a full week of our Season 7 course right in your browser, no login required.</p>
+          <p class="measure text-primary-dark mb-4">Watch a full week of our Season 7 course right in your browser, no login required!</p>
           <a href="demo/" class="btn btn-primary">WATCH A FREE WEEK</a>
         </div>
       </div>

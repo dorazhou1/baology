@@ -1,33 +1,28 @@
 // ─── Site-wide configuration ──────────────────────────────────────────────────
-// Update values here when links, emails, or the Google Form changes.
-// Do not hardcode these URLs anywhere else in the codebase.
-//
-// After replacing the Google Form, re-run the discovery commands below to find
-// the new entry IDs, then update formEntryCourse and tierValues:
-//
+// Update links, emails and the Google Form here; do not hardcode them anywhere else.
+// After replacing the Google Form, list the new entry IDs and match each against the
+// question text around it in the fetched HTML:
 //   curl -s "<FORM_VIEWFORM_URL>" | grep -o 'entry\.[0-9]*' | sort -u
-//
-//   curl -s "<FORM_VIEWFORM_URL>" | python3 -c "
-//   import sys, re; html = sys.stdin.read()
-//   for e in ['<id1>','<id2>',...]:
-//       idx = html.find('entry.'+e)
-//       if idx != -1:
-//           print(e, re.sub(r'<[^>]+>',' ', html[max(0,idx-400):idx+100])[-150:])
-//   "
 // ─────────────────────────────────────────────────────────────────────────────
 
 var SITE_CONFIG = {
-  // Contact
-  contactEmailHref: "mailto:kevinbaobiology@yahoo.com",
-  contactEmail:     "kevinbaobiology@yahoo.com",
+  // Two addresses, same local part, different provider (gmail / yahoo). The applier
+  // below sets only el.href, never textContent, so the VISIBLE address is a separate
+  // literal in the markup — grep for it and change it too, or a reader copying by eye
+  // sends the $1500-$2000 course fee to the old inbox.
+  // paymentEmail is the Zelle course fee only (three places on signup.html); every
+  // other "write to us" takes contactEmail.
+  contactEmailHref: "mailto:kevinbaobiology@gmail.com",   // questions — the general contact
+  contactEmail:     "kevinbaobiology@gmail.com",
+  paymentEmailHref: "mailto:kevinbaobiology@yahoo.com",   // Zelle course fee ONLY
+  paymentEmail:     "kevinbaobiology@yahoo.com",
 
   // Google Form
   formUrl:         "https://docs.google.com/forms/d/e/1FAIpQLSf8LeepZpT5VISiMeDuSRNR_GzDZc_9kD7PyrO-0RCjbOE0ng/viewform",
   formEmbedUrl:    "https://docs.google.com/forms/d/e/1FAIpQLSf8LeepZpT5VISiMeDuSRNR_GzDZc_9kD7PyrO-0RCjbOE0ng/viewform?embedded=true",
-  // Verified against the live "S7S2 Baology Registration" form: entry.701743111 is
-  // still the "Course Selection" question and the three option strings below still
-  // match it byte-for-byte (note the DOUBLE space after "Level 1"/"Level 2"/"Package").
-  // Re-run the discovery commands above whenever formUrl changes.
+  // entry.701743111 is the live form's "Course Selection" question, and the option
+  // strings below must match it byte-for-byte (note the DOUBLE space in each).
+  // Re-run the discovery command above whenever formUrl changes.
   formEntryCourse: "entry.701743111",
   tierValues: {
     "1":    "Level 1  (6+ hours/week, $1500)",
@@ -35,20 +30,17 @@ var SITE_CONFIG = {
     "full": "Full Package  (8+ hours/week, $2000)"
   },
 
-  // Official advertisement (Google Drive) — printable/forwardable flyer, linked from the
-  // Course Overview list on /signup.html. Verified asset: "Main Class Season 7 Semester 2
-  // 2026.pdf". Rotate this whenever the semester rolls; the previous value was the
-  // Season 7 Semester 1 flyer. Do NOT put this back in the homepage hero: it is an
-  // INBOUND asset whose own CTA is a QR code pointing at baology.org/signup, it is a
-  // 5.7 MB image-only PDF that Google serves as noindex/nofollow, and it contains no
-  // link back to this site.
+  // Printable flyer linked from the Course Overview list on /signup.html; rotate it
+  // each semester. Do NOT put it back in the homepage hero: its own CTA is a QR code
+  // to baology.org/signup, it is a 5.7 MB image-only PDF that Google serves as
+  // noindex/nofollow, and it links nowhere back to this site.
   officialAdUrl: "https://drive.google.com/file/d/1ImIsGj9RNFW5UnognMpXsPqJGhGfpbWg/view?usp=sharing",
 
   // Demo / free Week-1 preview (used by /demo)
   demoMoodleUrl:        "https://baology.moodlecloud.com/course/view.php?id=11",
-  // Week-1 videos (unlisted YouTube playlist). The /demo page plays one at a time and
-  // builds a thumbnail strip from this list — the /embed/videoseries?list= form throws
-  // "Error 153" for unlisted playlists. Update this list when the Week-1 videos change.
+  // Week-1 videos (unlisted YouTube playlist). /demo plays one at a time and builds a
+  // thumbnail strip from this list — the /embed/videoseries?list= form throws
+  // "Error 153" for unlisted playlists.
   demoPlaylistId: "PL20gi4tWxPdsKzv0kaNxOPEGSWX35MI8r",
   demoVideos: [
     { id: "ioJWFgKeKis", title: "Main Lecture" },
@@ -60,10 +52,9 @@ var SITE_CONFIG = {
     { id: "GmnPKZfmPiQ", title: "Homework Review" }
   ],
 
-  // Season 7 Semester 2 first lecture (week 21): Sept 19, 2026 at 4:00 PM Pacific
-  // (PDT, UTC-7 in September — DST doesn't end until Nov 1).
-  // Drives the homepage countdown popup. Changing this value also re-shows the
-  // popup to everyone, including visitors who dismissed the previous one.
+  // Season 7 Semester 2 first lecture (week 21), 4:00 PM Pacific — PDT, UTC-7, since
+  // DST does not end until Nov 1. Drives the homepage countdown popup; changing it
+  // re-shows that popup to everyone, including visitors who dismissed the last one.
   courseStartIso: "2026-09-19T16:00:00-07:00",
 
   // Info session recording (YouTube). Rotate each semester alongside officialAdUrl.

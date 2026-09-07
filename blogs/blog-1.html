@@ -3,21 +3,21 @@
 <head>
 
   <meta charset="utf-8">
-  <title>Blog Post 1: Campbells | Baology Prep</title>
+  <title>The One True Campbells | Baology Prep</title>
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="Review of Campbell Biology and study guidance for USABO preparation from Baology Prep.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="author" content="Baology Prep">
   <link rel="canonical" href="https://baology.org/blogs/blog-1.html">
-  <meta property="og:title" content="Blog Post 1: Campbells | Baology Prep">
+  <meta property="og:title" content="The One True Campbells | Baology Prep">
   <meta property="og:site_name" content="Baology Prep">
   <meta property="og:url" content="https://baology.org/blogs/blog-1.html">
   <meta property="og:description" content="Review of Campbell Biology and study guidance for USABO preparation from Baology Prep.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="https://baology.org/blogs/images/blog-1-thumbnail.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Blog Post 1: Campbells | Baology Prep">
+  <meta name="twitter:title" content="The One True Campbells | Baology Prep">
   <meta name="twitter:description" content="Review of Campbell Biology and study guidance for USABO preparation from Baology Prep.">
   <meta name="twitter:image" content="https://baology.org/blogs/images/blog-1-thumbnail.png">
   <link rel="shortcut icon" href="../images/favicon.ico" />
@@ -25,11 +25,18 @@
   <link rel="stylesheet" href="../plugins/bootstrap/bootstrap.min.css">
   <link href="../css/style.css" rel="stylesheet">
   <link href="blog.css" rel="stylesheet">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FHD7V5736Y"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-FHD7V5736Y');
+  </script>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
-      "headline": "Blog Post 1: The One True Campbells (Textbook Review)",
+      "headline": "The One True Campbells (Textbook Review)",
       "url": "https://baology.org/blogs/blog-1.html",
       "description": "Review of Campbell Biology and study guidance for USABO preparation from Baology Prep.",
       "image": "https://baology.org/blogs/images/blog-1-thumbnail.png",
@@ -45,8 +52,10 @@
 <body>
   
 
-<!--Navigation bar-->
-<header class="navigation fixed-top wow fadeInRight"  data-wow-delay=".4s" data-wow-duration="1.3s">
+<!-- Navigation bar. Synced from header.html on every build; edit it there, not here. -->
+<header class="navigation fixed-top animated fadeInRight">
+  <!-- `animated`, not `wow`: a position:fixed element can never pass WOW's viewport test, so `wow` here
+       hides the bar on any page not scrolled to the top. `animated` is WOW's own class. -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
       aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,23 +103,22 @@
   </nav>
 </header>
 
+<main>
 
-<div style="height: 50px"></div>
+
 <!-- team -->
-<section class="section">
+<section class="section blog-post">
     <div class="container">
-        <div class="col-lg-12 mb-50">
-            <a href="../blog-main.html"><-- Back to all blogs</a>
+        <div class="row">
+        <div class="col-lg-11 mx-auto mb-50">
+            <a class="blog-backlink" href="../blog-main.html"><-- Back to all blogs</a>
             
             <!-- Content starts here -->
-            <h2>Blog Post 1: The One True Campbells (Textbook Review)</h2>
+            <div class="blog-content">
+            <h1 class="text-primary">The One True Campbells (Textbook Review)</h1>
             <!-- Cover picture -->
-            <img class="img-top" src="images/blog-1-thumbnail.png">
-            <!-- Subtitle -->
-            
-            <p></p>
+            <img class="img-top" src="images/blog-1-thumbnail.png" alt="Meme-style video thumbnail: a wide-eyed presenter holds his hands out toward a blurred textbook cover stamped with a red-ringed black circle reading '???', a large red arrow points at it, a crying wojak face sits top left, and the caption reads 'INSANE TECH?'">
             <hr>
-            <p></p>
 
             <p>One common question we get here at Baology is “How should I get started?” or “What is the first thing I should study” to begin on biology competitions. What I am about to say is not at all a “secret” or “hot take” but a very honest reflection of conventional Wisdom: Campbell’s Biology.</p>
             
@@ -128,7 +136,7 @@
             <br>
             <hr>
             
-            <h3>Overall Rating:</h3>
+            <h2 class="h3 text-secondary">Overall Rating:</h2>
 
             <!-- please make this look nicer T_T -->
             <ul class="list-group d-inline-block">
@@ -153,17 +161,20 @@
             <p></p>
             <p></p>
 
-            <img src="images/campbells-biology-12.jpeg">
+            <img src="images/campbells-biology-12.jpeg" alt="Cover of Campbell Biology, twelfth edition, by Urry, Cain, Wasserman, Minorsky and Orr: a purple water lily on a black background.">
 
+            </div>
             <!-- Content ends here -->
+        </div>
         </div>
 
     </div>
 </section>
+</main>
 <!-- footer -->
 <footer class="bg-dark footer-section">
   <div class="text-center py-5">
-    <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</a></p>
+    <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</p>
     <p class="mb-0 text-sm text-white">Baology is not affiliated in any way with the USA Biology Olympiad Exam</p>
   </div>
 </footer>

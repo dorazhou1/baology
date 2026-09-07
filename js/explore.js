@@ -1,8 +1,37 @@
+// Each init is entered on its own. This used to be one unguarded chain, and a
+// missing plugins/slick/slick.min.js made `jQuery(...).slick` a TypeError inside
+// the FIRST call -- which stops the browser evaluating the rest of the IIFE, so
+// the gallery preview and the recent-blogs list died for a fault in the
+// testimonials carousel. js/script.js was hardened against exactly this pattern
+// (an unguarded top-level `new WOW()` was taking the sticky nav down with it);
+// same class of bug, same fix. Every init below feature-detects the plugin AND
+// the elements it needs, so one missing plugin costs one feature, not the page.
 (function () {
-  initTestimonialsCarousel();
-  initGalleryPreview();
-  initRecentBlogs();
+  runInit("testimonials carousel", initTestimonialsCarousel);
+  runInit("gallery preview", initGalleryPreview);
+  runInit("recent blogs", initRecentBlogs);
 })();
+
+// Belt-and-braces behind the feature detection: a fault the checks below do not
+// anticipate is reported and CONTAINED, instead of stopping the inits after it.
+// console.error, not a silent swallow -- a real fault stays visible.
+function runInit(name, fn) {
+  try {
+    fn();
+  } catch (err) {
+    console.error("explore.js: " + name + " failed to initialise", err);
+  }
+}
+
+// `window.jQuery`, not the bare `jQuery` identifier: the bare name is a
+// ReferenceError when the library is absent, and `$.fn.slick` is undefined
+// whenever the (render-blocking, per-page-optional) slick plugin is not loaded.
+// Same pair of checks js/script.js makes before its own .slick() call, so the
+// two files agree on what "slick is available" means.
+function slickReady() {
+  const $ = window.jQuery;
+  return !!($ && $.fn && typeof $.fn.slick === "function");
+}
 
 function initTestimonialsCarousel() {
   const slider = document.querySelector("[data-testimonial-slider]");
@@ -25,11 +54,17 @@ function initTestimonialsCarousel() {
   // just enhance with slick — no fetch, no DOM build, no flash. This is what
   // crawlers index and what users see immediately.
   if (slider.children.length > 0) {
-    jQuery(slider).slick(slickOpts);
+    // Without slick the pre-rendered slides simply stack: every quote is still
+    // readable and indexable, which is the right degradation for a missing
+    // enhancement.
+    if (slickReady()) jQuery(slider).slick(slickOpts);
     return;
   }
 
-  // Fallback for when build script hasn't been run.
+  // Fallback for when build script hasn't been run. It needs js-yaml to read the
+  // source data at all, so without the plugin there is nothing to build and no
+  // reason to fetch.
+  if (!window.jsyaml) return;
   fetch("data/testimonials.yaml")
     .then(res => res.text())
     .then(text => {
@@ -43,14 +78,15 @@ function initTestimonialsCarousel() {
         slide.innerHTML = `
           <i class="fa-solid fa-quote-left icon mb-4 d-inline-block"></i>
           <p class="text-white mb-4">${escapeHtml((t.quote || '').trim())}</p>
-          <h5 class="testimonial-name">${escapeHtml(t.name)}</h5>
+          <h3 class="testimonial-name">${escapeHtml(t.name)}</h3>
           <div class="testimonial-placements mb-4">${renderTestimonialBadges(t.placements)}</div>
         `;
         slider.appendChild(slide);
       });
 
-      jQuery(slider).slick(slickOpts);
-    });
+      if (slickReady()) jQuery(slider).slick(slickOpts);
+    })
+    .catch(err => console.error("explore.js: testimonials fallback failed", err));
 }
 
 function initGalleryPreview() {
@@ -77,6 +113,12 @@ function initGalleryPreview() {
         `;
         row.appendChild(slide);
       });
+
+      // The tiles appended above are ordinary markup and stand on their own;
+      // slick only turns the row into a carousel. Bail before touching it rather
+      // than throwing here and leaving the row half-built -- which is what took
+      // the rest of this file down when slick was missing.
+      if (!slickReady()) return;
 
       const $frame = jQuery(row).parent();
       jQuery(row).slick({
@@ -105,7 +147,8 @@ function initGalleryPreview() {
           { breakpoint: 576, settings: { slidesToShow: 1 } }
         ]
       });
-    });
+    })
+    .catch(err => console.error("explore.js: gallery preview failed", err));
 }
 
 function initRecentBlogs() {
@@ -117,7 +160,12 @@ function initRecentBlogs() {
   // behavior to attach on the explore landing page's recent-blogs section).
   if (container.children.length > 0) return;
 
-  // Fallback for when build script hasn't been run.
+  // Fallback for when build script hasn't been run. renderBlogCard() lives in
+  // js/blog-card.js, a separate <script> this page happens to load first -- check
+  // for it rather than assuming the tag order, so a dropped include costs this
+  // section and nothing else.
+  if (typeof renderBlogCard !== "function") return;
+
   fetch("blogs/blogs.json")
     .then(res => res.json())
     .then(data => {
@@ -126,7 +174,8 @@ function initRecentBlogs() {
         const card = renderBlogCard(blog, template);
         container.appendChild(card);
       });
-    });
+    })
+    .catch(err => console.error("explore.js: recent blogs fallback failed", err));
 }
 
 // Minimal RFC-4180 CSV parser — mirrors the one in js/gallery.js. Handles

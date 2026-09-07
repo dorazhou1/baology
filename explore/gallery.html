@@ -5,8 +5,9 @@
   <meta charset="utf-8">
   <title>Gallery | Baology Prep</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- One description per page: og:description, any twitter:description and any JSON-LD description repeat this verbatim. -->
   <meta name="description"
-    content="Photos from Baology students and competition seasons.">
+    content="Photo gallery from Baology classes, competitions, and alumni meetups.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="author" content="Baology Prep">
   <link rel="canonical" href="https://baology.org/explore/gallery.html">
@@ -14,21 +15,27 @@
   <meta property="og:site_name" content="Baology Prep">
   <meta property="og:url" content="https://baology.org/explore/gallery.html">
   <meta property="og:description"
-    content="Photos from Baology students, alumni, and competition seasons.">
+    content="Photo gallery from Baology classes, competitions, and alumni meetups.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://baology.org/images/demo-preview.png">
   <meta property="og:image:alt" content="Baology Prep gallery highlights">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Gallery | Baology Prep">
   <meta name="twitter:description"
-    content="Photos from Baology students, alumni, and competition seasons.">
+    content="Photo gallery from Baology classes, competitions, and alumni meetups.">
   <meta name="twitter:image" content="https://baology.org/images/demo-preview.png">
   <link rel="shortcut icon" href="../images/favicon.ico" />
   <link rel="stylesheet" href="../plugins/bootstrap/bootstrap.min.css">
-  <link rel="stylesheet" href="../plugins/slick/slick.css">
   <link rel="stylesheet" href="../plugins/glightbox/glightbox.min.css">
   <link rel="stylesheet" href="../plugins/wow/animate.css">
   <link href="../css/style.css" rel="stylesheet">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FHD7V5736Y"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-FHD7V5736Y');
+  </script>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -41,8 +48,10 @@
 </head>
 
 <body>
-  <!--Navigation bar-->
-  <header class="navigation fixed-top wow fadeInRight"  data-wow-delay=".4s" data-wow-duration="1.3s">
+  <!-- Navigation bar. Synced from header.html on every build; edit it there, not here. -->
+<header class="navigation fixed-top animated fadeInRight">
+  <!-- `animated`, not `wow`: a position:fixed element can never pass WOW's viewport test, so `wow` here
+       hides the bar on any page not scrolled to the top. `animated` is WOW's own class. -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
       aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -691,7 +700,7 @@
 
       <p class="gallery-removal-notice text-center">
         Are you in one of these photos and would like to be removed?
-        Please <a data-site-href="contactEmailHref">write to us</a>
+        Please <a href="mailto:kevinbaobiology@gmail.com" data-site-href="contactEmailHref">write to us</a>
         and we'll take it down right away.
       </p>
 
@@ -720,6 +729,7 @@
 
   <script src="../plugins/jQuery/jquery.min.js"></script>
   <script src="../plugins/bootstrap/bootstrap.min.js"></script>
+  <!-- slick JS only: no carousel here, so plugins/slick/slick.css is deliberately not linked. explore.html is the page that links it. -->
   <script src="../plugins/slick/slick.min.js"></script>
   <script src="../plugins/wow/wow.min.js"></script>
   <script src="../plugins/glightbox/glightbox.min.js"></script>

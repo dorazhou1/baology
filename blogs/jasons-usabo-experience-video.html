@@ -48,14 +48,23 @@
   <link href="../css/style.css" rel="stylesheet">
   <link href="blog.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FHD7V5736Y"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-FHD7V5736Y');
+  </script>
 
 </head>
 
 <body>
 
 
-  <!--Navigation bar-->
-  <header class="navigation fixed-top wow fadeInRight"  data-wow-delay=".4s" data-wow-duration="1.3s">
+  <!-- Navigation bar. Synced from header.html on every build; edit it there, not here. -->
+<header class="navigation fixed-top animated fadeInRight">
+  <!-- `animated`, not `wow`: a position:fixed element can never pass WOW's viewport test, so `wow` here
+       hides the bar on any page not scrolled to the top. `animated` is WOW's own class. -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
       aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,47 +112,50 @@
   </nav>
 </header>
 
+<main>
 
-  <div style="height: 50px"></div>
+
   <!-- team -->
-  <section class="section">
+  <section class="section blog-post">
     <div class="container">
-      <div class="col-lg-12 mb-50">
-        <a href="../blog-main.html" style="font-size: 1.2rem;"><-- Back to all blogs</a>
+      <div class="row">
+      <div class="col-lg-11 mx-auto mb-50">
+        <a class="blog-backlink" href="../blog-main.html"><-- Back to all blogs</a>
             <br>
             <br>
 
             <!-- Content starts here -->
             <div class="blog-content">
               <h1 class="text-primary">Jason Wang on High School Bio Competitions</h1>
-              <div class="d-flex align-items-center text-sm mb-3" style="gap: 1.5rem;">
-                <span class="d-flex align-items-center" style="gap: 1rem;">
+              <div class="blog-byline text-sm mb-3">
+                <span>
                   <i class="bi bi-person-fill text-secondary"></i>
-                  <span class="text-uppercase" style="letter-spacing: 1px; font-size: 1rem;">By Joseph Dong</span>
+                  <span class="text-uppercase blog-byline-label">By Joseph Dong</span>
                 </span>
-                <span class="d-flex align-items-center" style="gap: 1rem;">
+                <span>
                   <i class="bi bi-clock-fill text-secondary"></i>
-                  <span class="text-uppercase" style="letter-spacing: 1px; font-size: 1rem;">Last updated on September
+                  <span class="text-uppercase blog-byline-label">Last updated on September
                     22, 2025</span>
                 </span>
               </div>
 
-              <!-- Cover picture -->
-              <!-- <img class="img-top" src="images/jason-usabo-experience-video/2025-09-22 jason thumbnail.png"> -->
-              <br>
-              <div style="position: relative; width: 100%; height: 0; padding-bottom: 51.51%;">
-                <iframe src="https://www.youtube.com/embed/J7M1rZznjuo?si=BoA-336wGQV49dLW" title="YouTube video player"
+              <!-- No cover <img>: this post's cover IS the video, and the only cover image is the same title card YouTube
+                   already paints as the poster frame (still the card thumbnail in blogs/blogs.json). .img-top is the cover
+                   slot, not an <img> rule: it owns the siblings' 20px of cover air, and its inline-block + vertical-align:
+                   middle are what stop those margins collapsing from 36 to 20. -->
+              <div class="img-top"
+                style="position: relative; width: 100%; height: 0; padding-bottom: 51.51%; display: inline-block; vertical-align: middle;">
+                <iframe src="https://www.youtube.com/embed/J7M1rZznjuo?si=BoA-336wGQV49dLW"
+                  title="Baology Webinar - USABO and High School Insights, with Jason Wang"
                   frameborder="0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
                 </iframe>
               </div>
-              <br>
-              <!-- <p class="text-sm text-muted font-italic">Jason Wang</p> -->
               <hr>
 
               <!-- Subtitle -->
-              <h3 class="text-secondary">Information</h3>
+              <h2 class="h3 text-secondary">Information</h2>
               <br>
 
               <p>Thank you to everyone who attended Jason's webinar! We hope you found it informative. <em>
@@ -161,10 +173,9 @@
                   Research Science Institute
                   (RSI)</a>, high school science research, and more—with a Q&A section at the end.</p>
 
-              <!-- <h3 class="text-secondary">This is a subtitle</h3> -->
 
               <!-- Bubble link -->
-              <div style="text-align: center;">
+              <div class="text-center">
                 <a href="https://www.youtube.com/@baologyprep" class="blog-bubble">
                   <i class="bi bi-youtube"></i>
                   <span>Click here to visit our <b>youtube channel!</b></span>
@@ -172,7 +183,7 @@
               </div>
               <br>
 
-              <h3 class="text-secondary">More Resources</h3>
+              <h2 class="h3 text-secondary">More Resources</h2>
               <br>
               <p>You can learn more about Jason's experience in our blog posts below.</p>
 
@@ -209,16 +220,18 @@
             <!-- Content ends here -->
             <br>
             <hr>
-            <a href="../blog-main.html" style="font-size: 1.2rem;"><-- Back to all blogs</a>
+            <a class="blog-backlink" href="../blog-main.html"><-- Back to all blogs</a>
 
+      </div>
       </div>
 
     </div>
   </section>
+</main>
   <!-- footer -->
   <footer class="bg-dark footer-section">
     <div class="text-center py-5">
-      <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</a></p>
+      <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</p>
       <p class="mb-0 text-sm text-white">Baology is not affiliated in any way with the USA Biology Olympiad Exam</p>
     </div>
   </footer>

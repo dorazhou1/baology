@@ -1,68 +1,131 @@
+/* ============================================================
+   BLOG OVERRIDES — loaded AFTER css/style.css on the nine blogs/*.html pages.
+   Because it loads last, every bare-element rule in here would win over the
+   site's, so anything declared here silently becomes a SECOND site.
+   THE RULE: this file may ADD components the main site does not have (bubbles,
+   callouts, counted lists); it may NOT restyle the shared chrome (.navigation,
+   footer) or redefine the type/spacing roles css/style.css already owns.
+   THERE ARE NO BARE ELEMENT SELECTORS IN THIS FILE, and that is a rule rather
+   than an accident: everything this file styles sits under `.blog-post`, the
+   <section> that IS the post. That makes the rule above enforceable by reading a
+   selector instead of by auditing what the shared chrome happens to contain today.
+   Every value below references a :root token from css/style.css; the few that do
+   not are marked, with the reason.
+   ============================================================ */
+
+/* The post band. The other 11 pages open with `.hero-area`, whose padding-top IS the site's
+   nav clearance; the posts have no hero band, so each hand-rolled a `<div style="height: 50px">`
+   before `.section` — 50px on no ladder, in markup, in nine files, for a job a stylesheet owns.
+   Doubles as the scope root for the rules below. */
+.blog-post {
+    padding-top: var(--hero-clearance);
+}
+
 .img-top {
-    max-height: 80vh;
+    max-height: 80vh;          /* component geometry: cover-image cap, not a spacing step */
     max-width: 100%;
-    margin: 20px 0;
+    margin: var(--space-20) var(--space-0);
 }
-.navigation {
-    width: 100%;
-    border-radius: 0;
-}
-h2 {
-    color: var(--color-navy);
-}
-h3 {
-    color: var(--color-orange);
-    font-size: 4rem;
-}
-img {
+
+
+
+.blog-post img {
     max-width: 100%;
 }
-hr {
+
+.blog-post hr {
+    /* height/border-width are component geometry, not spacing rhythm:
+       this is the thick yellow section divider, and the site has no other. */
     height: 30px;
     border-width: 3px;
     border-color: var(--color-yellow);
 }
 
+/* One link, one role, one token. Without this the backlink renders at two sizes across the nine
+   posts, because the size used to live in a style attribute rather than with the component. */
+.blog-post .blog-backlink {
+    font-size: var(--fs-body);
+}
+
+/* Currently unreferenced by any page; kept so a future post can use it. */
 .text-lastupdate {
-    /* color: #E24C35; */
     font-style: italic;
-    font-size: 15px;
+    font-size: var(--fs-meta);
 }
 
-/* Default styling for blog content */
-em, b {
-    color: var(--color-orange);
+/* Prose emphasis. SCOPED: as a bare `em, b` this recoloured every <em> and <b> on the page, the shared
+   chrome included. Measured across the nine posts, EVERY <em>/<b> sits inside the post band and none sits
+   outside it, so the scope is zero-pixel. */
+.blog-post em,
+.blog-post b {
+    /* --color-orange-dk, not --color-orange: this is TEXT, and orange is 3.95:1 on white — under
+       AA. css/style.css already made this exact call for every other orange text role (a,
+       .text-secondary, .collapsible, .card-label>.header); --color-orange stays on fills and
+       glyphs, which owe 3:1 and clear it. */
+    color: var(--color-orange-dk);
 }
 
-/* Improved blog body text styling */
-p {
-    font-size: 1.3rem;
-    line-height: 1.7;
-    margin-bottom: 1.75rem;
+/* NOTE: there is deliberately NO bare `p` rule here. It used to declare
+   `font-size: 1.3rem; line-height: 1.7; margin-bottom: 1.75rem` — 20.8px/35.36px/28px against the
+   site's 20px/24px/16px — and because `p` is a bare element selector it also leaked into the
+   shared build-injected footer, whose paragraph line-height measured 23.8px on the nine blog pages
+   against 16.8px on the eleven main ones, making the footer 144px tall instead of 130px at 1440.
+   Blog paragraphs take the site's paragraph role, full stop. */
+
+/* BYLINE ROW — author + last-updated, under the post h1. One row, three authorities and three
+   sizes before this rule: the markup said `text-sm`, this file said --fs-body !important from a
+   selector that addressed the component by its Bootstrap utility classes, and five of the six
+   posts then pinned the label spans to an inline 1rem — 16px words beside 20px icons. The
+   overrides are gone; the row takes the `text-sm` the markup already carries.
+   LAYOUT ONLY BELOW. `gap` is meaningless without the flex container that consumes it, which is
+   exactly why it must not live in a style attribute separated from `d-flex`. */
+.blog-byline {
+    display: flex;
+    align-items: center;
+    gap: var(--space-24);
 }
 
-/* Author and date info styling */
-.d-flex.align-items-center.text-sm {
-    font-size: 1.2rem !important;
+.blog-byline > span {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
 }
 
+.blog-byline-label {
+    /* KNOWN DEVIATION: css/style.css names this value --tracking-label and uses the token in both
+       of its own tracked labels. This rule still spells the literal; point it at the token the
+       next time a pass is allowed to move declarations. */
+    letter-spacing: 0.05em;
+}
+
+/* Prose can carry unbreakable tokens ("AMC→AIME→USAMO→MOP") that, three list levels deep at 375px,
+   ran 80px past the column and pushed document scrollWidth to 437. Same setting css/style.css uses
+   for ol.steps li, and for the same reason: body{overflow-x:hidden} clips the overflow, so the
+   characters are otherwise unrecoverable. */
+.blog-content {
+    overflow-wrap: anywhere;
+}
+
+/* PROSE LISTS ONLY. `.list-group` is a Bootstrap component that brings its own list-style, padding
+   and row layout, and its `.list-group-item.p-0` beats the padding-left below with an !important
+   utility — so the bullet landed ON the first letter of every row. Excluding the component leaves
+   it exactly as Bootstrap draws it. */
 .blog-content ol,
-.blog-content ul {
-  margin: 0px;
-  padding-left: 1.5rem;
+.blog-content ul:not(.list-group) {
+    margin: var(--space-0);
+    padding-left: var(--space-24);
 }
 
 .blog-content ol {
     counter-reset: list-counter;
     list-style: none;
-    /* padding-left: 0; */
 }
 
 .blog-content ol > li {
     counter-increment: list-counter;
     position: relative;
-    padding-left: 3rem;
-    margin-bottom: 1rem;
+    padding-left: var(--space-48);
+    margin-bottom: var(--space-16);
     color: var(--color-orange);
 }
 
@@ -70,95 +133,105 @@ p {
     content: counter(list-counter);
     position: absolute;
     left: 0;
-    width: 2rem;
-    height: 2rem;
+    /* Disc diameter. --space-32 IS 32px, so the number has one source in the repo; the spacing
+       guard happens not to look at width/height, but the rule is about tracing to a token. */
+    width: var(--space-32);
+    height: var(--space-32);
     background-color: var(--color-yellow);
+    /* 50% is a SHAPE instruction, not a step on the radius scale — css/style.css's :root says so,
+       and names this file's list counters as one of the four sites. */
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
+    font-weight: var(--fw-bold);
     color: var(--color-orange);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-sans);
 }
 
-.blog-content ul {
+.blog-content ul:not(.list-group) {
     list-style: none;
-    padding-left: 0;
+    padding-left: var(--space-0);
 }
 
-.blog-content ul > li {
+.blog-content ul:not(.list-group) > li {
     position: relative;
-    padding-left: 2rem;
-    margin-bottom: 1rem;
+    padding-left: var(--space-32);
+    margin-bottom: var(--space-16);
     color: var(--color-orange);
 }
 
-.blog-content ul > li::before {
+.blog-content ul:not(.list-group) > li::before {
     content: "•";
     position: absolute;
     left: 0;
-    font-size: 1.5rem;
-    font-weight: bold;
+    /* The marker takes the size of the text it marks. Every row here is `<li><p>…</p></li>`, so that
+       text is a paragraph at --fs-body, and --lh-tight — INHERITED, not redeclared — gives the marker
+       the same 24px line box the paragraph's first line has, so the two baselines coincide by
+       construction. DO NOT add a line-height here: the previous `font-size: 1.5rem; line-height: 1.3`
+       drew a marker 4px larger than its own text and than the `◦` one level down. */
+    font-size: var(--fs-body);
+    font-weight: var(--fw-bold);
     color: var(--color-orange);
-    line-height: 1.3;
 }
 
-.blog-content ul ul {
+.blog-content ul ul:not(.list-group) {
     list-style: none;
-    padding-left: 0;
+    padding-left: var(--space-0);
 }
 
-.blog-content ul ul > li {
+.blog-content ul ul:not(.list-group) > li {
     position: relative;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-8);
     color: var(--color-orange);
 }
 
-.blog-content ul ul > li::before {
+.blog-content ul ul:not(.list-group) > li::before {
     content: "◦";
     position: absolute;
-    line-height: 1.3;
+    /* size and leading inherited, as above */
 }
 
 /* Clickable bubble component */
 .blog-bubble {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 1.5rem;
+    gap: var(--space-12);
+    padding: var(--space-16) var(--space-24);
     background-color: rgba(var(--slate-rgb), 0.1);
     border: 2px solid rgba(var(--slate-rgb), 0.3);
-    border-radius: 25px;
+    border-radius: var(--radius-card);
     text-decoration: none;
     color: var(--color-slate-dk);
-    font-weight: bold;
-    font-size: 1.3rem;
-    transition: all 0.2s ease-in-out;
-    margin: 1.5rem 0;
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-body);
+    transition: all var(--ease);
+    margin: var(--space-24) var(--space-0);
 }
 
 /* Callout box styling */
 .callout-box {
     background-color: rgba(var(--yellow-rgb), 0.15);
     border: 2px solid rgba(var(--yellow-rgb), 0.4);
-    border-radius: 25px;
-    padding: 1.5rem;
-    margin: 2.5rem 0;
+    border-radius: var(--radius-card);
+    padding: var(--space-24);
+    margin: var(--space-40) var(--space-0);
     color: var(--color-navy);
-    font-size: 1.1rem;
-    line-height: 1.6;
+    /* Both inherited by the <p> children, so the box's own text and its paragraphs land on the same
+       body role instead of drifting apart. */
+    font-size: var(--fs-body);
+    line-height: var(--lh-tight);
 }
 
 /* Callout box alignment classes */
 .callout-box.callout-left {
-    margin-left: 0;
+    margin-left: var(--space-0);
     margin-right: auto;
 }
 
 .callout-box.callout-right {
     margin-left: auto;
-    margin-right: 0;
+    margin-right: var(--space-0);
 }
 
 .callout-box.callout-center {
@@ -166,7 +239,7 @@ p {
     margin-right: auto;
 }
 
-/* Callout box width classes */
+/* Callout box width classes — container geometry, not the spacing ladder. */
 .callout-box.callout-narrow {
     max-width: 400px;
 }
@@ -185,48 +258,27 @@ p {
 
 .callout-box p,
 .callout-box span {
-    margin-bottom: 0;
+    margin-bottom: var(--space-0);
     color: inherit;
 }
 
+/* Serif title inside a callout. The markup is `<h3 class="callout-title">`, so the family, the size,
+   the line-height AND the small-viewport clamp all come from css/style.css's h3 role and CANNOT drift
+   from it; this rule adds only the icon row and its bottom margin. It used to run a 5-step ladder of
+   its own parallel to the h1/h2/h3 clamp system — one ladder defined in two files. */
 .callout-box .callout-title {
-    font-family: "New York","Playfair Display", serif;
-    font-size: 2.5rem;
-    line-height: 1.2;
-    margin: 0 0 1rem 0;
+    color: inherit;
+    margin: var(--space-0) var(--space-0) var(--space-16) var(--space-0);
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--space-12);
 }
 
 .callout-box .callout-title i {
+    /* Deliberately relative, not a token: this icon sits inside an <h3>, whose size is CLAMPED below
+       992px, so any absolute value would hold still while its own label shrank. */
     font-size: 0.8em;
     color: var(--color-navy);
-}
-
-/* Responsive font sizing */
-@media (max-width: 1200px) {
-    .callout-box .callout-title {
-        font-size: 2.2rem;
-    }
-}
-
-@media (max-width: 991px) {
-    .callout-box .callout-title {
-        font-size: 2rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .callout-box .callout-title {
-        font-size: 1.8rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .callout-box .callout-title {
-        font-size: 1.5rem;
-    }
 }
 
 /* Blog bubble styling */
@@ -236,35 +288,32 @@ p {
     color: var(--color-ink-dk);
     text-decoration: none;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow-raised);
 }
 
 .blog-bubble i {
-    font-size: 2.2rem;
-    margin-right: 0.5rem;
+    /* The site's answer for a large decorative glyph, taken from the one place css/style.css already
+       made this call: --fs-section in a full-width band, --fs-title inside a card. This is the band. */
+    font-size: var(--fs-section);
+    margin-right: var(--space-8);
 }
 
 /* Blog bubble styling for default bubbles */
 .blog-bubble:not(.section-bubble) {
     background-color: var(--color-orange);
     border-color: var(--color-orange);
-    color: white;
-    /* margin: 0 auto; */
-    /* display: block; */
+    color: #fff;
 }
 
 .blog-bubble:not(.section-bubble):hover {
     background-color: var(--color-orange-dk);
     border-color: var(--color-orange-dk);
-    color: white;
+    color: #fff;
     transform: translateY(-2px);
+    /* --shadow-raised is navy-tinted and would read as a bruise under a solid orange pill; this is
+       the same lift in the pill's own hue. */
     box-shadow: 0 4px 12px rgba(var(--orange-rgb), 0.3);
 }
-
-/* .blog-bubble:not(.section-bubble) span {
-    color: white;
-    font-weight: bold;
-} */
 
 .blog-bubble:not(.section-bubble) b,
 .blog-bubble:not(.section-bubble) strong {
@@ -272,7 +321,7 @@ p {
 }
 
 .blog-bubble:not(.section-bubble) i {
-    color: white;
+    color: #fff;
     flex-shrink: 0;
 }
 
@@ -280,7 +329,6 @@ p {
 .section-navigation {
     display: flex;
     flex-direction: column;
-    /* margin: 2rem 0; */
 }
 
 .section-bubble {
@@ -324,12 +372,17 @@ p {
     color: var(--color-slate);
 }
 
-/* Centered section bubble option - fixed/variable width instead of flexbox */
+/* Centred section bubble — fixed/variable width instead of flexbox. Widths are container geometry,
+   not the spacing ladder.
+   min-width YIELDS TO THE COLUMN. A flat `min-width: 300px` is wider than the column it sits in below
+   a 360px viewport: at 320px the container's and column's 15px gutters leave 260px, so the bubble's
+   right edge landed at 330 against a 320 clientWidth and dragged document scrollWidth with it. min()
+   keeps the 300px readable floor wherever the column can hold it and drops to the column width where
+   it cannot. */
 .section-bubble.centered {
-    /* display: block !important; */
     margin-left: auto !important;
     margin-right: auto !important;
     width: 75%;
-    min-width: 300px;
+    min-width: min(300px, 100%);
     max-width: 700px;
 }

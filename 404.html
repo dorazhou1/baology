@@ -3,28 +3,46 @@
 <head>
 
   <meta charset="utf-8">
-  <title>Baology Prep</title>
+  <title>Page Not Found | Baology Prep</title>
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- One description per page: og:description, any twitter:description and any JSON-LD description repeat this verbatim. -->
   <meta name="description" content="Baology Prep page not found. Explore our USABO biology course, syllabus, and student resources.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="author" content="Baology Prep">
+  <!-- Served for any missing URL, so it must never be indexed, and carries no canonical or
+       og:url: either would claim a real address for an error page. -->
+  <meta name="robots" content="noindex">
+  <meta property="og:title" content="Page Not Found | Baology Prep">
+  <meta property="og:site_name" content="Baology Prep">
+  <meta property="og:description"
+    content="Baology Prep page not found. Explore our USABO biology course, syllabus, and student resources.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://baology.org/images/demo-preview.png">
+  <meta property="og:image:alt" content="Baology Prep course preview">
   <link rel="shortcut icon" href="/images/favicon.ico" />
   
   <link rel="stylesheet" href="/plugins/bootstrap/bootstrap.min.css">
-  <link rel="stylesheet" href="/plugins/slick/slick.css">
   <link rel="stylesheet" href="/plugins/wow/animate.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   
   <link href="/css/style.css" rel="stylesheet">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FHD7V5736Y"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-FHD7V5736Y');
+  </script>
 
 </head>
 <body>
   
 
 
-<!--Navigation bar-->
-<header class="navigation fixed-top wow fadeInRight"  data-wow-delay=".4s" data-wow-duration="1.3s">
+<!-- Navigation bar. Synced from header.html on every build; edit it there, not here. -->
+<header class="navigation fixed-top animated fadeInRight">
+  <!-- `animated`, not `wow`: a position:fixed element can never pass WOW's viewport test, so `wow` here
+       hides the bar on any page not scrolled to the top. `animated` is WOW's own class. -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
       aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,14 +98,11 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-11 mx-auto">
-        <h1 class="font-tertiary text-primary-dark"><span class="wow fadeInLeft"  data-wow-delay=".4s" data-wow-duration="1.3s">Coming Soon!</span></h1>
+        <h1 class="font-tertiary text-primary-dark"><span class="wow fadeInLeft"  data-wow-delay=".4s" data-wow-duration="1.3s">Page Not Found</span></h1>
       </div>
       
     </div>
     
-  </div>
-  <div class="layer wow fadeInLeft" id="l3">
-    <!-- <img src="images/illustrations/dots-group-blue.png" alt="bg-shape"> -->
   </div>
   <div class="layer wow fadeInRight" id="l4">
     <img src="/images/illustrations/dots-orange.png" alt="bg-shape">
@@ -102,16 +117,15 @@
 </section>
 <!-- /hero area -->
 
-<!-- team -->
+<!-- what to do next -->
 <section class="section">
   <div class="container">
-    <div class="col-lg-12 mb-80 text-center">
-      
-    </div>
-      <div class="row justify-content-center">
-        <div class="col-lg col-md wow fadeInUp" data-wow-delay=".2s">
-            <h4 class="wow fadeInLeft text-secondary mb-40" data-wow-delay=".2s" data-wow-duration=".8s">We're still working on this page, please come back for updates!</h4>
+    <div class="row justify-content-center">
+      <div class="col-lg col-md text-center wow fadeInUp" data-wow-delay=".2s">
+        <h2 class="h4 wow fadeInLeft text-secondary mb-40" data-wow-delay=".2s" data-wow-duration=".8s">That link is broken or the page has moved. Nothing lives at this address.</h2>
+        <a href="/" class="btn btn-primary">Back to home</a>
       </div>
+    </div>
   </div>
 </section>
 
@@ -119,7 +133,7 @@
 <!-- footer -->
 <footer class="bg-dark footer-section">
   <div class="text-center py-5">
-    <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</a></p>
+    <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</p>
     <p class="mb-0 text-sm text-white">Baology is not affiliated in any way with the USA Biology Olympiad Exam</p>
   </div>
 </footer>
@@ -129,7 +143,7 @@
 <script src="/plugins/jQuery/jquery.min.js"></script>
 <!-- Bootstrap JS -->
 <script src="/plugins/bootstrap/bootstrap.min.js"></script>
-<!-- slick slider -->
+<!-- slick JS only: no carousel here, so plugins/slick/slick.css is deliberately not linked. explore.html is the page that links it. -->
 <script src="/plugins/slick/slick.min.js"></script>
 <!-- wow js -->
 <script src="/plugins/wow/wow.min.js"></script>

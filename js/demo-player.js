@@ -1,7 +1,11 @@
 // Demo player — sets the #demo-player YouTube iframe and builds the #demo-thumbs
 // Week-1 strip from SITE_CONFIG.demoVideos / demoPlaylistId. No-ops on any page
-// without the demo markup. Used by demo/index.html and explore.html.
-// Requires js/site-config.js to be loaded first.
+// without the demo markup. Loaded ONLY by demo/index.html, which is also the only
+// page carrying #demo-player / #demo-thumbs (this used to claim explore.html too,
+// which loads neither the script nor the markup).
+// Wants js/site-config.js loaded first, but does not require it: SITE_CONFIG is
+// read off `window` with an empty-object fallback, so a missing or late include
+// makes this a no-op instead of a ReferenceError.
 (function () {
   function initDemoPlayer() {
     var cfg = window.SITE_CONFIG || {};

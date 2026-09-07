@@ -6,6 +6,7 @@
   <title>FAQ | Baology Prep</title>
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- One description per page: og:description, any twitter:description and any JSON-LD description repeat this verbatim. -->
   <meta name="description" content="Get answers to common questions about Baology Prep, course logistics, and USABO training.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="author" content="Baology Prep">
@@ -14,19 +15,16 @@
   <meta property="og:site_name" content="Baology Prep">
   <meta property="og:url" content="https://baology.org/about/faq.html">
   <meta property="og:description"
-    content="Frequently asked questions about Baology Prep classes, registration, and biology olympiad preparation.">
+    content="Get answers to common questions about Baology Prep, course logistics, and USABO training.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://baology.org/images/demo-preview.png">
   <meta property="og:image:alt" content="Baology Prep FAQ page">
   <link rel="shortcut icon" href="../images/favicon.ico" />
   
   <link rel="stylesheet" href="../plugins/bootstrap/bootstrap.min.css">
-  <link rel="stylesheet" href="../plugins/slick/slick.css">
   <link rel="stylesheet" href="../plugins/wow/animate.css">
-  <link rel="stylesheet" href="../https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   
   <link href="../css/style.css" rel="stylesheet">
-  <meta name="google-site-verification" content="bU7HWMJGjCA3XwfkKLwIi6N_rOAkMtPDo7IznqjFfe4" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-FHD7V5736Y"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -40,15 +38,17 @@
       "@type": "FAQPage",
       "name": "FAQ | Baology Prep",
       "url": "https://baology.org/about/faq.html",
-      "description": "Frequently asked questions about Baology Prep."
+      "description": "Get answers to common questions about Baology Prep, course logistics, and USABO training."
     }
   </script>
 
 </head>
 <body>
   
-<!--Navigation bar-->
-<header class="navigation fixed-top wow fadeInRight"  data-wow-delay=".4s" data-wow-duration="1.3s">
+<!-- Navigation bar. Synced from header.html on every build; edit it there, not here. -->
+<header class="navigation fixed-top animated fadeInRight">
+  <!-- `animated`, not `wow`: a position:fixed element can never pass WOW's viewport test, so `wow` here
+       hides the bar on any page not scrolled to the top. `animated` is WOW's own class. -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
       aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,9 +110,6 @@
     </div>
     
   </div>
-  <div class="layer wow fadeInLeft" id="l3">
-    <!-- <img src="images/illustrations/dots-group-blue.png" alt="bg-shape"> -->
-  </div>
   <div class="layer wow fadeInRight" id="l4">
     <img src="../images/illustrations/dots-orange.png" alt="bg-shape">
   </div>
@@ -145,7 +142,7 @@
             </div>
             <button class="collapsible">I filled out the form for the class, now what?</button>
             <div class="content">
-                <p class="description">Our helpful staff will email you with further directions, but <strong>the next step is to send payment through Zelle</strong>. We are a small business and as such our staff will check for new registrants periodically but it may take 24-48 hours. We thank you in advance for your patience!</p>
+                <p class="description">Our helpful staff will email you with further directions, but <strong>the next step is to send payment through Zelle</strong> to <a class="link" href="mailto:kevinbaobiology@yahoo.com" data-site-href="paymentEmailHref">kevinbaobiology@yahoo.com</a> (note this is our Yahoo address, not our Gmail address). We are a small business and as such our staff will check for new registrants periodically but it may take 24-48 hours. We thank you in advance for your patience!</p>
             </div>
             <button class="collapsible">What resources are provided alongside the course?</button>
             <div class="content">
@@ -153,7 +150,7 @@
             </div>
             <button class="collapsible">Do you offer any discounts :p?</button>
             <div class="content">
-                <p class="description"><strong>Unfortunately not</strong> :(. However students who retake a particular course (i.e. session 1 and session 2) are eligible for a discount for that same course. The course is designed to be taken multiple times because we expect you will learn new things each time and the course has been revamped each time to offer more value and content! If you qualify for a discount, please write to us.</p>
+                <p class="description"><strong>Unfortunately not</strong> :(. However students who retake a particular course (i.e. session 1 and session 2) are eligible for a discount for that same course. The course is designed to be taken multiple times because we expect you will learn new things each time and the course has been revamped each time to offer more value and content! If you qualify for a discount, please <a class="link" href="mailto:kevinbaobiology@gmail.com" data-site-href="contactEmailHref">write to us</a>.</p>
             </div>
             <button class="collapsible">What is your track record? How successful have your alums been?</button>
             <div class="content">
@@ -179,7 +176,7 @@
             </div>
             <button class="collapsible">How can I find out more about the class?</button>
             <div class="content">
-                <p class="description">If you have other unanswered questions feel free to write to <a data-site-href="contactEmailHref">kevinbaobiology@yahoo.com</a> and we will answer you as soon as possible.</p>
+                <p class="description">If you have other unanswered questions feel free to write to <a href="mailto:kevinbaobiology@gmail.com" data-site-href="contactEmailHref">kevinbaobiology@gmail.com</a> and we will answer you as soon as possible.</p>
             </div>
         </div>
     </div>
@@ -191,7 +188,7 @@
 <!-- footer -->
 <footer class="bg-dark footer-section">
   <div class="text-center py-5">
-    <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</a></p>
+    <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</p>
     <p class="mb-0 text-sm text-white">Baology is not affiliated in any way with the USA Biology Olympiad Exam</p>
   </div>
 </footer>
@@ -201,7 +198,7 @@
 <script src="../plugins/jQuery/jquery.min.js"></script>
 <!-- Bootstrap JS -->
 <script src="../plugins/bootstrap/bootstrap.min.js"></script>
-<!-- slick slider -->
+<!-- slick JS only: no carousel here, so plugins/slick/slick.css is deliberately not linked. explore.html is the page that links it. -->
 <script src="../plugins/slick/slick.min.js"></script>
 <!-- wow js -->
 <script src="../plugins/wow/wow.min.js"></script>

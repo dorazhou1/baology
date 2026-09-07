@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <title>Syllabus | Baology Prep</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- One description per page: og:description repeats this verbatim. The JSON-LD below is the
+         exception: it describes the Course, generated from data/classes.yaml in the BUILD markers. -->
     <meta name="description"
         content="Review the Baology Prep syllabus, weekly topics, and course structure for USABO-focused biology training.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
@@ -14,16 +16,14 @@
     <meta property="og:site_name" content="Baology Prep">
     <meta property="og:url" content="https://baology.org/about/syllabus.html">
     <meta property="og:description"
-        content="Week-by-week USABO course syllabus: lecture topics, extended topics, and Campbell Biology chapter assignments for every semester.">
+        content="Review the Baology Prep syllabus, weekly topics, and course structure for USABO-focused biology training.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://baology.org/images/demo-preview.png">
     <meta property="og:image:alt" content="Baology Prep course syllabus">
     <link rel="shortcut icon" href="../images/favicon.ico" />
     <link rel="stylesheet" href="../plugins/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="../plugins/slick/slick.css">
     <link rel="stylesheet" href="../plugins/wow/animate.css">
     <link href="../css/style.css" rel="stylesheet">
-    <meta name="google-site-verification" content="bU7HWMJGjCA3XwfkKLwIi6N_rOAkMtPDo7IznqjFfe4" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FHD7V5736Y"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -235,8 +235,10 @@
 </head>
 
 <body>
-    <!--Navigation bar-->
-    <header class="navigation fixed-top wow fadeInRight"  data-wow-delay=".4s" data-wow-duration="1.3s">
+    <!-- Navigation bar. Synced from header.html on every build; edit it there, not here. -->
+<header class="navigation fixed-top animated fadeInRight">
+  <!-- `animated`, not `wow`: a position:fixed element can never pass WOW's viewport test, so `wow` here
+       hides the bar on any page not scrolled to the top. `animated` is WOW's own class. -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
       aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -296,9 +298,6 @@
                 </div>
             </div>
         </div>
-        <div class="layer wow fadeInLeft" id="l3">
-            <!-- <img src="images/illustrations/dots-group-blue.png" alt="bg-shape"> -->
-        </div>
         <div class="layer wow fadeInRight" id="l4">
             <img src="../images/illustrations/dots-orange.png" alt="bg-shape">
         </div>
@@ -315,11 +314,11 @@
 
             <div class="row justify-content-center">
                 <div class="wow fadeInUp table-section" data-wow-delay=".2s">
-                    <h3 class="wow fadeInLeft text-secondary mb-40" data-wow-delay=".2s" data-wow-duration=".8s"
+                    <h2 class="h3 wow fadeInLeft text-secondary mb-40" data-wow-delay=".2s" data-wow-duration=".8s"
                         style="display: flex; justify-content: space-between; align-items: center;">
                         <span>Season 7 Semester 2</span>
-                        <small style="text-align: right; font-weight: 400;">(2026–2027)</small>
-                    </h3>
+                        <small style="text-align: right; font-weight: var(--fw-normal);">(2026–2027)</small>
+                    </h2>
                     <div class="table-responsive">
                         <table class="table" id="syllabus-s7s2">
                             <caption class="sr-only">Season 7 Semester 2 (2026–2027) USABO course syllabus — weekly lecture topics and Campbell Biology chapter assignments.</caption>
@@ -364,24 +363,25 @@
 
             <p class="text-secondary text-left">*Syllabus is tentative</p>
 
-            <iframe class="calendar"
+            <!-- title is required on an iframe: with none, a screen reader announces only "frame". -->
+            <iframe class="calendar" title="Baology class calendar"
                 src="https://calendar.google.com/calendar/embed?src=0c3g9ibrj24ub195vp6mudlgss%40group.calendar.google.com&ctz=America%2FLos_Angeles"
                 style="border: 0" width="100%" frameborder="0" scrolling="no"></iframe>
             <br>
             <br>
 
-            <hr style="height: 30px; border-width: 3px; border-color: #FFD686;">
+            <hr style="height: 30px; border-width: 3px; border-color: var(--color-yellow);">
 
-            <h3 class="wow fadeInLeft text-secondary mb-40" data-wow-delay=".2s" data-wow-duration=".8s">
+            <h2 class="h3 wow fadeInLeft text-secondary mb-40" data-wow-delay=".2s" data-wow-duration=".8s">
                 Past Syllabi
-            </h3>
+            </h2>
 
             <div class="row justify-content-center">
                 <div class="wow fadeInUp table-section" data-wow-delay=".2s">
                     <button class="collapsible wow fadeInLeft" data-wow-delay=".2s" data-wow-duration=".8s"
                         style="display: flex; justify-content: space-between; align-items: center;">
                         <span>Season 7 Semester 1</span>
-                        <span style="text-align: right; font-weight: 400;">(2026)</span>
+                        <span style="text-align: right; font-weight: var(--fw-normal);">(2026)</span>
                     </button>
                     <div class="content">
                         <div class="table-responsive">
@@ -427,7 +427,7 @@
                     <button class="collapsible wow fadeInLeft" data-wow-delay=".2s" data-wow-duration=".8s"
                         style="display: flex; justify-content: space-between; align-items: center;">
                         <span>Season 6 Semester 2</span>
-                        <span style="text-align: right; font-weight: 400;">(2025–2026)</span>
+                        <span style="text-align: right; font-weight: var(--fw-normal);">(2025–2026)</span>
                     </button>
                     <div class="content">
                         <div class="table-responsive">
@@ -473,7 +473,7 @@
                     <button class="collapsible wow fadeInLeft" data-wow-delay=".2s" data-wow-duration=".8s"
                         style="display: flex; justify-content: space-between; align-items: center;">
                         <span>Season 6 Semester 1</span>
-                        <span style="text-align: right; font-weight: 400;">(2025)</span>
+                        <span style="text-align: right; font-weight: var(--fw-normal);">(2025)</span>
                     </button>
                     <div class="content">
                         <div class="table-responsive">
@@ -520,7 +520,7 @@
                     <button class="collapsible wow fadeInLeft" data-wow-delay=".2s" data-wow-duration=".8s"
                         style="display: flex; justify-content: space-between; align-items: center;">
                         <span>Season 5 Semester 2</span>
-                        <span style="text-align: right; font-weight: 400;">(2024–2025)</span>
+                        <span style="text-align: right; font-weight: var(--fw-normal);">(2024–2025)</span>
                     </button>
                     <div class="content">
                         <div class="table-responsive">
@@ -574,7 +574,7 @@
     <!-- footer -->
     <footer class="bg-dark footer-section">
         <div class="text-center py-5">
-            <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</a>
+            <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology
             </p>
             <p class="mb-0 text-sm text-white">Baology is not affiliated in any way with the USA Biology Olympiad Exam
             </p>
@@ -585,7 +585,7 @@
     <script src="../plugins/jQuery/jquery.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="../plugins/bootstrap/bootstrap.min.js"></script>
-    <!-- slick slider -->
+    <!-- slick JS only: no carousel here, so plugins/slick/slick.css is deliberately not linked. explore.html is the page that links it. -->
     <script src="../plugins/slick/slick.min.js"></script>
     <!-- wow js -->
     <script src="../plugins/wow/wow.min.js"></script>

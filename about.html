@@ -7,6 +7,7 @@
     <title>About | Baology Prep</title>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- One description per page: og:description, any twitter:description and any JSON-LD description repeat this verbatim. -->
     <meta name="description"
         content="Learn about Baology Prep’s mission, instructors, and approach to USABO and biology olympiad training.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
@@ -16,21 +17,16 @@
     <meta property="og:site_name" content="Baology Prep">
     <meta property="og:url" content="https://baology.org/about.html">
     <meta property="og:description"
-        content="Meet the Baology Prep instructors and see the mission behind our USABO-focused biology training program.">
+        content="Learn about Baology Prep’s mission, instructors, and approach to USABO and biology olympiad training.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://baology.org/images/demo-preview.png">
     <meta property="og:image:alt" content="Baology Prep instructors and student community">
     <link rel="shortcut icon" href="images/favicon.ico" />
 
     <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="plugins/slick/slick.css">
     <link rel="stylesheet" href="plugins/wow/animate.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link href="css/style.css" rel="stylesheet">
-    <meta name="google-site-verification" content="bU7HWMJGjCA3XwfkKLwIi6N_rOAkMtPDo7IznqjFfe4" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FHD7V5736Y"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -44,7 +40,7 @@
             "@type": "AboutPage",
             "name": "About Baology Prep",
             "url": "https://baology.org/about.html",
-            "description": "Mission, instructors, and teaching approach for Baology Prep.",
+            "description": "Learn about Baology Prep’s mission, instructors, and approach to USABO and biology olympiad training.",
             "isPartOf": {
                 "@type": "WebSite",
                 "name": "Baology Prep",
@@ -58,8 +54,10 @@
 <body>
 
 
-    <!--Navigation bar-->
-    <header class="navigation fixed-top wow fadeInRight"  data-wow-delay=".4s" data-wow-duration="1.3s">
+    <!-- Navigation bar. Synced from header.html on every build; edit it there, not here. -->
+<header class="navigation fixed-top animated fadeInRight">
+  <!-- `animated`, not `wow`: a position:fixed element can never pass WOW's viewport test, so `wow` here
+       hides the bar on any page not scrolled to the top. `animated` is WOW's own class. -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
       aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -121,9 +119,6 @@
             </div>
 
         </div>
-        <div class="layer wow fadeInLeft" id="l3">
-            <!-- <img src="images/illustrations/dots-group-blue.png" alt="bg-shape"> -->
-        </div>
         <div class="layer wow fadeInRight" id="l4">
             <img src="images/illustrations/dots-orange.png" alt="bg-shape">
         </div>
@@ -140,10 +135,11 @@
     <!-- team -->
     <section class="section">
         <div class="container">
-            <div class="col-lg-12 mb-50">
-                <h2 class="wow fadeInDown text-center text-primary-dark" data-wow-delay=".2s" data-wow-duration=".8s">
+            <div class="row">
+            <div class="col-lg-10 mx-auto mb-50">
+                <h2 class="wow fadeInDown text-center text-secondary" data-wow-delay=".2s" data-wow-duration=".8s">
                     Mission</h2>
-                <p class="wow fadeInLeft text-center" data-wow-delay=".3s" data-wow-duration=".8s"><strong
+                <p class="measure wow fadeInLeft text-center" data-wow-delay=".3s" data-wow-duration=".8s"><strong
                         class="text-primary-dark">The Baology Prep Course is designed to be the biology course that our
                         instructors wished they had access to when they were students. All of our instructors are not
                         only alumni of competitive biology programs, but also competed at the top levels in them. While
@@ -153,11 +149,11 @@
                         advanced topics. As such our class will benefit students both introductory and advanced. We
                         pride ourselves on three principles when teaching our course:</strong></p>
 
-                <ol class="steps text-primary-dark">
+                <ol class="steps steps--lg text-primary-dark">
                     <li>
                         <div class="wow fadeInUp" data-wow-delay=".1s"><strong
                                 class="text-secondary font-secondary text-lg">Content:</strong>
-                            <p class="text-md text-primary-dark" style="line-height: normal;"> Whenever possible we
+                            <p class="measure text-md text-primary-dark"> Whenever possible we
                                 strive to cover more and not less material. We will often hold additional sessions,
                                 review classes, and even community activities for students of the course</p>
                         </div>
@@ -165,7 +161,7 @@
                     <li>
                         <div class="wow fadeInUp" data-wow-delay=".1s"><strong
                                 class="text-secondary font-secondary text-lg">Community:</strong>
-                            <p class="text-md text-primary-dark" style="line-height: normal;"> We think that with any
+                            <p class="measure text-md text-primary-dark"> We think that with any
                                 competition as intensive and involved as an olympiad, half the battle is finding the
                                 motivation to study. By fostering a community of fellow biology enthusiasts we find that
                                 students find studying no longer a chore but a fun challenge to undertake</p>
@@ -174,7 +170,7 @@
                     <li>
                         <div class="wow fadeInUp" data-wow-delay=".1s"><strong
                                 class="text-secondary font-secondary text-lg">Cognizance:</strong>
-                            <p class="text-md text-primary-dark" style="line-height: normal;"> Study smarter not harder
+                            <p class="measure text-md text-primary-dark"> Study smarter not harder
                                 is a common adage, and we strive to bring the “smart” to the table. As former
                                 high-performers ourselves, we know the stress of dealing with other extracurriculars,
                                 challenging classes, and a social life, so we try to focus a big part of the class on
@@ -184,18 +180,24 @@
                     </li>
                 </ol>
             </div>
-            <div class="col-lg-12 mb-50 text-center">
-                <h2 class="wow fadeInDown text-primary-dark" data-wow-delay=".2s" data-wow-duration=".8s">Meet the
-                    Instructors</h2>
-                <h4 class="wow fadeInLeft text-secondary" data-wow-delay=".3s" data-wow-duration=".8s">This course is
-                    taught by biology finalists and Ivy-league instructors.</h4>
             </div>
+            <div class="row">
+            <div class="col-lg-10 mx-auto mb-50 text-center">
+                <h2 class="wow fadeInDown text-secondary" data-wow-delay=".2s" data-wow-duration=".8s">Meet the
+                    Instructors</h2>
+                <!-- Deliberately a <p>, not a heading: every other section intro on the site is plain body copy. -->
+                <p class="measure text-primary-dark wow fadeInLeft mb-0" data-wow-delay=".3s" data-wow-duration=".8s">This course is
+                    taught by biology finalists and Ivy+ instructors.</p>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-lg-10 mx-auto instructor-row">
             <div id="kevinbao" class="instructor-card about wow fadeInUp" data-wow-delay=".2s">
                 <div class="img-wrapper-left">
-                    <img class="instructor-img left" src="images/team/kevin_bao.jpg" alt="icon">
+                    <img class="instructor-img left" src="images/team/kevin_bao.jpg" alt="Kevin Bao in a black suit and a blue-and-white striped tie, facing the camera against a plain grey wall.">
                 </div>
                 <div class="about-head">
-                    <h3 class="text-secondary">Kevin Bao</h3>
+                    <h3>Kevin Bao</h3>
                     <!-- BUILD:teaches-kevinbao -->
                     <p class="teaches"><span class="teaches-label">Teaches</span><span class="teaches-name">Main Lecture</span><span class="teaches-when">Saturdays, 7:00pm ET / 4:00pm PT</span><span class="teaches-desc">Lecture-based class covering the central curriculum.</span></p>
         <!-- /BUILD:teaches-kevinbao -->
@@ -210,10 +212,10 @@
             </div>
             <div id="josephdong" class="instructor-card about wow fadeInUp" data-wow-delay=".2s">
                 <div class="img-wrapper-left">
-                    <img class="instructor-img left" src="images/team/joseph-dong.jpeg" alt="icon">
+                    <img class="instructor-img left" src="images/team/joseph-dong.jpeg" alt="Joseph Dong in round wire-rimmed glasses and a dark suit, smiling in front of sunlit green foliage.">
                 </div>
                 <div class="about-head">
-                    <h3 class="text-secondary">Joseph Dong</h3>
+                    <h3>Joseph Dong</h3>
                     <!-- BUILD:teaches-josephdong -->
                     <p class="teaches"><span class="teaches-label">Teaches</span><span class="teaches-name">New Concepts</span><span class="teaches-when">Sundays, 8:00pm ET / 5:00pm PT</span><span class="teaches-desc">Learn deeper and more advanced concepts than even what is covered in the main lecture.</span></p>
         <!-- /BUILD:teaches-josephdong -->
@@ -226,10 +228,10 @@
             </div>
             <div id="jasonwang" class="instructor-card about wow fadeInUp" data-wow-delay=".2s">
                 <div class="img-wrapper-left">
-                    <img class="instructor-img left" src="images/team/jason_wang.png" alt="icon">
+                    <img class="instructor-img left" src="images/team/jason_wang.png" alt="Jason Wang in a navy blazer and an orange competition lanyard, smiling in front of a row of national flags.">
                 </div>
                 <div class="about-head">
-                    <h3 class="text-secondary">Jason Wang</h3>
+                    <h3>Jason Wang</h3>
                     <!-- BUILD:teaches-jasonwang -->
                     <p class="teaches"><span class="teaches-label">Teaches</span><span class="teaches-name">Lecture Primer</span><span class="teaches-when">Tuesdays, 8:00pm ET / 5:00pm PT</span><span class="teaches-desc">Prepares students for the advanced topics of the core lecture by reviewing fundamentals.</span></p>
         <!-- /BUILD:teaches-jasonwang -->
@@ -242,10 +244,10 @@
             </div>
             <div id="vishalsurya" class="instructor-card about wow fadeInUp" data-wow-delay=".2s">
                 <div class="img-wrapper-left">
-                    <img class="instructor-img left" src="images/team/vishal_surya.jpg" alt="icon">
+                    <img class="instructor-img left" src="images/team/vishal_surya.jpg" alt="Vishal Surya in a dark blazer over a maroon shirt, smiling against a plain grey studio backdrop.">
                 </div>
                 <div class="about-head">
-                    <h3 class="text-secondary">Vishal Surya</h3>
+                    <h3>Vishal Surya</h3>
                     <!-- BUILD:teaches-vishalsurya -->
                     <p class="teaches"><span class="teaches-label">Teaches</span><span class="teaches-name">Case Study</span><span class="teaches-when">Thursdays, 8:00pm ET / 5:00pm PT</span><span class="teaches-desc">Discuss specific diseases with a focus on real-world clinical applications.</span></p>
         <!-- /BUILD:teaches-vishalsurya -->
@@ -258,11 +260,10 @@
             </div>
             <div id="suzukoohshima" class="instructor-card about wow fadeInUp" data-wow-delay=".2s">
                 <div class="img-wrapper-left">
-                    <!-- TODO: ADD PHOTO suzuko_ohshima.jpg -->
-                    <img class="instructor-img left" src="images/team/suzuko_ohshima.png" alt="icon">
+                    <img class="instructor-img left" src="images/team/suzuko_ohshima.png" alt="Suzuko Ohshima in a black polo shirt, smiling against a plain cream wall.">
                 </div>
                 <div class="about-head">
-                    <h3 class="text-secondary">Suzuko Ohshima</h3>
+                    <h3>Suzuko Ohshima</h3>
                     <!-- BUILD:teaches-suzukoohshima -->
                     <p class="teaches"><span class="teaches-label">Teaches</span><span class="teaches-name">Problem Solving</span><span class="teaches-when">Wednesdays, 8:00pm ET / 5:00pm PT</span><span class="teaches-desc">Students join in and learn from the pros how to tackle the complicated problems of USABO.</span></p>
         <!-- /BUILD:teaches-suzukoohshima -->
@@ -274,11 +275,10 @@
             </div>
             <div id="sunipunbiswas" class="instructor-card about wow fadeInUp" data-wow-delay=".2s">
                 <div class="img-wrapper-left">
-                    <!-- TODO: ADD PHOTO sunipun_biswas.jpg -->
-                    <img class="instructor-img left" src="images/team/sunipun_biswas.jpg" alt="icon">
+                    <img class="instructor-img left" src="images/team/sunipun_biswas.jpg" alt="Sunipun Biswas in a dark suit and white shirt, facing the camera against a plain cream wall.">
                 </div>
                 <div class="about-head">
-                    <h3 class="text-secondary">Sunipun Biswas</h3>
+                    <h3>Sunipun Biswas</h3>
                     <!-- BUILD:teaches-sunipunbiswas -->
                     <p class="teaches"><span class="teaches-label">Teaches</span><span class="teaches-name">Skill Building</span><span class="teaches-when">Fridays, 8:00pm ET / 5:00pm PT</span><span class="teaches-desc">Learn how biology is applied in real science and how that is used to develop test questions!</span></p>
         <!-- /BUILD:teaches-sunipunbiswas -->
@@ -292,10 +292,10 @@
             </div>
             <div id="kiandhawan" class="instructor-card about wow fadeInUp" data-wow-delay=".2s">
                 <div class="img-wrapper-left">
-                    <img class="instructor-img left" src="images/team/kian_dhawan.png" alt="icon">
+                    <img class="instructor-img left" src="images/team/kian_dhawan.png" alt="Kian Dhawan in a light blue shirt and navy tie, smiling against a plain off-white wall.">
                 </div>
                 <div class="about-head">
-                    <h3 class="text-secondary">Kian Dhawan</h3>
+                    <h3>Kian Dhawan</h3>
                     <!-- BUILD:teaches-kiandhawan -->
                     <p class="teaches"><span class="teaches-label">Teaches</span><span class="teaches-name">Homework Review</span><span class="teaches-when">Mondays, 8:00pm ET / 5:00pm PT</span><span class="teaches-desc">Live review of weekly homework where we will go over answers and student questions.</span></p>
         <!-- /BUILD:teaches-kiandhawan -->
@@ -308,13 +308,15 @@
             </div>
 
         </div>
+            </div>
+            </div>
     </section>
 
 </main>
     <!-- footer -->
     <footer class="bg-dark footer-section">
         <div class="text-center py-5">
-            <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</a>
+            <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology
             </p>
             <p class="mb-0 text-sm text-white">Baology is not affiliated in any way with the USA Biology Olympiad Exam
             </p>
@@ -326,7 +328,7 @@
     <script src="plugins/jQuery/jquery.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="plugins/bootstrap/bootstrap.min.js"></script>
-    <!-- slick slider -->
+    <!-- slick JS only: no carousel here, so plugins/slick/slick.css is deliberately not linked. explore.html is the page that links it. -->
     <script src="plugins/slick/slick.min.js"></script>
     <!-- wow js -->
     <script src="plugins/wow/wow.min.js"></script>

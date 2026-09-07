@@ -1,31 +1,72 @@
 #!/bin/sh
-# Regenerate the data-driven HTML + sitemap before every commit so the
-# committed (and therefore deployed) files can never go stale relative to
-# data/gallery.csv, data/testimonials.yaml, or blogs/blogs.json.
+# Regenerate the data-driven HTML + sitemap before every commit, so the committed
+# (and therefore deployed) files can never go stale relative to data/*.yaml,
+# data/*.csv, blogs/blogs.json, about/syllabus-*.csv or header.html. This repo
+# deploys straight from `main` with no CI build step, so the rendered output MUST
+# be committed — see README.md.
 #
-# This repo deploys straight from the `main` branch (no CI build step), so the
-# rendered output MUST be committed — see README.md.
-#
-# One-time setup per clone (tell git to use this hooks directory):
-#   git config core.hooksPath .githooks
-#
-# To bypass once (e.g. an emergency commit without Node installed):
-#   git commit --no-verify
+# Setup, once per clone:  git config core.hooksPath .githooks
+# Bypass, once:           git commit --no-verify
 
-if ! command -v npm >/dev/null 2>&1; then
-  echo "pre-commit: npm/Node not found — skipping build." >&2
-  echo "            Install Node and re-run, or the generated files may go stale." >&2
+if ! command -v node >/dev/null 2>&1; then
+  echo "pre-commit: Node not found — skipping build. Generated files may go stale." >&2
   exit 0
 fi
 
-echo "pre-commit: regenerating gallery / testimonials / explore / blog-main / sitemap…" >&2
-if ! npm run build >/dev/null; then
-  echo "pre-commit: 'npm run build' failed — commit aborted. Fix the build and retry." >&2
+echo "pre-commit: regenerating generated HTML / nav / sitemap…" >&2
+
+# One run, both jobs: `--list-generated` builds (log on stderr) and prints on
+# stdout every file the build OWNS. Deriving the staging list from the build is
+# the point — this hook used to `git add` seven hand-typed paths while the build
+# wrote 21, so editing classes.yaml or header.html committed stale HTML.
+if ! generated=$(node scripts/build.js --list-generated); then
+  echo "pre-commit: build failed — commit aborted. Fix the build and retry." >&2
   exit 1
 fi
 
-# Stage the generated outputs so the fresh render is part of this commit.
-git add explore.html explore/gallery.html explore/testimonials.html blog-main.html \
-        index.html about/syllabus.html sitemap.xml
+# UNTRACKED BUILD DEPENDENCY = a commit that only builds on this machine. The
+# build printed this a moment ago as a warning; here is where it stops being one.
+# git is asked the same question scripts/build.js and scripts/check-generated.js
+# ask, so the three can never disagree. pre-push already refuses to ship this
+# state — failing at COMMIT instead means finding out while the fix is still one
+# `git add`, and before more commits are stacked on a tree nobody else can build.
+untracked=$(git ls-files --others --exclude-standard -- scripts .githooks)
+if [ -n "$untracked" ]; then
+  echo "pre-commit: build files git is not tracking — commit aborted:" >&2
+  printf '%s\n' "$untracked" | sed 's/^/              /' >&2
+  echo "            A clone never had them and nothing can restore them once deleted." >&2
+  echo "            Fix:  git add $(printf '%s' "$untracked" | tr '\n' ' ')" >&2
+  echo "            (Scratch work in scripts/ or .githooks/ belongs elsewhere, or in" >&2
+  echo "             .gitignore; \`git commit --no-verify\` skips this hook entirely.)" >&2
+  exit 1
+fi
+
+# Normalise exactly as scripts/check-generated.js does, so the two can never
+# disagree about what "no generated files" means.
+generated=$(printf '%s\n' "$generated" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | grep -v '^$')
+
+# Split on NEWLINES only (IFS) with globbing off (set -f): a path containing a
+# space stages as one file, and a literal `*` is never expanded. Not a pipeline —
+# a `while read` after a `|` runs in a subshell, where a failing `git add` could
+# not abort the commit.
+old_ifs=$IFS
+IFS='
+'
+set -f
+set -- $generated
+set +f
+IFS=$old_ifs
+
+# EMPTY LEDGER = BROKEN LEDGER, NOT "NOTHING TO DO". The build owns 21 files and
+# can never legitimately own zero, so an empty split means the ledger stopped
+# reaching stdout. Committing here would stage nothing and ship stale HTML.
+if [ "$#" -eq 0 ]; then
+  echo "pre-commit: the build reported NO generated files — commit aborted." >&2
+  echo "            \`node scripts/build.js --list-generated\` printed an empty ledger;" >&2
+  echo "            nothing would be staged. Run it by hand and fix it." >&2
+  exit 1
+fi
+
+git add -- "$@" || exit 1
 
 exit 0

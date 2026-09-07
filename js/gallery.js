@@ -35,7 +35,8 @@
       render();
       openDeepLink();
       window.addEventListener("resize", onResize);
-    });
+    })
+    .catch(err => console.error("gallery.js: could not load gallery.csv", err));
 
   function renderFilters(photos) {
     const years = [...new Set(photos.map(p => yearOf(p.date)).filter(y => y != null))].sort((a, b) => b - a);
@@ -185,8 +186,15 @@
     // Timing matches `.gallery-grid` transition in css/style.css.
     grid.classList.add("is-swapping");
     setTimeout(() => {
-      render();
-      grid.classList.remove("is-swapping");
+      // try/finally, not try/catch: removing `is-swapping` is CLEANUP that must
+      // happen even if render() throws, or the grid stays faded to opacity 0 and
+      // the whole gallery looks empty. The error still propagates to the console
+      // rather than being swallowed.
+      try {
+        render();
+      } finally {
+        grid.classList.remove("is-swapping");
+      }
     }, 250);
   }
 
@@ -216,6 +224,17 @@
     });
 
     if (lightbox) lightbox.destroy();
+
+    // plugins/glightbox is an enhancement, not the gallery. Unguarded, the bare
+    // `GLightbox` identifier is a ReferenceError when the plugin is absent, and
+    // it is thrown from render() -- which killed openDeepLink(), the resize
+    // listener and window.wow.sync() queued after it, and on a filter switch
+    // left the grid stuck at `is-swapping` (opacity 0, every photo invisible)
+    // because the class is only removed on the line AFTER render(). Returning
+    // here instead leaves each tile's native href intact, so a click opens the
+    // full image directly: one missing plugin, one missing feature.
+    if (typeof GLightbox !== "function") return;
+
     lightbox = GLightbox({
       selector: ".gallery-lightbox-source",
       touchNavigation: true,

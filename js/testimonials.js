@@ -10,7 +10,33 @@
     return;
   }
 
-  // Fallback for when build script hasn't been run.
+  // Fallback for when build script hasn't been run. It needs js-yaml to read the
+  // source data at all, so without the plugin there is nothing to build here and
+  // no reason to fetch. (Bare `jsyaml` would be a ReferenceError.)
+  if (!window.jsyaml) return;
+
+  // The stagger for the cards built below. STEP and CAP have exactly ONE author,
+  // scripts/build.js, which stamps them on this very grid as data-stagger-step /
+  // data-stagger-cap for this file to read back — the same contract js/search.js
+  // has with data-page-size — and hard-fails the build if the container that
+  // carries them is gone. So they are READ here, never retyped: a second authored
+  // copy is precisely what lets the baked cards and these fallback cards drift.
+  //
+  // build.js's .toFixed(2) comes along with the numbers, because the formatting is
+  // part of the rule. Without it this file emitted `${Math.min(i * 0.08, 0.6)}s`,
+  // which is the same number PRINTED differently: "0s" vs "0.00s" at i=0, "0.4s"
+  // vs "0.40s" at i=5, "0.6s" vs "0.60s" from i=8 on. Trailing zeros, not binary
+  // floating point — verified in V8, i * 0.08 is exact at every index this can
+  // reach, and i=4 is 0.32, never 0.32000000000000004.
+  //
+  // No `|| 0.08` default: that default would BE the second copy. If the attributes
+  // are missing the cards get no data-wow-delay and fade in unison, which is what
+  // WOW does with no delay — visibly plainer, never a different stagger.
+  const step = parseFloat(grid.dataset.staggerStep);
+  const cap = parseFloat(grid.dataset.staggerCap);
+  const staggered = Number.isFinite(step) && Number.isFinite(cap);
+  const staggerDelay = (i) => `${Math.min((i || 0) * step, cap).toFixed(2)}s`;
+
   fetch("../data/testimonials.yaml")
     .then(res => res.text())
     .then(text => {
@@ -28,11 +54,12 @@
         card.querySelector("[data-name]").textContent = t.name;
         const badgesEl = card.querySelector("[data-placements]");
         badgesEl.innerHTML = renderBadges(t.placements);
-        card.setAttribute("data-wow-delay", `${Math.min(i * 0.08, 0.6)}s`);
+        if (staggered) card.setAttribute("data-wow-delay", staggerDelay(i));
         grid.appendChild(card);
       });
       if (window.wow) window.wow.sync();
-    });
+    })
+    .catch(err => console.error("testimonials.js: could not load testimonials.yaml", err));
 })();
 
 // A placement's year can be either a single number (2024) or a [start, end]
