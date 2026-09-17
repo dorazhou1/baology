@@ -278,11 +278,24 @@
 </main>
   <!-- footer -->
   <footer class="bg-dark footer-section">
-    <div class="text-center py-5">
-      <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</p>
-      <p class="mb-0 text-sm text-white">Baology is not affiliated in any way with the USA Biology Olympiad Exam</p>
-    </div>
-  </footer>
+  <!-- THE SHARED FOOTER. Synced into every page by syncFooter() in scripts/build.js on each
+       build; edit it HERE, not in the pages. Like header.html this file must be EXACTLY one
+       footer element with nothing outside it, and it must contain exactly one closing footer
+       tag: the sync matches from the opening tag to the FIRST closing one, so a closing tag
+       written inside this comment would truncate the match and append a second copy of the
+       footer on every build. That is not hypothetical — it happened when this file was
+       written. syncFooter() now counts the tags and fails the build rather than accumulate.
+
+       The Privacy link is .text-white on purpose: `a:hover` resolves to --color-navy, which
+       is invisible on this navy ground, and .text-white carries !important so it wins at
+       rest AND on hover. Root-relative href so the one string works from /about/, /explore/,
+       /blogs/ and /demo/ alike, matching header.html's convention. -->
+  <div class="text-center py-5">
+    <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</p>
+    <p class="mb-0 text-sm text-white">Baology is not affiliated in any way with the USA Biology Olympiad Exam</p>
+    <p class="mb-0 text-sm text-white"><a class="text-white" href="/privacy.html">Privacy</a></p>
+  </div>
+</footer>
   <!-- /footer -->
 
   <!-- jQuery -->

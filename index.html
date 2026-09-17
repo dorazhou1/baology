@@ -4,20 +4,20 @@
 <head>
 
   <meta charset="utf-8">
-  <title>Baology Olympiad Preparatory Course with Kevin Bao</title>
+  <title>USABO Prep Course with Kevin Bao | Baology Prep</title>
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <!-- One description per page: og:description, any twitter:description and any JSON-LD description repeat this verbatim. -->
   <meta name="description"
-    content="Baology Prep is a USABO-focused biology course led by USA Biology Olympiad finalists and Ivy+ instructors.">
+    content="A USABO-focused biology course taught by past USABO finalists and IBO medalists. Since 2021 Baology students have taken 43% of National Finalist places.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="author" content="Baology Prep">
   <link rel="canonical" href="https://baology.org/">
-  <meta property="og:title" content="Baology Olympiad Preparatory Course with Kevin Bao">
+  <meta property="og:title" content="USABO Prep Course with Kevin Bao | Baology Prep">
   <meta property="og:site_name" content="Baology Prep">
   <meta property="og:url" content="https://baology.org/">
   <meta property="og:description"
-    content="Baology Prep is a USABO-focused biology course led by USA Biology Olympiad finalists and Ivy+ instructors.">
+    content="A USABO-focused biology course taught by past USABO finalists and IBO medalists. Since 2021 Baology students have taken 43% of National Finalist places.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://baology.org/images/demo-preview.png">
   <meta property="og:image:alt" content="Baology Prep course preview">
@@ -57,7 +57,7 @@
         },
         {
           "@type": "Course",
-          "name": "Baology Olympiad Preparatory Course",
+          "name": "USABO Prep Course with Kevin Bao",
           "provider": {
             "@type": "Organization",
             "name": "Baology Prep",
@@ -155,6 +155,9 @@
     <div class="layer wow fadeInRight" id="l4">
       <img src="images/illustrations/dots-orange.png" alt="bg-shape">
     </div>
+    <div class="layer wow fadeInLeft" id="l5">
+      <img src="images/illustrations/leaf-yellow.png" alt="bg-shape">
+    </div>
     <div class="layer wow fadeInDown" id="l6">
       <img src="images/illustrations/dots-group-orange.png" alt="bg-shape">
     </div>
@@ -177,11 +180,16 @@
       <div class="row">
         <div class="col-lg-10 mx-auto text-center">
           <h2 class="text-peach wow fadeInDown mb-3" data-wow-delay=".2s" data-wow-duration=".8s">Why Baology?</h2>
-          <p class="measure text-white wow fadeInLeft mb-5" data-wow-delay=".3s" data-wow-duration=".8s">No course offers
-            this value or these results. Since 2021, Baology students have earned <b>52 USA Biology Olympiad (USABO)
-              National Finalist places and 12 spots on Team USA at the International Biology Olympiad</b>. At some of
-            the lowest rates anywhere, Baology has no equal! Click below to find out more about what we're all
-            about.</p>
+          <p class="measure text-white wow fadeInLeft mb-4" data-wow-delay=".3s" data-wow-duration=".8s">Since 2021,
+            Baology students have earned <b>52 USA Biology Olympiad (USABO) National Finalist places and 12 spots on
+              Team USA at the International Biology Olympiad</b>. That is 43% of every National Finalist place
+            awarded since 2021, and 50% of every Team USA place.</p>
+          <p class="measure text-white wow fadeInLeft mb-5" data-wow-delay=".35s" data-wow-duration=".8s">Our flagship course
+            offers 20 weeks of live class, with 6-8+ hours a week. Level 1 is for students new to biology
+            competitions, and Level 2 goes deeper. They are <b>$1500</b> each, or <b>$2000</b> for the Full Package
+            with both, in total about <b>$12.50 per hour of live class, or less</b>. Every class is recorded, and a
+            full week is free to watch before you pay anything. Click below to find out more about what we're all
+            about!</p>
           <a href="about.html" class="btn btn-white wow fadeInUp" data-wow-delay=".3s" data-wow-duration=".8s">LEARN
             MORE</a>
         </div>
@@ -254,7 +262,7 @@
         <div class="col-sm-6 col-md-4">
           <div class="text-center instructor-card wow fadeInUp" data-wow-delay=".2s">
             <a href="about.html#kevinbao">
-              <img class="instructor-img" src="images/team/kevin-bao.jpeg" alt="Kevin Bao in a black suit and a blue-and-white striped tie, facing the camera against a plain grey wall.">
+              <img class="instructor-img" src="images/team/kevin_bao.jpg" alt="Kevin Bao in a black suit and a blue-and-white striped tie, facing the camera against a plain grey wall.">
               <h3 class="h4">Kevin Bao</h3>
               <!-- BUILD:teaches-index-kevinbao -->
             <span class="instructor-class">Main Lecture</span>
@@ -302,7 +310,7 @@
         <div class="col-sm-6 col-md-4">
           <div class="text-center instructor-card wow fadeInUp" data-wow-delay=".2s">
             <a href="about.html#suzukoohshima">
-              <img class="instructor-img" src="images/team/suzuko_ohshima.png" alt="Suzuko Ohshima in a black polo shirt, smiling against a plain cream wall.">
+              <img class="instructor-img" src="images/team/suzuko_ohshima.jpg" alt="Suzuko Ohshima in a black polo shirt, smiling against a plain cream wall.">
               <h3 class="h4">Suzuko Ohshima</h3>
               <!-- BUILD:teaches-index-suzukoohshima -->
             <span class="instructor-class">Problem Solving</span>
@@ -380,11 +388,24 @@
 
   <!-- footer -->
   <footer class="bg-dark footer-section">
-    <div class="text-center py-5">
-      <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</p>
-      <p class="mb-0 text-sm text-white">Baology is not affiliated in any way with the USA Biology Olympiad Exam</p>
-    </div>
-  </footer>
+  <!-- THE SHARED FOOTER. Synced into every page by syncFooter() in scripts/build.js on each
+       build; edit it HERE, not in the pages. Like header.html this file must be EXACTLY one
+       footer element with nothing outside it, and it must contain exactly one closing footer
+       tag: the sync matches from the opening tag to the FIRST closing one, so a closing tag
+       written inside this comment would truncate the match and append a second copy of the
+       footer on every build. That is not hypothetical — it happened when this file was
+       written. syncFooter() now counts the tags and fails the build rather than accumulate.
+
+       The Privacy link is .text-white on purpose: `a:hover` resolves to --color-navy, which
+       is invisible on this navy ground, and .text-white carries !important so it wins at
+       rest AND on hover. Root-relative href so the one string works from /about/, /explore/,
+       /blogs/ and /demo/ alike, matching header.html's convention. -->
+  <div class="text-center py-5">
+    <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</p>
+    <p class="mb-0 text-sm text-white">Baology is not affiliated in any way with the USA Biology Olympiad Exam</p>
+    <p class="mb-0 text-sm text-white"><a class="text-white" href="/privacy.html">Privacy</a></p>
+  </div>
+</footer>
   <!-- /footer -->
 
   <!-- jQuery -->
@@ -429,7 +450,7 @@
 
           <div class="countdown-actions">
             <a href="signup.html" class="btn btn-primary">SIGN&nbsp;UP</a>
-            <a data-site-href="infoSessionRecordingUrl" target="_blank" rel="noopener"
+            <a href="https://youtu.be/i27Fl1RZlUs" data-site-href="infoSessionRecordingUrl" target="_blank" rel="noopener"
               class="btn btn-secondary">WATCH&nbsp;INFO&nbsp;SESSION</a>
           </div>
         </div>

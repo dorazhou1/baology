@@ -30,7 +30,12 @@ fi
 # ask, so the three can never disagree. pre-push already refuses to ship this
 # state — failing at COMMIT instead means finding out while the fix is still one
 # `git add`, and before more commits are stacked on a tree nobody else can build.
-untracked=$(git ls-files --others --exclude-standard -- scripts .githooks)
+# Repo-wide, not just scripts/.githooks: the build reads data/*.yaml, data/*.csv,
+# about/syllabus-*.csv, header.html, footer.html and js/site-config.js, and dies on an
+# ENOENT for any of them. Narrowing this to modules let an untracked DATA input ship a
+# commit that no one could build. Safe to widen because --exclude-standard honours
+# .gitignore, which now carries *-how.csv.
+untracked=$(git ls-files --others --exclude-standard)
 if [ -n "$untracked" ]; then
   echo "pre-commit: build files git is not tracking — commit aborted:" >&2
   printf '%s\n' "$untracked" | sed 's/^/              /' >&2
@@ -57,9 +62,12 @@ set -- $generated
 set +f
 IFS=$old_ifs
 
-# EMPTY LEDGER = BROKEN LEDGER, NOT "NOTHING TO DO". The build owns 21 files and
-# can never legitimately own zero, so an empty split means the ledger stopped
-# reaching stdout. Committing here would stage nothing and ship stale HTML.
+# EMPTY LEDGER = BROKEN LEDGER, NOT "NOTHING TO DO". The build owns every page
+# carrying the shared nav or footer plus sitemap.xml — a couple of dozen files, and
+# never zero. No count is written here on purpose: it grew from 21 the day a page was
+# added, and a stale number in a comment invites someone to "fix" the wrong thing.
+# `npm run -s list:generated` prints the live ledger. An empty split means the ledger
+# stopped reaching stdout; committing would stage nothing and ship stale HTML.
 if [ "$#" -eq 0 ]; then
   echo "pre-commit: the build reported NO generated files — commit aborted." >&2
   echo "            \`node scripts/build.js --list-generated\` printed an empty ledger;" >&2

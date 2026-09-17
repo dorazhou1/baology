@@ -77,15 +77,30 @@ var coll = document.getElementsByClassName("collapsible");
 var i;
 for (i = 0; i < coll.length; i++) {
   coll[i].addEventListener("click", function() {
-    this.classList.toggle("active");
+    var open = this.classList.toggle("active");
+    // The +/- glyph was the ONLY open/closed signal, so a screen-reader user got none.
+    // Only set it where the markup already declares it, so the syllabus accordions (which
+    // do not) are not given a half-implemented ARIA contract.
+    if (this.hasAttribute("aria-expanded")) this.setAttribute("aria-expanded", String(open));
     // A .collapsible whose panel was removed (or that is the last child) has no
     // nextElementSibling; reading .style off null throws inside the handler.
-    var content = this.nextElementSibling;
+    //
+    // about/faq.html wraps each button in <h2 class="faq-q"> — the WAI-ARIA disclosure
+    // pattern, and it fixes a heading-order defect. (It does NOT help text extraction:
+    // measured across 16 extractors, readability and friends delete the button subtree
+    // and keep the wrapper empty. See the note in scripts/build.js renderFaq.) The wrap
+    // moves the panel to the WRAPPER's next sibling; `|| this` keeps the four un-wrapped
+    // accordions on about/syllabus.html working unchanged.
+    var content = (this.closest(".faq-q") || this).nextElementSibling;
     if (!content) return;
     if (content.style.maxHeight){
       content.style.maxHeight = null;
+      // Paired with the aria-expanded above: see the .content rule in css/style.css for why
+      // max-height alone is not enough to make "collapsed" true.
+      content.style.visibility = "hidden";
     } else {
       content.style.maxHeight = content.scrollHeight + "px";
+      content.style.visibility = "visible";
     } 
   }); 
 }
@@ -97,10 +112,24 @@ for (i = 0; i < coll.length; i++) {
 (function () {
   var header = document.querySelector(".navigation");
   if (!header) return;
+  var collapse = header.querySelector(".navbar-collapse");
+  var toggler = header.querySelector(".navbar-toggler");
   function publish() {
+    // NEVER PUBLISH WHILE THE BURGER DRAWER IS OPEN. `.navigation` then measures the whole open menu —
+    // 657px on a phone, against a 97px bar — and Bootstrap's collapse-close fires no resize, so a
+    // resize taken while it was open would stick. Every consumer of --header-h wants the BAR: it feeds
+    // html { scroll-padding-top }, so a poisoned value pushes every anchor landing hundreds of px off.
+    if (collapse && collapse.classList.contains("show")) return;
     document.documentElement.style.setProperty(
       "--header-h", header.getBoundingClientRect().height + "px");
   }
   publish();
   window.addEventListener("resize", publish);
+  // Re-measure after the drawer finishes closing, which covers the one case the guard above skips:
+  // a breakpoint crossed while it was open. 400ms clears Bootstrap's 350ms collapse transition.
+  // A click listener rather than `hidden.bs.collapse` because that is a jQuery event, and this block
+  // is deliberately plain-DOM so it survives jQuery not loading.
+  if (toggler) {
+    toggler.addEventListener("click", function () { setTimeout(publish, 400); });
+  }
 })();

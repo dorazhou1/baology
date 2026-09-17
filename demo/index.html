@@ -124,14 +124,14 @@
           <h2 class="text-secondary text-center wow fadeInDown mb-3">About the Demo</h2>
           <p class="text-primary-dark text-center wow fadeInUp">
             Below are <b>free video recordings from our Season 7 course</b>. If you're interested, please visit our
-            Sign Up page, or check out our <a class="link" data-site-href="demoMoodleUrl"
+            Sign Up page, or check out our <a class="link" href="https://baology.moodlecloud.com/course/view.php?id=11" data-site-href="demoMoodleUrl"
               target="_blank" rel="noopener">online classroom</a>!
           </p>
           <ul class="course-overview-list text-primary-dark wow fadeInUp">
             <li>Main Lecture plus six office-hour sessions</li>
             <li>Taught by Dr. Kevin Bao and a staff of past IBO competitors and campers</li>
             <li><a class="link" href="../about/syllabus.html">See the full syllabus</a></li>
-            <li><a class="link" data-site-href="infoSessionRecordingUrl" target="_blank" rel="noopener">Watch our info
+            <li><a class="link" href="https://youtu.be/i27Fl1RZlUs" data-site-href="infoSessionRecordingUrl" target="_blank" rel="noopener">Watch our info
                 session</a></li>
           </ul>
         </div>
@@ -146,19 +146,33 @@
       <div class="row justify-content-center">
         <div class="col-lg-9 wow fadeInUp" data-wow-delay=".2s">
           <div class="signup-card-actions mb-4">
-            <a class="btn btn-secondary" data-site-href="demoMoodleUrl" target="_blank" rel="noopener">
+            <a class="btn btn-secondary" href="https://baology.moodlecloud.com/course/view.php?id=11" data-site-href="demoMoodleUrl" target="_blank" rel="noopener">
               ENTER THE CLASSROOM
             </a>
             <a class="btn btn-primary" href="../signup.html">
               SIGN UP
             </a>
           </div>
+          <!-- BUILD:demo-week -->
           <div class="demo-embed">
-            <iframe id="demo-player" title="Baology Week 1 Preview"
+            <iframe id="demo-player" title="Baology Week 1 Preview" src="https://www.youtube.com/embed/ioJWFgKeKis?rel=0&amp;list=PL20gi4tWxPdsKzv0kaNxOPEGSWX35MI8r"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowfullscreen></iframe>
           </div>
           <div class="demo-thumbs" id="demo-thumbs" aria-label="Week 1 videos"></div>
+          <h2 class="text-secondary text-center wow fadeInDown mt-5 mb-3">What is in the free week</h2>
+          <p class="text-primary-dark wow fadeInUp">These are the 7 full-length recordings from
+            <b>week 1 of Season 7, Semester 1</b> (the first week of the 40-week year). Recordings are 1 to 2 hours in length.</p>
+          <ul class="course-overview-list text-primary-dark wow fadeInUp">
+            <li><a class="link" href="https://www.youtube.com/watch?v=ioJWFgKeKis" target="_blank" rel="noopener">Main Lecture</a> with <a class="link" href="../about.html#kevinbao">Kevin Bao</a> on Introduction to Biology (Campbell chapter 1)</li>
+            <li><a class="link" href="https://www.youtube.com/watch?v=xqXsfLzbUMI" target="_blank" rel="noopener">New Concepts</a> with <a class="link" href="../about.html#josephdong">Joseph Dong</a> on Introduction + Chemistry Primer 1 (Atoms, Molecules, and Bonds)</li>
+            <li><a class="link" href="https://www.youtube.com/watch?v=LC_EDq0JP78" target="_blank" rel="noopener">Skill Building</a> with <a class="link" href="../about.html#sunipunbiswas">Sunipun Biswas</a> on How to read a graph (and a paper)</li>
+            <li><a class="link" href="https://www.youtube.com/watch?v=dAfsQ1iTw1o" target="_blank" rel="noopener">Lecture Primer</a> with <a class="link" href="../about.html#jasonwang">Jason Wang</a></li>
+            <li><a class="link" href="https://www.youtube.com/watch?v=TqalqCmT0x8" target="_blank" rel="noopener">Problem Solving</a> with <a class="link" href="../about.html#suzukoohshima">Suzuko Ohshima</a></li>
+            <li><a class="link" href="https://www.youtube.com/watch?v=CIFLPS6bGsM" target="_blank" rel="noopener">Case Study</a> with <a class="link" href="../about.html#vishalsurya">Vishal Surya</a></li>
+            <li><a class="link" href="https://www.youtube.com/watch?v=GmnPKZfmPiQ" target="_blank" rel="noopener">Homework Review</a> with <a class="link" href="../about.html#kiandhawan">Kian Dhawan</a></li>
+          </ul>
+        <!-- /BUILD:demo-week -->
         </div>
       </div>
     </div>
@@ -169,11 +183,24 @@
 
   <!-- footer -->
   <footer class="bg-dark footer-section">
-    <div class="text-center py-5">
-      <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</p>
-      <p class="mb-0 text-sm text-white">Baology is not affiliated in any way with the USA Biology Olympiad Exam</p>
-    </div>
-  </footer>
+  <!-- THE SHARED FOOTER. Synced into every page by syncFooter() in scripts/build.js on each
+       build; edit it HERE, not in the pages. Like header.html this file must be EXACTLY one
+       footer element with nothing outside it, and it must contain exactly one closing footer
+       tag: the sync matches from the opening tag to the FIRST closing one, so a closing tag
+       written inside this comment would truncate the match and append a second copy of the
+       footer on every build. That is not hypothetical — it happened when this file was
+       written. syncFooter() now counts the tags and fails the build rather than accumulate.
+
+       The Privacy link is .text-white on purpose: `a:hover` resolves to --color-navy, which
+       is invisible on this navy ground, and .text-white carries !important so it wins at
+       rest AND on hover. Root-relative href so the one string works from /about/, /explore/,
+       /blogs/ and /demo/ alike, matching header.html's convention. -->
+  <div class="text-center py-5">
+    <p class="mb-0 text-sm text-white">Copyright &copy;2026 Baology</p>
+    <p class="mb-0 text-sm text-white">Baology is not affiliated in any way with the USA Biology Olympiad Exam</p>
+    <p class="mb-0 text-sm text-white"><a class="text-white" href="/privacy.html">Privacy</a></p>
+  </div>
+</footer>
   <!-- /footer -->
 
   <!-- jQuery -->

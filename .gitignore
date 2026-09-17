@@ -2,3 +2,9 @@
 **/.DS_Store
 .idea
 /node_modules
+
+# Attribution exports: raw "How did you hear about us?" rows from the registration
+# form. They carry students' and parents' NAMES, and every file in this repo is
+# served publicly on baology.org (data/gallery.csv returns 200 text/csv), so a
+# commit publishes them. Keep the exports out of the tree, not merely unstaged.
+*-how.csv

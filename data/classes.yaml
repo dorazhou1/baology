@@ -30,7 +30,7 @@
 - name: New Concepts
   instructor: Joseph Dong
   anchor: josephdong
-  day: Sunday
+  day: Tuesday
   startEt: "20:00"
   levels: [2]
   description: >
@@ -39,7 +39,7 @@
 - name: Lecture Primer
   instructor: Jason Wang
   anchor: jasonwang
-  day: Tuesday
+  day: Sunday
   startEt: "20:00"
   levels: [1]
   description: >

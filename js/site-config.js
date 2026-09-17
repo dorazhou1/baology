@@ -64,13 +64,17 @@ var SITE_CONFIG = {
 // Auto-apply config to any element with data-site-href or data-site-src.
 // Usage in HTML:  <a data-site-href="formUrl">...</a>
 //                 <iframe data-site-src="formEmbedUrl"></iframe>
+// Only assigns when the value DIFFERS from what is already in the markup. scripts/build.js
+// bakeSiteLinks() now bakes these same values in at build time, so the common case is that
+// they already match — and for an <iframe> an unconditional write is not a no-op: it
+// re-navigates the frame, fetching the embedded Google Form a second time on every load.
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("[data-site-href]").forEach(function (el) {
     var key = el.getAttribute("data-site-href");
-    if (SITE_CONFIG[key]) el.href = SITE_CONFIG[key];
+    if (SITE_CONFIG[key] && el.getAttribute("href") !== SITE_CONFIG[key]) el.href = SITE_CONFIG[key];
   });
   document.querySelectorAll("[data-site-src]").forEach(function (el) {
     var key = el.getAttribute("data-site-src");
-    if (SITE_CONFIG[key]) el.src = SITE_CONFIG[key];
+    if (SITE_CONFIG[key] && el.getAttribute("src") !== SITE_CONFIG[key]) el.src = SITE_CONFIG[key];
   });
 });

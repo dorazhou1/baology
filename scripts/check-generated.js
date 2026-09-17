@@ -67,7 +67,12 @@ if (!generated.length) {
 // no blob, no reflog, no stash — so this FAILS rather than warns. Asked of git, not of
 // a filename list, so a helper added tomorrow is covered without an edit.
 const untracked = lines(
-  git(["ls-files", "--others", "--exclude-standard", "--", "scripts", ".githooks"]).stdout
+  // Repo-wide, not just scripts/.githooks: the build reads data/*.yaml, data/*.csv,
+  // about/syllabus-*.csv, header.html, footer.html and js/site-config.js, and dies on an
+  // ENOENT for any of them. Narrowing this to modules let an untracked DATA input ship a
+  // commit that no one could build. Safe to widen because --exclude-standard honours
+  // .gitignore, which now carries *-how.csv.
+  git(["ls-files", "--others", "--exclude-standard"]).stdout
 );
 
 const diff = git(["diff", "--quiet", "--", ...generated], { stdio: "inherit" });

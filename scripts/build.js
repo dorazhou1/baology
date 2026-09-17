@@ -62,7 +62,12 @@ function want(mod, fn) {
 // Silent without git: a tarball export has no repo and so no risk. This is the reminder;
 // .githooks/pre-commit is the stop, and both ask git the same question.
 function warnUntrackedBuildDeps() {
-  const ls = spawnSync("git", ["ls-files", "--others", "--exclude-standard", "--", "scripts", ".githooks"],
+  // Repo-wide, not just scripts/.githooks: the build reads data/*.yaml, data/*.csv,
+  // about/syllabus-*.csv, header.html, footer.html and js/site-config.js, and dies on an
+  // ENOENT for any of them. Narrowing this to modules let an untracked DATA input ship a
+  // commit that no one could build. Safe to widen because --exclude-standard honours
+  // .gitignore, which now carries *-how.csv.
+  const ls = spawnSync("git", ["ls-files", "--others", "--exclude-standard"],
     { cwd: ROOT, encoding: "utf8" });
   if (ls.error || ls.status !== 0) return;
   const untracked = (ls.stdout || "").split("\n").map((x) => x.trim()).filter(Boolean).sort();
@@ -74,7 +79,11 @@ function warnUntrackedBuildDeps() {
   );
 }
 
-const { SKIP_DIR } = need("./css-source.js");
+const { SKIP_DIR, htmlFiles } = need("./css-source.js");
+
+// The two hand-edited fragments the nav and footer syncs copy OUT of, and which
+// therefore must never be written to by a generated step.
+const SYNC_SOURCES = new Set(["header.html", "footer.html"]);
 
 // --- Generated-file ledger ----------------------------------------------
 // The pre-commit hook has to `git add` everything this script writes, and the list can
@@ -889,7 +898,9 @@ function renderResultsSection(rows) {
 
 // Every page that states a finalist/IBO total must match data/results.csv, including the
 // invisible ones in <meta> tags.
-function checkResultClaims(totals) {
+function checkResultClaims(totals, rows) {
+  const shareF = Math.round((totals.finalists / (rows.length * FIELD_FINALISTS)) * 100);
+  const shareI = Math.round((totals.ibo / (rows.length * FIELD_IBO)) * 100);
   // Anchored deliberately tightly: a loose "(\\d+) ... finalist" also matches a YEAR
   // ("2019 USABO Finalist"), a rank ("Top 20 National Finalist") and the size of the
   // national field ("only 20 finalists") — correct sentences that are not our total. An
@@ -900,6 +911,12 @@ function checkResultClaims(totals) {
   // USA" — the caption this build writes) but forbids a digit in between, so
   // "52 ... Finalist places, 12 of which ... Team USA" matches only the 12.
   const TEAM_USA = /(?<!\d)(\d{1,3})\s+[^.<0-9]{0,70}?Team USA/g;
+  // The SHARE figures, which are derived from the counts and so are a second place for the
+  // same fact to drift. renderResultsChart() computes them as Math.round(total / (seasons *
+  // field) * 100); these match the same sentence shapes in hand-written copy. A share
+  // written as a word ("half of every place") is NOT caught — write the digits.
+  const SHARE_FIN = /(?<!\d)(\d{1,3})%\s+of\s+(?:every|all|the)?\s*National Finalist/g;
+  const SHARE_IBO = /(?<!\d)(\d{1,3})%\s+of\s+(?:every|all|the)?\s*Team USA/g;
   const bad = [];
   const walk = (dir) => {
     for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -925,6 +942,13 @@ function checkResultClaims(totals) {
           bad.push(`${rel}:${line(m.index)}  claims ${m[1]} Team USA, data/results.csv says ${totals.ibo}`);
         }
       }
+      for (const [re, want, what] of [[SHARE_FIN, shareF, "finalist share"], [SHARE_IBO, shareI, "Team USA share"]]) {
+        for (const m of txt.matchAll(re)) {
+          if (Number(m[1]) !== want) {
+            bad.push(`${rel}:${line(m.index)}  claims ${m[1]}% ${what}, data/results.csv works out to ${want}%`);
+          }
+        }
+      }
     }
   };
   walk(ROOT);
@@ -932,7 +956,7 @@ function checkResultClaims(totals) {
     throw new Error("results claim guard failed:\n  - " + bad.join("\n  - ") +
       "\n\nEvery count comes from data/results.csv. Update the CSV, not the copy.");
   }
-  console.log(`Results claim guard OK — every stated total matches data/results.csv (${totals.finalists}/${totals.ibo})`);
+  console.log(`Results claim guard OK — every stated total and share matches data/results.csv (${totals.finalists}/${totals.ibo}, ${shareF}%/${shareI}%)`);
 }
 
 // --- Sitemap ------------------------------------------------------------
@@ -1070,6 +1094,7 @@ function buildSitemap(photos, blogs) {
     { url: "/about/faq.html", file: "about/faq.html" },
     { url: "/about/syllabus.html", file: "about/syllabus.html" },
     { url: "/signup.html", file: "signup.html" },
+    { url: "/privacy.html", file: "privacy.html" },
     { url: "/demo/", file: "demo/index.html" },
     { url: "/explore.html", file: "explore.html" },
     { url: "/explore/testimonials.html", file: "explore/testimonials.html" },
@@ -1138,31 +1163,57 @@ function injectBetweenMarkers(html, name, content) {
     throw new Error(`Marker pair not found: ${name}`);
   }
   re.lastIndex = 0;
-  return html.replace(re, `${open}\n${content}\n        ${close}`);
+  // Replacer FUNCTION, not a template string: `content` is author-edited prose from
+  // data/*.yaml, and in a string replacement `$&`, `` $` ``, `$'` and `$$` are special —
+  // a single `$&` in a FAQ answer splices the matched marker block into the output and
+  // compounds on every subsequent build, with the build still exiting 0.
+  const replacement = `${open}\n${content}\n        ${close}`;
+  return html.replace(re, () => replacement);
 }
 
-// --- Static nav sync (header.html is the single source) -----------------
-// Every page carries its nav as static, crawlable HTML; this keeps them all in
-// sync with header.html on each build. Replaces either an inlined
-// <header class="navigation…">…</header> block or a <div id="header"></div>
-// placeholder, so a new page only needs one of those where the nav belongs.
-function syncNav() {
-  const nav = fs.readFileSync(path.join(ROOT, "header.html"), "utf8").trim();
-  const navRe = /<header class="navigation[\s\S]*?<\/header>/;
-  // header.html must be EXACTLY one <header> element. Anything outside it — a leading comment, say —
-  // gets copied into every page but is not matched by navRe on the next build, so each build appends
-  // another copy and never removes the old one. That happened: a 919-byte comment reached 5 copies on
-  // each of 20 pages before it was caught. Put such comments INSIDE <header>.
-  if (!/^<header class="navigation[\s\S]*<\/header>$/.test(nav)) {
+// --- Static fragment sync (header.html / footer.html are the single sources) ----
+// Every page carries its nav and footer as static, crawlable HTML; this keeps them all in
+// step with the source fragment on each build. Replaces either the inlined element or a
+// <div id="header"></div> / <div id="footer"></div> placeholder, so a new page needs only
+// one of those where the fragment belongs.
+//
+// ONE helper for both, deliberately. These were two copy-pasted functions, and the copy is
+// what let them diverge: the footer sync grew a tag-count guard after its first draft
+// APPENDED A SECOND FOOTER TO ALL 20 PAGES ON EVERY BUILD, and the nav sync — same regex,
+// same shape, same hazard — never got it. Sharing the code means a guard cannot protect one
+// fragment and miss the other.
+//
+// The hazard, precisely: `re` is non-greedy, so it matches from the opening tag to the FIRST
+// closing one. A closing tag anywhere else in the fragment — inside a comment, say, or a
+// second element — truncates the match, leaves the tail of the old block in place, and adds
+// one more copy per build. The shape test alone does NOT catch it (it is greedy, so
+// starts-with-open + ends-with-close passes two whole elements); only the counts do.
+function syncFragment({ file, tag, classPrefix, placeholderId }) {
+  const src = fs.readFileSync(path.join(ROOT, file), "utf8")
+    // Normalised first: a CRLF fragment passes every guard and then propagates a \r into
+    // every synced page, which is a whole-tree whitespace diff nobody asked for.
+    .replace(/\r\n/g, "\n").trim();
+  const open = new RegExp(`<${tag} class="${classPrefix}`);
+  const re = new RegExp(`<${tag} class="${classPrefix}[\\s\\S]*?</${tag}>`);
+  const placeholderRe = new RegExp(`<div id="${placeholderId}">\\s*</div>`);
+
+  if (!new RegExp(`^<${tag} class="${classPrefix}[\\s\\S]*</${tag}>$`).test(src)) {
     throw new Error(
-      "header.html has content outside its <header> element.\n" +
-      "syncNav() copies the whole file in but only matches <header>...</header> on the way back out,\n" +
-      "so anything outside it accumulates one more copy per build. Move it inside <header>."
-    );
+      `${file} must be exactly one <${tag}> element with nothing outside it.\n` +
+      `It must START with \`<${tag} class="${classPrefix}\` — that class first, double-quoted — ` +
+      `and END with </${tag}>.\nAnything outside the element is copied into every page but ` +
+      `not matched on the way back out,\nso it accumulates one more copy per build.`);
   }
-  const placeholderRe = /<div id="header">\s*<\/div>/;
-  const skipFiles = new Set(["header.html", "footer.html"]);
-  let count = 0;
+  const openers = (src.match(new RegExp(`<${tag}[\\s>]`, "g")) || []).length;
+  const closers = (src.match(new RegExp(`</${tag}>`, "g")) || []).length;
+  if (openers !== 1 || closers !== 1) {
+    throw new Error(
+      `${file} must contain exactly one opening and one closing <${tag}> tag; found ` +
+      `${openers} opening and ${closers} closing. A stray tag inside a comment counts — ` +
+      `rephrase the comment so it does not spell the tag out.`);
+  }
+
+  let matched = 0, changed = 0;
   (function walk(dir) {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       if (entry.name.startsWith(".")) continue;
@@ -1172,17 +1223,326 @@ function syncNav() {
         continue;
       }
       if (!entry.name.endsWith(".html")) continue;
-      if (skipFiles.has(path.relative(ROOT, full))) continue;
+      if (SYNC_SOURCES.has(path.relative(ROOT, full))) continue;
       const html = fs.readFileSync(full, "utf8");
       let out = html;
-      if (navRe.test(out)) out = out.replace(navRe, nav);
-      else if (placeholderRe.test(out)) out = out.replace(placeholderRe, nav);
-      else continue;                 // no nav here — not a page this build owns
+      // Replacer functions, same reason as injectBetweenMarkers: header.html and
+      // footer.html are hand-edited, and a `$&` in either would splice the matched element
+      // back into itself on every build.
+      if (re.test(out)) out = out.replace(re, () => src);
+      else if (placeholderRe.test(out)) out = out.replace(placeholderRe, () => src);
+      else continue;                 // no such fragment here — not a page this build owns
+      matched++;
+      // Assert on the way OUT as well as in. `re` is non-global, so a page that somehow
+      // already holds two copies keeps them: the sync cannot repair the state its own
+      // former bug created, and would report "0 changed" while leaving it broken.
+      const o = (out.match(new RegExp(`<${tag}[\\s>]`, "g")) || []).length;
+      const c = (out.match(new RegExp(`</${tag}>`, "g")) || []).length;
+      if (o !== 1 || c !== 1) {
+        throw new Error(
+          `${path.relative(ROOT, full)}: ${o} opening / ${c} closing <${tag}> tag(s) after ` +
+          `sync — duplicated or truncated. Repair it by hand between the <!-- ${placeholderId} --> ` +
+          `and <!-- /${placeholderId} --> fences, then rebuild.`);
+      }
       claim(full);
-      if (out !== html) { fs.writeFileSync(full, out); count++; }
+      if (out !== html) { fs.writeFileSync(full, out); changed++; }
     }
   })(ROOT);
-  console.log(`Synced static nav into ${count} page(s) from header.html`);
+  // MATCHED, not just changed: "into 0 page(s)" is what a correct no-op AND a regex that
+  // matches nothing both print, so a renamed class would silently stop syncing forever.
+  if (!matched) {
+    throw new Error(
+      `${file}: matched no page. Every page should carry either <${tag} class="${classPrefix}…> ` +
+      `or <div id="${placeholderId}"></div>. Did the class get renamed in the pages?`);
+  }
+  console.log(`Synced ${placeholderId} into ${matched} page(s) from ${file} (${changed} changed)`);
+}
+
+const syncNav = () => syncFragment(
+  { file: "header.html", tag: "header", classPrefix: "navigation", placeholderId: "header" });
+const syncFooter = () => syncFragment(
+  { file: "footer.html", tag: "footer", classPrefix: "bg-dark footer-section", placeholderId: "footer" });
+
+// --- FAQ: the accordion and its JSON-LD, from one source -----------------
+// about/faq.html shipped twelve visible questions inside <button class="collapsible">
+// elements and a FAQPage node with NO mainEntity key at all. Two separate problems, and only
+// ONE of them is fixable in markup:
+//
+//  * The structured data claimed to be an FAQ while listing zero questions. FIXED: the
+//    mainEntity array below is read cleanly by structured-data parsers (verified with
+//    extruct), which is the class Google and Bing belong to.
+//  * Text-extraction pipelines drop the button and its text as interactive chrome, so the
+//    retrievable document is twelve answers with nothing they answered. NOT FIXED, and it
+//    cannot be fixed while the question is the button's own text. Measured across 16
+//    extractor configurations (readability, trafilatura, jusText, html-to-text, turndown,
+//    boilerpy3 and the live r.jina.ai): a heading WRAPPING the button changes nothing —
+//    readability deletes the button subtree and keeps the wrapper EMPTY, byte-for-byte the
+//    same output as the bare button. Every text extractor also strips <script>, so the
+//    JSON-LD is not a fallback for that channel either. Only moving the question text out
+//    of the button survives, and that costs either duplicated visible text or a
+//    <details>/<summary> rewrite of the accordion's CSS and JS.
+//
+// The wrapper is kept anyway because it is the correct WAI-ARIA disclosure pattern, it is
+// valid, and it fixes a real heading-order defect — NOT because it aids extraction.
+// h2, not h3: the page is one h1 and thirteen questions, and h3 skipped a level. A heading
+// INSIDE the button would be invalid (a button takes phrasing content) and would inherit
+// --fs-section and the serif face, desyncing .collapsible:after from its own text.
+// The wrapper needs js/script.js to walk up from the button — see closest(".faq-q") there.
+function faqEntries() {
+  const rows = yaml.load(fs.readFileSync(path.join(ROOT, "data/faq.yaml"), "utf8"),
+    { schema: yaml.CORE_SCHEMA });
+  if (!Array.isArray(rows) || !rows.length) throw new Error("renderFaq: data/faq.yaml is empty");
+  rows.forEach((r, i) => {
+    if (!r || typeof r.q !== "string" || typeof r.a !== "string" || !r.q.trim() || !r.a.trim()) {
+      throw new Error(`renderFaq: data/faq.yaml entry ${i + 1} needs both a q: and an a:`);
+    }
+  });
+  return rows;
+}
+
+function renderFaq() {
+  return faqEntries().map(r => `            <h2 class="faq-q"><button class="collapsible" type="button" aria-expanded="false">${escapeHtml(r.q.trim())}</button></h2>
+            <div class="content">
+                <p class="description">${r.a.trim()}</p>
+            </div>`).join("\n");
+}
+
+// Google removed the FAQ rich result in 2026, so this buys no search feature. It is here
+// because the page asserted @type FAQPage with nothing in it, and because an answer engine
+// parsing the page gets question/answer pairs instead of orphaned answers.
+function renderFaqJsonLd(pageHtml) {
+  // name/url/description are read off the page itself rather than retyped, so the site
+  // convention stated in every head ("any JSON-LD description repeats this verbatim")
+  // is enforced by the build instead of by a comment.
+  const pick = (re, what) => {
+    const m = pageHtml.match(re);
+    if (!m) throw new Error(`renderFaqJsonLd: could not read ${what} from about/faq.html`);
+    return m[1].replace(/\s+/g, " ").trim();
+  };
+  const title = pick(/<title>([\s\S]*?)<\/title>/, "<title>");
+  const url = pick(/<link rel="canonical" href="([^"]+)"/, "canonical");
+  const desc = pick(/<meta name="description"\s+content="([^"]*)"/, "meta description");
+
+  // schema.org wants answer TEXT. Strip the inline markup and decode the handful of
+  // entities the copy uses; a raw "&mdash;" inside a JSON string is not an em dash.
+  const plain = (h) => h
+    .replace(/<[^>]+>/g, " ")
+    // A space, not "", so "<strong>x</strong>y" does not weld into "xy" — then tighten the
+    // space this leaves before punctuation where a tag abutted it ("advanced ." -> "advanced.").
+    .replace(/\s+([.,;:!?])/g, "$1")
+    .replace(/&mdash;/g, "—").replace(/&ndash;/g, "–")
+    .replace(/&nbsp;/g, " ").replace(/&#39;/g, "'").replace(/&quot;/g, '"')
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&")
+    .replace(/\s+/g, " ").trim();
+
+  const doc = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    name: title,
+    url,
+    description: desc,
+    mainEntity: faqEntries().map(r => ({
+      "@type": "Question",
+      name: plain(r.q),
+      acceptedAnswer: { "@type": "Answer", text: plain(r.a) },
+    })),
+  };
+  // Checked against the RAW source, not the decoded JSON: decoding first both misses
+  // &#x2019; / &frac12; (neither matches a [a-z]+ / #\d+ shape) and false-positives on
+  // legitimate copy — "Q&A; see below" is not an entity. KNOWN is what plain() handles.
+  const KNOWN = /&(?:mdash|ndash|nbsp|quot|lt|gt|amp|#39);/g;
+  const leftover = faqEntries()
+    .flatMap(r => [["q", r.q], ["a", r.a]])
+    .flatMap(([k, v]) => (String(v).replace(KNOWN, "").match(/&(?:#x?[0-9a-f]+|[a-z][a-z0-9]*);/gi) || [])
+      .map(e => `${k}: ${e}`));
+  if (leftover.length) {
+    throw new Error(
+      `renderFaqJsonLd: data/faq.yaml uses entit(ies) plain() cannot decode, so the literal ` +
+      `text would ship into acceptedAnswer: ${[...new Set(leftover)].join(", ")}. ` +
+      `Either write the character itself or add the entity to plain() and KNOWN.`);
+  }
+  return `  <script type="application/ld+json">\n` +
+    JSON.stringify(doc, null, 2).split("\n").map(l => "    " + l).join("\n") +
+    `\n  </script>`;
+}
+
+// --- /demo/ week-one session list ----------------------------------------
+// The seven free recordings existed only as videoIds in js/site-config.js, injected into a
+// src-less <iframe> by js/demo-player.js — so `curl https://baology.org/demo/ | grep -c
+// youtube` returned 0 and the page's whole body was 65 words. Seven hours of finalist
+// instruction, invisible to every crawler and text extractor. This renders the session list
+// AND bakes the first video's src, from the same config the player reads, so the two cannot
+// disagree. Deliberately NOT rendered here: the .demo-thumb buttons. js/demo-player.js
+// appends them with no already-built guard, so pre-rendering would produce fourteen thumbs.
+// #demo-thumbs must stay empty and #demo-player must stay the only element with that id.
+function renderDemoWeek() {
+  const cfg = siteConfig();
+  const vids = cfg.demoVideos || [];
+  const listId = cfg.demoPlaylistId || "";
+  if (!vids.length) throw new Error("renderDemoWeek: js/site-config.js has no demoVideos");
+
+  const classes = yaml.load(fs.readFileSync(path.join(ROOT, "data/classes.yaml"), "utf8"),
+    { schema: yaml.CORE_SCHEMA });
+  const byName = new Map(classes.map(c => [c.name, c]));
+
+  // These are Semester 1 WEEK 1 recordings (s7s1 row 1), not week 21 of the live semester.
+  // Only three of the seven class types have a per-week topic column in that CSV. The other four
+  // get NO topic, on purpose. They used to fall back to their one-line data/classes.yaml
+  // description, which left three items naming a real week-1 topic and four reciting a marketing
+  // sentence, so the list did not read as one list. Those descriptions already appear on
+  // about.html under each instructor. Separator is " on " and not a dash: no dashes in site copy.
+  const wk1 = parseCSV(fs.readFileSync(path.join(ROOT, "about/syllabus-s7s1.csv"), "utf8"))
+    .find(r => String(r.Week).trim() === "1") || {};
+  const topicFor = {
+    "Main Lecture": wk1["Lecture Topic"],
+    "New Concepts": wk1["New Concepts OH"],
+    "Skill Building": wk1["Skill Building OH"],
+  };
+
+  // Byte-identical to js/demo-player.js srcFor(id, false), so the runtime assignment is a
+  // no-op rather than a second network request.
+  const embed = (id) =>
+    `https://www.youtube.com/embed/${id}?rel=0` + (listId ? `&list=${encodeURIComponent(listId)}` : "");
+
+  const items = vids.map((v) => {
+    const c = byName.get(v.title);
+    if (!c) {
+      throw new Error(
+        `renderDemoWeek: demoVideos title "${v.title}" in js/site-config.js matches no ` +
+        `\`name:\` in data/classes.yaml. The two lists must use the same class names.`);
+    }
+    const topic = String(topicFor[v.title] || "").trim();
+    const chap = String(wk1["Campbell's Chapters"] || "").trim();
+    const tail = v.title === "Main Lecture" && chap && chap.toUpperCase() !== "N/A"
+      ? ` (Campbell chapter ${escapeHtml(chap)})` : "";
+    return `            <li><a class="link" href="https://www.youtube.com/watch?v=${escapeAttr(v.id)}" ` +
+      `target="_blank" rel="noopener">${escapeHtml(v.title)}</a> with ` +
+      `<a class="link" href="../about.html#${escapeAttr(c.anchor)}">${escapeHtml(c.instructor)}</a>` +
+      `${topic ? ` on ${escapeHtml(topic)}` : ""}${tail}</li>`;
+  }).join("\n");
+
+  return `          <div class="demo-embed">
+            <iframe id="demo-player" title="Baology Week 1 Preview" src="${escapeAttr(embed(vids[0].id))}"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          </div>
+          <div class="demo-thumbs" id="demo-thumbs" aria-label="Week 1 videos"></div>
+          <h2 class="text-secondary text-center wow fadeInDown mt-5 mb-3">What is in the free week</h2>
+          <p class="text-primary-dark wow fadeInUp">These are the ${vids.length} full-length recordings from
+            <b>week 1 of Season 7, Semester 1</b> (the first week of the 40-week year). Recordings are 1 to 2 hours in length.</p>
+          <ul class="course-overview-list text-primary-dark wow fadeInUp">
+${items}
+          </ul>`;
+}
+
+// --- Bake site links (js/site-config.js is the single source) -------------
+// js/site-config.js applies itself at DOMContentLoaded, so before this existed the
+// registration form link, the form iframe, the flyer and both demo CTAs had NO href/src in
+// the served HTML at all — anchor text pointing nowhere to anything that does not run JS,
+// which is every crawler and every text extractor. This bakes the literal in at build time;
+// the runtime applier then assigns the identical value, so it is a no-op. Hardcoding by hand
+// was the alternative and was rejected: site-config.js records that officialAdUrl and
+// infoSessionRecordingUrl rotate every semester, and a hand-typed copy would silently
+// diverge on the next rotation. Generated, so it cannot.
+let _siteConfig = null;
+function siteConfig() {
+  if (_siteConfig) return _siteConfig;
+  const src = fs.readFileSync(path.join(ROOT, "js/site-config.js"), "utf8");
+  // Eval the WHOLE file behind a document stub, rather than brace-scanning for the object
+  // literal. The scan this replaced broke on a lone `}` inside a comment or a string value —
+  // in a file whose own comments discuss braces — and its "not found" guard was unreachable,
+  // because indexOf clamps a negative fromIndex to 0: renaming `var` to `const` would have
+  // silently anchored on the first brace in the file instead of failing.
+  const cfg = new Function("document",
+    src + ";return typeof SITE_CONFIG === 'undefined' ? null : SITE_CONFIG;")({ addEventListener() {} });
+  if (!cfg || typeof cfg !== "object") {
+    throw new Error("siteConfig: js/site-config.js did not define a SITE_CONFIG object.");
+  }
+  _siteConfig = cfg;
+  return cfg;
+}
+
+function bakeSiteLinks() {
+  const cfg = siteConfig();
+  // `href`/`src` NOT preceded by a word char, hyphen or COLON: the data-site-href attribute
+  // contains the substring "href=", and `xlink:href` would otherwise match and have a sprite
+  // reference overwritten with a URL.
+  const attrRe = { href: /(?<![-\w:])href\s*=\s*"[^"]*"/, src: /(?<![-\w:])src\s*=\s*"[^"]*"/ };
+  const keyRe = { href: /data-site-href="([^"]+)"/, src: /data-site-src="([^"]+)"/ };
+  const bad = [];
+  let files = 0, baked = 0;
+  for (const rel of htmlFiles(ROOT)) {
+    // header.html and footer.html are hand-edited SOURCES the syncs copy out of. Baking into
+    // them would make a source file build-owned and auto-staged by the pre-commit hook.
+    if (SYNC_SOURCES.has(rel)) continue;
+    const full = path.join(ROOT, rel);
+    const html = fs.readFileSync(full, "utf8");
+    // Count every data-site-* attribute HOWEVER it is written — uppercase, single-quoted,
+    // spaces around the `=` — so a shape the tag scanner cannot see fails the build instead
+    // of silently diverging from what the runtime applier does to that same element.
+    const expect = (html.match(/data-site-(?:href|src)\s*=/gi) || []).length;
+    if (!expect) continue;
+    let touched = 0;
+    // A negated class matches newlines, so this spans the multi-line tags in signup.html.
+    const out = html.replace(/<[a-zA-Z][^>]*>/g, (tag) => {
+      for (const kind of ["href", "src"]) {
+        const m = tag.match(keyRe[kind]);
+        if (!m) continue;
+        const key = m[1], val = cfg[key];
+        // A key with no usable value used to fail silently — the runtime applier guards on
+        // truthiness and simply left the element dead. Collected, not thrown on the first,
+        // so a typo per build run is not the fix loop.
+        if (val === undefined) {
+          bad.push(`${rel}: data-site-${kind}="${key}" — js/site-config.js defines no such key`); continue;
+        }
+        if (typeof val !== "string") {
+          bad.push(`${rel}: data-site-${kind}="${key}" — SITE_CONFIG.${key} is ` +
+            `${Array.isArray(val) ? "an array" : "a " + typeof val}, not a string`); continue;
+        }
+        if (!val) {
+          bad.push(`${rel}: data-site-${kind}="${key}" — SITE_CONFIG.${key} is an empty string`); continue;
+        }
+        const attr = `${kind}="${escapeAttr(val)}"`;
+        // escapeAttr AND replacer functions, both load-bearing: a `"` in a value injects an
+        // extra attribute, and a `$` is read as `$&`/`$1` and expands — and each of those
+        // grew the attribute again on EVERY subsequent build.
+        tag = attrRe[kind].test(tag)
+          ? tag.replace(attrRe[kind], () => attr)
+          : tag.replace(keyRe[kind], () => `${attr} data-site-${kind}="${key}"`);
+        touched++;
+      }
+      return tag;
+    });
+    if (touched !== expect && !bad.length) {
+      bad.push(
+        `${rel}: ${expect} data-site-* attribute(s) present but ${touched} baked. The scanner ` +
+        `only sees lowercase, double-quoted attributes on tags with no ">" inside an earlier ` +
+        `attribute value — normalise the markup.`);
+    }
+    writeGenerated(full, out);
+    files++; baked += touched;
+  }
+  if (bad.length) {
+    throw new Error(`bakeSiteLinks: ${bad.length} problem(s):\n  - ` + bad.join("\n  - "));
+  }
+  // Ordering assertion. Everything above depends on this running after every HTML write:
+  // data/faq.yaml ships its Zelle payment link with NO href, relying entirely on this pass.
+  // A reorder would serve an anchor whose visible text is the payment address and whose
+  // destination is nothing — the exact failure this function exists to fix.
+  const orphans = [];
+  for (const rel of htmlFiles(ROOT)) {
+    if (SYNC_SOURCES.has(rel)) continue;
+    const html = fs.readFileSync(path.join(ROOT, rel), "utf8");
+    for (const m of html.matchAll(/<(a|iframe)\b[^>]*data-site-(href|src)="[^"]*"[^>]*>/g)) {
+      if (!attrRe[m[2]].test(m[0])) orphans.push(`${rel}: <${m[1]}> with data-site-${m[2]} and no ${m[2]}`);
+    }
+  }
+  if (orphans.length) {
+    throw new Error(
+      `bakeSiteLinks: ${orphans.length} element(s) have no destination in the served HTML:\n  - ` +
+      orphans.join("\n  - ") + `\n\nbakeSiteLinks() must run AFTER every step that writes HTML.`);
+  }
+  console.log(`Baked ${baked} site link(s) from js/site-config.js into ${files} page(s); 0 orphaned`);
 }
 
 // --- Build ---------------------------------------------------------------
@@ -1271,6 +1631,7 @@ function build() {
   want("./radius-guard.js", "checkRadius");
   want("./type-guard.js", "checkType");
   syncNav();
+  syncFooter();
   const galleryCsv = fs.readFileSync(path.join(ROOT, "data/gallery.csv"), "utf8");
   const photos = parseCSV(galleryCsv)
     .sort((a, b) => dateSortKey(b.date) - dateSortKey(a.date));
@@ -1449,7 +1810,29 @@ function build() {
   }
 
   console.log(`Wrote results chart — ${resultRows.length} seasons (${resultTotals.finalists} finalists, ${resultTotals.ibo} IBO) into ${chartPages.join(", ")}`);
-  checkResultClaims(resultTotals);
+
+  {
+    const rel = "about/faq.html", full = path.join(ROOT, rel);
+    let h = fs.readFileSync(full, "utf8");
+    h = injectBetweenMarkers(h, "faq", renderFaq());
+    h = injectBetweenMarkers(h, "faq-jsonld", renderFaqJsonLd(h));
+    writeGenerated(full, h);
+    console.log(`Wrote FAQ — ${faqEntries().length} question(s) + JSON-LD into ${rel}`);
+  }
+
+  {
+    const rel = "demo/index.html", full = path.join(ROOT, rel);
+    writeGenerated(full, injectBetweenMarkers(
+      fs.readFileSync(full, "utf8"), "demo-week", renderDemoWeek()));
+    console.log(`Wrote demo week — ${siteConfig().demoVideos.length} session(s) into ${rel}`);
+  }
+
+  // AFTER the FAQ and demo-week writes, not before: the guard reads files from disk, so
+  // running it earlier validated last build's copy and let a wrong figure typed into
+  // data/faq.yaml ship once before failing.
+  checkResultClaims(resultTotals, resultRows);
+
+  bakeSiteLinks();
 
   // --- sitemap.xml ----------------------------------------------------
   const sitemapPath = path.join(ROOT, "sitemap.xml");

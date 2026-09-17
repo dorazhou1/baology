@@ -29,8 +29,13 @@
       }
     }
 
-    // first video, no autoplay
-    player.src = srcFor(vids[0].id, false);
+    // first video, no autoplay. COMPARE BEFORE ASSIGNING: scripts/build.js renderDemoWeek()
+    // now bakes this exact src into demo/index.html, and an unconditional write to an
+    // iframe is not a no-op — it re-navigates the frame and fetches the video a second time
+    // on every page load. getAttribute returns the entity-decoded value, so the baked
+    // `&amp;` compares equal to the `&` built here.
+    var first = srcFor(vids[0].id, false);
+    if (player.getAttribute("src") !== first) player.src = first;
 
     // build the thumbnail strip
     if (strip) {

@@ -8,7 +8,7 @@ fi
 echo "pre-push: checking generated HTML/sitemap are up to date…" >&2
 if ! npm run check:generated >/dev/null; then
   echo "pre-push: generated files are stale (or build failed)." >&2
-  echo "          Run: npm run build && git add -A && git commit" >&2
+  echo "          Run: npm run build && git add -u && git commit" >&2
   exit 1
 fi
 

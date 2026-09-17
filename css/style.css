@@ -12,6 +12,9 @@
   /* woff2 FIRST: the browser takes the first src it can use, so listing the ttf first meant every page
      downloaded 206KB and the 52KB woff2 beside it was never fetched. */
   src: url('../plugins/fonts/New-York-Bold.woff2') format('woff2'), url('../plugins/fonts/New-York-Bold.ttf') format('truetype');
+  /* Without this the default is `auto` = block: measured with the binary delayed, the hero h1 painted
+     207 ink pixels (blank) at 930ms. The three Google families already carry &display=swap. */
+  font-display: swap;
   font-weight: normal;
 }
 
@@ -50,13 +53,20 @@
      warm fills where that fails too and the text takes navy. */
   --color-orange:    rgb(var(--orange-rgb));     /* fills, borders, decorative glyphs */
   --color-orange-dk: rgb(var(--orange-dk-rgb));  /* ALL orange TEXT; also orange's hover/active partner on fills */
-  --color-navy:      rgb(var(--navy-rgb));       /* = .text-primary; headings, body on light, solid CTA */
-  --color-navy-dk:   rgb(var(--navy-dk-rgb));    /* = .text-primary-dark; the DARKEST navy — h1 on the peach
-                                                    hero, navy's hover partner. NOT body copy. */
+  --color-navy:      rgb(var(--navy-rgb));       /* = .text-primary; headings, card and list titles,
+                                                    numerals, solid CTA. NOT body copy: that is
+                                                    --color-ink. This comment used to say "body on
+                                                    light" and that was simply wrong. */
+  --color-navy-dk:   rgb(var(--navy-dk-rgb));    /* = .text-primary-dark; the DARKEST navy. h1 on the
+                                                    peach hero, navy's hover partner. NOT body copy.
+                                                    Several pages put .text-primary-dark on prose
+                                                    anyway; that is drift, not licence. */
   --color-peach:     rgb(var(--peach-rgb));      /* = .bg-primary; the hero band */
   --color-yellow:    rgb(var(--yellow-rgb));     /* nav bar, badges, highlights, hover fills, .selected */
   --color-cream:     rgb(var(--cream-rgb));      /* THE card background; warm surfaces, table stripes */
-  --color-ink:       rgb(var(--ink-rgb));        /* body copy */
+  --color-ink:       rgb(var(--ink-rgb));        /* THE DEFAULT text colour. Both `body` and
+                                                    `p, .paragraph` declare it, so body copy needs
+                                                    no class. 8.59:1 on white. */
   --color-muted:     rgb(var(--muted-rgb));      /* meta / subtext on light: captions, dates, labels.
                                                     NOT a disabled state. */
   --color-line:      rgb(var(--line-rgb));       /* hairlines, subtle gray hover, scrollbar track */
@@ -117,8 +127,7 @@
      A height, so deliberately NOT a rung. */
   --card-h: 400px;
 
-  /* The hero band's top clearance. ART, not rhythm: it is NOT derived from the 56px fixed nav. #l7's
-     neighbouring 190px is a deliberate 10px lift off this line. */
+  /* The hero band's top clearance. ART, not rhythm: it is NOT derived from the 56px fixed nav. */
   --hero-clearance: 200px;
 
   /* The burger's bar PITCH: the three bars sit at 0, 1x and 2x this and the X state rotates bars 1 and 3
@@ -617,6 +626,17 @@ a:hover {
   margin-bottom: var(--space-48);
 }
 
+/* CONTINUOUS PROSE OPTS OUT. The arm above assumes a heading's intro line is followed by
+   CONTENT (cards, a list, a button) and pushes the pair away from it. In a prose column the
+   next block is just the next paragraph, and --space-48 there reads as a section break in the
+   middle of an argument. Deliberately NOT extended to a following ul: about.html's Mission and
+   both demo/ intros rely on the 48px above their lists. (0,3,2) beats the arm's (0,2,2) on class
+   count whatever the source order, the same manoeuvre `.section:not(.blog-post) h2.faq-q` uses
+   below. No :has(), so nothing new degrades. */
+.section:not(.blog-post) .prose h2 + :is(p, h4) {
+  margin-bottom: var(--space-16);
+}
+
 .bg-primary {
   background: var(--color-peach) !important;
 }
@@ -941,7 +961,8 @@ li.nav-item {
   border-bottom-right-radius: var(--radius-card-lg);
 }
 
-.navbar .nav-item:hover .dropdown-menu {
+.navbar .nav-item:hover .dropdown-menu,
+.navbar .nav-item:focus-within .dropdown-menu {
   display: block;
 }
 
@@ -1012,6 +1033,11 @@ li.nav-item {
   /* Contains #l5, which is deliberately hung right:-150px. Unscoped on purpose: scoped to max-width:767px the
      leaf escaped its section from 768px up. */
   overflow: hidden;
+  /* z-index:0 IS LOAD-BEARING, not a no-op. `position: relative` alone leaves z-index auto, which is NOT a
+     stacking context — so .layer's negative z-index below would paint the leaf BEHIND this band's own
+     background and make it invisible. Declaring 0 here creates the context, which puts negative children
+     above the background and below every in-flow child. Remove this and the decorations disappear. */
+  z-index: 0;
 }
 
 .hero-area h1,
@@ -1101,11 +1127,42 @@ a.link {
   text-decoration-color: rgba(var(--orange-dk-rgb), 0.35);
 }
 
+/* The tint does not track currentColor, so the hover half is restated against `a:hover`'s navy — the
+   same pairing .pricing-card ul li a:hover writes for its own rung. */
+p a:not(.btn):hover,
+a.link:hover {
+  text-decoration-color: rgba(var(--navy-rgb), 0.35);
+}
+
 /* Hero leaves — art, not rhythm: a leaf's top is not a gap between two things, and some are negative
    because the leaf hangs off the edge. The spacing guard's Tier B warnings here are on purpose. */
+/* BEHIND EVERYTHING — decoration must never paint over content. At z-index:1 these sat ABOVE in-flow text
+   (a positioned element with any z-index paints after inline content), and the only thing saving the
+   headline was a hand-raised `z-index: 2` on .hero-area h1. That protected exactly one element, so the H2
+   subtitle WAS being covered: measured on the homepage, the leaf occluded h2.text-secondary at both 1440px
+   and 1024px. Raising each new element as it gets bitten does not scale; putting the layers behind the whole
+   flow makes the class of bug impossible. Negative z-index works only because .hero-area declares z-index:0
+   — see the note there. Verified after the change: the leaf covers no text at 1440/1024/768/400/320 and is
+   still visible at every one. */
 .layer {
   position: absolute;
-  z-index: 1;
+  z-index: -1;
+  /* Decoration is not a target. Every layer hit-tested as the topmost element before this: pointer-events
+     auto plus an absolute box over the band meant elementFromPoint returned a layer's own <img>. */
+  pointer-events: none;
+  /* NOT SCALED, ON PURPOSE. A proportional cap (max-width:24%, the 1440 render restated) was tried and
+     rejected by the owner: it held the leaf at a constant 14% of the viewport but shrank the art to 77px at
+     320, which reads as a different, smaller illustration rather than the same one. These are fixed pieces of
+     art at a fixed size, and `overflow: hidden` on .hero-area is what keeps them in bounds — so the visible
+     sliver is the same at every width instead of the drawing being redrawn smaller. Scaling was only ever
+     needed to stop the leaf covering copy, and z-index:-1 above does that properly. */
+}
+
+/* `display: block` only — it drops the inline line box the div inherits, which sat ~19px of leading around a
+   19px-tall dot row and put the art below its own `top`. No width/height: the art draws at its natural size,
+   which is the point. */
+.layer img {
+  display: block;
 }
 
 #l4 {
@@ -1115,7 +1172,15 @@ a.link {
 }
 
 #l5 {
+  /* Nav bottom (y=64) + 36. Deliberately NOT expressed against --hero-clearance: halving that constant is
+     numerically 100px but semantically false — the clearance comment says it is art, not rhythm, and a
+     taller nav should move this leaf while leaving the title's clearance alone. */
   top: 100px;
+  /* A LENGTH, not a percentage, and that is what makes the visible sliver consistent: the art is 346px wide
+     and this hangs its right 150px off the edge, so the same 196px shows at every viewport. A percentage was
+     tried and swung the sliver from 196px at 1440 to 313px at 320. The tail is the right part to lose —
+     per-column alpha on leaf-yellow.png is 10.9% ink across the clipped 150 against 54.2% across the 196
+     that stay, so the clip trims the wispy end and keeps the body of the leaf. */
   right: -150px;
 }
 
@@ -1133,7 +1198,6 @@ a.link {
   /* Bootstrap's column gutters are 15+15, so this row gap matches them and the grid is square. */
   margin: 0 0 var(--grid-gutter);
   box-shadow: var(--shadow-raised) !important;
-  transition: transform var(--ease);
 }
 
 /* Without a width the <img> falls back to intrinsic size, and images/team holds originals up to
@@ -1168,9 +1232,11 @@ a.link {
 /* The card owns its heading colour instead of each h3 carrying a utility, so the rung is set once for the
    ground rather than fourteen times on the elements.
 
-   BASE ORANGE IS AN OWNER DECISION — DO NOT "FIX" IT. It measures 2.86:1 on this --color-yellow card,
-   under the 3:1 that 26px/40px large text owes. It was tried at --color-orange-dk (3.69:1, and passing)
-   and rejected: the darker rung read as unintentional against the brand orange used everywhere else.
+   BASE ORANGE IS AN OWNER DECISION — DO NOT "FIX" IT. It measures 2.86:1 on this --color-yellow card.
+   index.html's names carry `.h4`, whose clamp puts them at 20px on any phone (<=512px) and 26px only
+   above ~640px, so they owe 4.5:1 there and 3:1 above it — and base orange misses both. It was tried at
+   --color-orange-dk (3.69:1, which clears the large-text floor but still not 4.5) and rejected: the
+   darker rung read as unintentional against the brand orange used everywhere else.
    A contrast pass that darkens this is re-litigating a decision, not fixing a bug. If it ever must
    change, the ground is the thing to change — not the text rung. */
 .instructor-card h3 {
@@ -1458,6 +1524,23 @@ button.slick-next {
   padding-right: var(--space-16);
 }
 
+/* The footer link's marker, on the one ground where the sitewide link tints fail. `p
+   a:not(.btn)` underlines it in rgba(--orange-dk, 0.35), which composites to 1.25:1 on
+   --color-navy, and its :hover tint is rgba(--navy-rgb, 0.35) — the background itself, so
+   the underline disappears entirely. That left colour as the only marker, which WCAG 1.4.1
+   forbids. Peach reads 3.54:1 at 60% and 7.36:1 solid on this ground, and is what the token
+   table already assigns to navy surfaces. The hover colour needs !important only because
+   .text-white carries it. */
+.footer-section p a {
+  text-decoration-color: rgba(var(--peach-rgb), 0.6);
+}
+
+.footer-section p a:hover,
+.footer-section p a:focus {
+  color: var(--color-peach) !important;
+  text-decoration-color: var(--color-peach);
+}
+
 /* /footer */
 
 blockquote {
@@ -1548,6 +1631,44 @@ ol.steps--lg li:before {
   margin-top: var(--space-48);
 }
 
+/* .text-secondary's rung is sized for HEADINGS: >=26px is WCAG large text and owes 3:1, which
+   --color-orange clears at 3.95:1 on white. On inline emphasis inside prose the text is 20px and owes
+   4.5:1, which base orange misses. The dark rung is 5.09:1 there and is exactly what the token table
+   prescribes for small orange text, alongside .collapsible, .taglist and .blog-backlink.
+   `:not(.text-lg)` keeps about.html's 26px Mission labels on the brand rung — they are large text and
+   darkening them is the change the owner rejected twice. !important because .text-secondary uses it. */
+em.text-secondary:not(.text-lg),
+b.text-secondary:not(.text-lg),
+i.text-secondary:not(.text-lg),
+strong.text-secondary:not(.text-lg),
+p.text-secondary:not(.text-lg) {
+  color: var(--color-orange-dk) !important;
+}
+
+/* The FAQ question is a real <h2> WRAPPING its button (see renderFaq in scripts/build.js), so the
+   question survives text extraction as a heading. The wrapper must not restyle the button it holds:
+   `button { font-family: inherit }` above would pull --font-serif down from the global h1-h6 rule,
+   h2 carries --fs-heading (60px) where this owes --fs-body, and the heading's navy would fight
+   .collapsible's own rung — which .collapsible:after inherits, so the glyph would desync from its
+   text. margin:0 because Bootstrap gives every heading .5rem below, which would unbalance the
+   button's symmetric --space-16 padding and shift the vertically-centred glyph off the text. */
+.faq-q {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-tight);
+}
+
+/* The margin reset is written at this specificity ON PURPOSE. `.section:not(.blog-post)
+   h2:not(:has(+ :is(p, h4)))` above is (0,2,2) and DOES match these headings — each one's
+   next sibling is div.content, not a p or h4 — so it would inject --space-48 between every
+   question and its own panel. Repeating that selector's shape plus the class is (0,3,1),
+   which wins on class count regardless of source order. The bare .faq-q is kept in the list
+   so the reset still applies if the accordion ever moves outside a .section. */
+.section:not(.blog-post) h2.faq-q,
+.faq-q {
+  margin: 0;
+}
+
 /*collapse*/
 .collapsible {
   background-color: var(--color-cream);
@@ -1576,9 +1697,12 @@ ol.steps--lg li:before {
   color: var(--color-navy);
 }
 
+/* `inherit`, not a colour: the glyph is the only indicator of open/closed state, so it owes 3:1 as a
+   non-text indicator, and --color-amber missed in all three backgrounds. The button's own text rung is
+   already tuned for each of those grounds. */
 .collapsible:after {
   content: '\002B';
-  color: var(--color-amber);
+  color: inherit;
   font-weight: var(--fw-bold);
   font-size: 1.4em;
   line-height: var(--lh-solid);
@@ -1593,11 +1717,18 @@ ol.steps--lg li:before {
   content: "\2212";
 }
 
+/* `visibility`, alongside max-height, is what makes the button's aria-expanded="false" TRUE:
+   max-height:0 + overflow:hidden hides the panel visually but leaves its text in the
+   accessibility tree and its links tab-reachable, so a screen-reader user was told
+   "collapsed" while still able to Tab into four invisible links. visibility:hidden removes
+   it from both. Transitioned so it flips at the END of the close, not the start, and the
+   collapse still animates. */
 .content {
   padding: 0 var(--space-16);
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.2s ease-out;
+  visibility: hidden;
+  transition: max-height 0.2s ease-out, visibility 0.2s;
   background-color: var(--color-mist);
 }
 
@@ -1615,6 +1746,8 @@ p.description {
   width: 100%;
 }
 
+/* Navy rather than the default --color-ink is DELIBERATE: these cells carry dates, chapter numbers
+   and topic labels, which the role table above assigns to navy, not the body-prose role. */
 .table {
   overflow-x: auto !important;
   width: 100% !important;
@@ -1662,16 +1795,16 @@ tr:nth-child(even) {
 
 /* calendar */
 
-/* Google's pasted embed ships `style="border: 0"` ON THE IFRAME and an inline style beats a stylesheet
-   rule; that is what the !important answers. Remove the inline style and it goes too. */
+/* Google's pasted embed ships `style="border: 0"` ON THE IFRAME, and an inline style beats a stylesheet
+   rule, so a border here would need !important to show at all. There was a 2px yellow one; it was
+   removed on purpose, so the inline zero now stands. */
 .calendar {
   width: 100%;
   max-width: 100%;
   height: 500px;
-  border: 2px solid var(--color-yellow) !important;
   border-radius: var(--radius-card);
-  /* NO box-shadow: --shadow-raised marks OUR raised surfaces, and this is a third-party iframe that
-     draws its own chrome. The yellow border already separates it from the page. */
+  /* NO box-shadow. --shadow-raised marks OUR raised surfaces, and this is a third-party iframe that
+     draws its own chrome. */
   margin: var(--space-20) 0;
   overflow: hidden;
 }
@@ -1693,9 +1826,10 @@ input#query {
 
 /* #query takes the shared :focus-visible ring; text fields match it on pointer focus too. */
 
+/* The placeholder is this control's only visible label, so it owes 4.5:1 like any other text.
+   --color-amber at 0.7 measured 1.84:1 on --color-cream-dk; the opacity was most of the damage. */
 input#query::placeholder {
-  color: var(--color-amber);
-  opacity: 0.7;
+  color: var(--color-orange-dk);
 }
 
 .search {
@@ -1705,7 +1839,8 @@ input#query::placeholder {
   align-items: center;
   justify-content: center;
   background-color: var(--color-amber);
-  color: #fff;
+  /* Navy, not #fff: the button has no text, so the glyph IS the control, and #fff on amber is 2.63:1. */
+  color: var(--color-navy);
   padding: var(--space-8) var(--space-16);
   margin: var(--space-8);
 }
@@ -1714,7 +1849,7 @@ input#query::placeholder {
 .btn.search:hover,
 .btn.search:focus,
 .btn.search:active {
-  color: #fff;
+  color: var(--color-navy-dk);
 }
 
 form#search {
@@ -2056,8 +2191,10 @@ svg {
 }
 
 /* Pricing Cards - Signup Page */
-/* SCOPED TEXT ROLE, ON PURPOSE — not drift. Everything here is --color-navy on --color-cream at
-   12.78:1. The one place body-weight text is not --color-ink: do not "fix" it, do not copy it outward. */
+/* SCOPED TEXT ROLE, ON PURPOSE. Not drift. Everything here is --color-navy on --color-cream at
+   12.78:1. Body-weight text is --color-ink everywhere by default; this is one of a small number of
+   deliberate exceptions, the others being .testimonial-card .quote and .table. This comment used to
+   claim it was the only one. Do not "fix" it, and do not copy it outward. */
 .pricing-card {
   background-color: var(--color-cream);
   border-radius: var(--radius-card);
@@ -2081,9 +2218,7 @@ svg {
   color: #fff;
 }
 
-.pricing-card:hover {
-  transform: translateY(var(--card-lift));
-}
+
 
 .pricing-card .tier-name {
   font-family: var(--font-serif);
@@ -2628,7 +2763,9 @@ svg {
   font-size: var(--fs-title);
 }
 
-/* Leading is not here: this is one of the long-form surfaces, and they are listed together. */
+/* Leading is not here: this is one of the long-form surfaces, and they are listed together.
+   Navy rather than the default --color-ink is DELIBERATE: a pull quote is display text, not body
+   prose. Documented because .pricing-card's comment once claimed to be the only such exception. */
 .testimonial-card .quote {
   color: var(--color-navy);
   margin-bottom: var(--space-20);
@@ -2769,5 +2906,21 @@ svg {
   color: var(--color-orange-dk);
 }
 
+/* THE REDUCED-MOTION GUARD, and it is LAST on purpose: `.instructor-card.wow` sets
+   `animation-duration: .8s !important` further up, and only a later !important at equal specificity
+   beats it. Everything here is a property the file already animates — WOW/animate.css entrances, the
+   --ease transitions on cards and buttons, and html's smooth scrolling, which is full-viewport motion
+   on every in-page anchor. Durations go to 0.01ms rather than `none` so animation-fill-mode still
+   lands each element on its final keyframe: WOW hides its boxes with visibility:hidden and relies on
+   the animation completing to reveal them, so killing the animation outright would hide content. */
+@media (prefers-reduced-motion: reduce) {
 
-
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

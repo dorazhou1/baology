@@ -53,8 +53,13 @@ has to be committed.**
 npm install        # once, to get the build's dev dependencies
 npm run build      # re-render the HTML + sitemap from data/
 npm run check:generated  # re-render + fail if committed generated files drifted
-git add -A && git commit && git push   # to main → live in ~1 min
+git add -u && git commit && git push   # to main → live in ~1 min
 ```
+
+> `git add -u`, not `git add -A`: the pre-commit hook already stages every file the
+> build owns, and `-u` stages only tracked changes. `-A` would sweep in untracked
+> files — including the `*-how.csv` attribution exports, which carry students' and
+> parents' names and would be served publicly from baology.org.
 
 If you change `data/*` but forget to run `npm run build`, the live site keeps
 showing the old content. When in doubt, run the build — it's deterministic, so

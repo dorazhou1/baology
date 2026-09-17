@@ -1,0 +1,79 @@
+# The FAQ. Single source for BOTH halves of about/faq.html: the rendered accordion and the
+# FAQPage JSON-LD. They used to be able to drift — the page shipped twelve visible questions
+# and a FAQPage node with no mainEntity key at all — and one source is what stops that.
+#
+# Schema:
+#   - q: the question, as visible copy (required)
+#     a: the answer, inline HTML allowed (required). <strong>/<em>/<a> only.
+#
+# Links to an address or form that lives in js/site-config.js carry ONLY
+# data-site-href="key"; scripts/build.js bakeSiteLinks() fills the href in on every build,
+# so the URL is never written down twice.
+#
+# Order here is the order on the page.
+
+- q: |-
+    What level of student is this course intended for? Is this course mostly focused on tackling the open or semifinal exam?
+  a: |-
+    This course is designed to offer value to students both <strong>beginner and more advanced</strong>. This may seem a contradiction, but we will be fully honest to say that students without experience may find themselves having to work significantly more time and effort into the course and biology. However, often it is not prior experience but rather how hard a student works (as evidenced by our 3 freshman finalists in 2021). The course does not favor one over the other. The USABO runs an <strong>Open Exam</strong> around February and a <strong>Semifinal Exam</strong> around March, and both dates shift from year to year. The syllabus covers the same body of material that both exams draw on.
+
+- q: |-
+    What prerequisites are required/suggested for this course?
+  a: |-
+    We think that anyone who has enough dedication/commitment to the course will be able to succeed. Generally it is not the students who have the most experience of the most advanced biology courses that do the best but rather those that put in the most effort and dedicate their time will succeed. That being said, completing at least <strong>Honors Biology</strong> is recommended.
+
+- q: |-
+    What do I do if I can’t make it to some of the sessions?
+  a: |-
+    While live participation is highly participated and beneficial, we totally understand that it can be hard to make it to all the sessions, <strong>every single class is recorded</strong> and made available within a week to those who miss class. We have also introduced a new flexible, university-style office hours which will be flexible and give students opportunity for live help even if they cannot make sessions normally!
+
+- q: |-
+    I filled out the form for the class, now what?
+  a: |-
+    Our helpful staff will email you with further directions, but <strong>the next step is to send payment through Zelle</strong> to <a class="link" data-site-href="paymentEmailHref">kevinbaobiology@yahoo.com</a> (note this is our Yahoo address, not our Gmail address). We are a small business and as such our staff will check for new registrants periodically but it may take 24-48 hours. We thank you in advance for your patience!
+
+- q: |-
+    What resources are provided alongside the course?
+  a: |-
+    By signing up for the course, not only do you get access to our high quality lectures and access to our world-class staff, we also write <strong>unit summaries</strong>, provide detailed <strong>reading lists</strong> for both beginner and advanced students, and hold many <strong>additional events and activities</strong>.
+
+- q: |-
+    Do you offer any discounts :p?
+  a: |-
+    <strong>Unfortunately not</strong> :(. However students who retake a particular course (i.e. session 1 and session 2) are eligible for a discount for that same course. The course is designed to be taken multiple times because we expect you will learn new things each time and the course has been revamped each time to offer more value and content! If you qualify for a discount, please <a class="link" data-site-href="contactEmailHref">write to us</a>.
+
+- q: |-
+    Do you offer 1:1 tutoring?
+  a: |-
+    Yes, but on a case-by-case basis rather than as a standing offering, because it depends on which instructor has time. <a class="link" data-site-href="contactEmailHref">Write to us</a> and we will tell you what is possible. The weekly classes are the main course, and they are small-cohort live teaching rather than one-to-one.
+
+- q: |-
+    What is your track record? How successful have your alums been?
+  a: |-
+    We've been lucky to have <strong>finalists every year</strong> from our main course participants! You can <a class="link" href="/#results">see our results</a> season by season. Many remain involved with the course and its community. They’re regular presences in class and in our community mentoring other students and answering questions.
+
+- q: |-
+    What textbooks/materials do I need for the course?
+  a: |-
+    Our course provides most of the materials a student may need to succeed in the course with the exception of textbooks. The only text you definitely <em>need</em> is <strong>Campbell’s Biology</strong>. Any edition 10th or later will suffice. If you need to buy an older edition 9th and 7th are also very good.
+
+- q: |-
+    What do need to do each week for the course?
+  a: |-
+    For each week we recommend you do the <strong>Suggested Readings</strong> for that week <em>before</em> the main lecture. More advanced students may want to peruse our additional readings after each weeks lecture.
+
+- q: |-
+    What are the booster classes?
+  a: |-
+    The booster classes are small, <strong>test-prep oriented sessions that focus on review</strong> of basic material and old tests. They are offered usually as “intensives” and are some of the more popular course offerings.
+
+- q: |-
+    Why is the class priced the way it is?
+  a: |-
+    Level 1 and Level 2 are <strong>$1500</strong> each and the Full Package is <strong>$2000</strong>, for a 20-week semester of 6-8+ hours of live class a week. This comes to 120+ hours at Level 1 or Level 2 and 160+ with the Full Package, or about <strong>$12.50 an hour of live class</strong> either way. We understand that is a real amount of money, and the class is priced competitively against similar offerings (some of which only sell recordings). We also make sure to compensate our talented staff fairly for their time.
+
+- q: |-
+    How can I find out more about the class?
+  a: |-
+    If you have other unanswered questions feel free to write to <a class="link" data-site-href="contactEmailHref">kevinbaobiology@gmail.com</a> and we will answer you as soon as possible.
+
